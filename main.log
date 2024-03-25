@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.2.28)  10 MAR 2024 21:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.2.28)  25 MAR 2024 19:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -559,7 +559,11 @@ LaTeX Warning: Label `sub@fig:subim2' multiply defined.
 
 LaTeX Warning: Label `fig:image2' multiply defined.
 
-) (./Chapter3.aux) (./Chapter4.aux) (./Chapter5.aux) (./Chapter6.aux) (./Chapter7.aux) (./Chapter8.aux))
+) (./Chapter3.aux
+
+LaTeX Warning: Label `fig:image2' multiply defined.
+
+) (./Chapter4.aux) (./Chapter5.aux) (./Chapter6.aux) (./Chapter7.aux) (./Chapter8.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -669,7 +673,7 @@ LaTeX Info: Redefining \nameref on input line 8.
 \openout2 = `TitlePage.aux'.
 
  (./TitlePage.tex
-<Figures/Logo.png, id=164, 341.275pt x 341.275pt>
+<Figures/Logo.png, id=209, 341.275pt x 341.275pt>
 File: Figures/Logo.png Graphic file (type png)
 <use Figures/Logo.png>
 Package pdftex.def Info: Figures/Logo.png  used on input line 4.
@@ -695,20 +699,20 @@ l.25 ...ter}{\numberline {2}Models}{18}{chapter.2}
 
 
 
-])
+] [2])
 \tf@toc=\write7
 \openout7 = `main.toc'.
 
- [2]
+ [3]
 No file main.acr.
-[3
+[4
 
 ]
 \openout2 = `Chapter1.aux'.
 
  (./Chapter1.tex
 Chapter 1.
-<Figures/ProcessingChain.png, id=229, 616.3025pt x 318.18875pt>
+<Figures/ProcessingChain.png, id=288, 616.3025pt x 318.18875pt>
 File: Figures/ProcessingChain.png Graphic file (type png)
 <use Figures/ProcessingChain.png>
 Package pdftex.def Info: Figures/ProcessingChain.png  used on input line 13.
@@ -729,24 +733,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--29
 
  []
 
-<Figures/Sampling.png, id=234, 543.02875pt x 139.52126pt>
+<Figures/Sampling.png, id=293, 543.02875pt x 139.52126pt>
 File: Figures/Sampling.png Graphic file (type png)
 <use Figures/Sampling.png>
 Package pdftex.def Info: Figures/Sampling.png  used on input line 34.
 (pdftex.def)             Requested size: 271.5137pt x 69.76045pt.
 [2 <./Figures/ProcessingChain.png>] [3 <./Figures/Sampling.png>]
-<Figures/AdditiveModel.png, id=254, 550.055pt x 266.9975pt>
+<Figures/AdditiveModel.png, id=313, 550.055pt x 266.9975pt>
 File: Figures/AdditiveModel.png Graphic file (type png)
 <use Figures/AdditiveModel.png>
 Package pdftex.def Info: Figures/AdditiveModel.png  used on input line 67.
 (pdftex.def)             Requested size: 275.02682pt x 133.49841pt.
  [4] [5 <./Figures/AdditiveModel.png>]
-<Figures/HSV1.png, id=265, 368.37625pt x 273.02pt>
+<Figures/HSV1.png, id=324, 368.37625pt x 273.02pt>
 File: Figures/HSV1.png Graphic file (type png)
 <use Figures/HSV1.png>
 Package pdftex.def Info: Figures/HSV1.png  used on input line 102.
 (pdftex.def)             Requested size: 147.34789pt x 109.20605pt.
-<Figures/HSV2.png, id=266, 249.93375pt x 255.95625pt>
+<Figures/HSV2.png, id=325, 249.93375pt x 255.95625pt>
 File: Figures/HSV2.png Graphic file (type png)
 <use Figures/HSV2.png>
 Package pdftex.def Info: Figures/HSV2.png  used on input line 106.
@@ -761,82 +765,87 @@ Underfull \hbox (badness 10000) in paragraph at lines 126--129
 
  []
 
-[7] [8]
-<Figures/Histogram.png, id=282, 637.38126pt x 343.2825pt>
+[7]
+<Figures/Histogram.png, id=338, 637.38126pt x 343.2825pt>
 File: Figures/Histogram.png Graphic file (type png)
 <use Figures/Histogram.png>
-Package pdftex.def Info: Figures/Histogram.png  used on input line 165.
+Package pdftex.def Info: Figures/Histogram.png  used on input line 156.
 (pdftex.def)             Requested size: 318.68985pt x 171.64082pt.
- [9 <./Figures/Histogram.png>]
-<Figures/Stretching.jpeg, id=290, 1284.8pt x 738.76pt>
-File: Figures/Stretching.jpeg Graphic file (type jpg)
-<use Figures/Stretching.jpeg>
-Package pdftex.def Info: Figures/Stretching.jpeg  used on input line 192.
-(pdftex.def)             Requested size: 385.44298pt x 221.6297pt.
-<Figures/OperationsHist.png, id=291, 773.89125pt x 190.7125pt>
-File: Figures/OperationsHist.png Graphic file (type png)
-<use Figures/OperationsHist.png>
-Package pdftex.def Info: Figures/OperationsHist.png  used on input line 207.
-(pdftex.def)             Requested size: 386.94467pt x 95.356pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[10 <./Figures/Stretching.jpeg>]
-<Figures/Convolution.png, id=298, 778.91pt x 386.44376pt>
+[8]
+<Figures/Stretching.jpeg, id=344, 1284.8pt x 738.76pt>
+File: Figures/Stretching.jpeg Graphic file (type jpg)
+<use Figures/Stretching.jpeg>
+Package pdftex.def Info: Figures/Stretching.jpeg  used on input line 183.
+(pdftex.def)             Requested size: 385.44298pt x 221.6297pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[9 <./Figures/Histogram.png>]
+<Figures/OperationsHist.png, id=351, 773.89125pt x 190.7125pt>
+File: Figures/OperationsHist.png Graphic file (type png)
+<use Figures/OperationsHist.png>
+Package pdftex.def Info: Figures/OperationsHist.png  used on input line 198.
+(pdftex.def)             Requested size: 386.94467pt x 95.356pt.
+ [10 <./Figures/Stretching.jpeg> <./Figures/OperationsHist.png>]
+<Figures/Convolution.png, id=360, 778.91pt x 386.44376pt>
 File: Figures/Convolution.png Graphic file (type png)
 <use Figures/Convolution.png>
-Package pdftex.def Info: Figures/Convolution.png  used on input line 247.
+Package pdftex.def Info: Figures/Convolution.png  used on input line 238.
 (pdftex.def)             Requested size: 233.6748pt x 115.93402pt.
 
-Overfull \hbox (40.50987pt too wide) in paragraph at lines 227--251
+Overfull \hbox (40.50987pt too wide) in paragraph at lines 218--242
 \OT1/cmr/bx/n/12 Roberts op-er-a-tor: $[]  []$ Pre-witt op-er-a-tor: $[]  []$ 
  []
 
-[11 <./Figures/OperationsHist.png>] [12 <./Figures/Convolution.png>]
-<Figures/Noise.png, id=311, 846.16125pt x 310.15875pt>
+[11] [12 <./Figures/Convolution.png>]
+<Figures/Noise.png, id=371, 846.16125pt x 310.15875pt>
 File: Figures/Noise.png Graphic file (type png)
 <use Figures/Noise.png>
-Package pdftex.def Info: Figures/Noise.png  used on input line 270.
+Package pdftex.def Info: Figures/Noise.png  used on input line 261.
 (pdftex.def)             Requested size: 423.07959pt x 155.079pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [13] [14 <./Figures/Noise.png>]
-<Figures/Dilatation.png, id=326, 488.82625pt x 185.69376pt>
+<Figures/Dilatation.png, id=386, 488.82625pt x 185.69376pt>
 File: Figures/Dilatation.png Graphic file (type png)
 <use Figures/Dilatation.png>
-Package pdftex.def Info: Figures/Dilatation.png  used on input line 293.
+Package pdftex.def Info: Figures/Dilatation.png  used on input line 284.
 (pdftex.def)             Requested size: 244.41252pt x 92.84665pt.
  [15 <./Figures/Dilatation.png>]
-<Figures/Erosion.png, id=334, 488.82625pt x 185.69376pt>
+<Figures/Erosion.png, id=393, 488.82625pt x 185.69376pt>
 File: Figures/Erosion.png Graphic file (type png)
 <use Figures/Erosion.png>
-Package pdftex.def Info: Figures/Erosion.png  used on input line 307.
+Package pdftex.def Info: Figures/Erosion.png  used on input line 298.
 (pdftex.def)             Requested size: 244.41252pt x 92.84665pt.
-<Figures/Opening.png, id=335, 657.45625pt x 222.8325pt>
+<Figures/Opening.png, id=394, 657.45625pt x 222.8325pt>
 File: Figures/Opening.png Graphic file (type png)
 <use Figures/Opening.png>
-Package pdftex.def Info: Figures/Opening.png  used on input line 320.
+Package pdftex.def Info: Figures/Opening.png  used on input line 311.
 (pdftex.def)             Requested size: 262.97784pt x 89.13141pt.
 
-Overfull \hbox (41.18861pt too wide) in paragraph at lines 320--321
+Overfull \hbox (41.18861pt too wide) in paragraph at lines 311--312
 [][] 
  []
 
-<Figures/Closing.png, id=336, 657.45625pt x 222.8325pt>
+<Figures/Closing.png, id=395, 657.45625pt x 222.8325pt>
 File: Figures/Closing.png Graphic file (type png)
 <use Figures/Closing.png>
-Package pdftex.def Info: Figures/Closing.png  used on input line 325.
+Package pdftex.def Info: Figures/Closing.png  used on input line 316.
 (pdftex.def)             Requested size: 262.97784pt x 89.13141pt.
 
-Overfull \hbox (41.18861pt too wide) in paragraph at lines 325--326
+Overfull \hbox (41.18861pt too wide) in paragraph at lines 316--317
 [][] 
  []
 
 
-Overfull \hbox (2.61107pt too wide) in paragraph at lines 319--330
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 310--321
 []$[]$ $[]$
  []
 
@@ -845,7 +854,7 @@ Overfull \hbox (2.61107pt too wide) in paragraph at lines 319--330
 
  (./Chapter2.tex
 Chapter 2.
-<Figures/Pinhole.png, id=351, 917.4275pt x 442.65375pt>
+<Figures/Pinhole.png, id=410, 917.4275pt x 442.65375pt>
 File: Figures/Pinhole.png Graphic file (type png)
 <use Figures/Pinhole.png>
 Package pdftex.def Info: Figures/Pinhole.png  used on input line 8.
@@ -859,7 +868,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 ] [19 <./Figures/Pinhole.png>]
-<Figures/Perspective_proj1.jpeg, id=363, 1284.8pt x 654.445pt>
+<Figures/Perspective_proj1.jpeg, id=422, 1284.8pt x 654.445pt>
 File: Figures/Perspective_proj1.jpeg Graphic file (type jpg)
 <use Figures/Perspective_proj1.jpeg>
 Package pdftex.def Info: Figures/Perspective_proj1.jpeg  used on input line 38.
@@ -869,7 +878,7 @@ Overfull \hbox (35.16621pt too wide) in paragraph at lines 38--40
 [][]
  []
 
-<Figures/Perspective_proj.jpeg, id=364, 681.54625pt x 335.2525pt>
+<Figures/Perspective_proj.jpeg, id=423, 681.54625pt x 335.2525pt>
 File: Figures/Perspective_proj.jpeg Graphic file (type jpg)
 <use Figures/Perspective_proj.jpeg>
 Package pdftex.def Info: Figures/Perspective_proj.jpeg  used on input line 42.
@@ -884,24 +893,24 @@ Overfull \hbox (2.61107pt too wide) in paragraph at lines 37--46
 []$[]$ $[]$
  []
 
-<Figures/Orthographic_proj.png, id=365, 580.1675pt x 259.97125pt>
+<Figures/Orthographic_proj.png, id=424, 580.1675pt x 259.97125pt>
 File: Figures/Orthographic_proj.png Graphic file (type png)
 <use Figures/Orthographic_proj.png>
 Package pdftex.def Info: Figures/Orthographic_proj.png  used on input line 68.
 (pdftex.def)             Requested size: 221.78923pt x 99.38115pt.
 [20 <./Figures/Perspective_proj1.jpeg> <./Figures/Perspective_proj.jpeg>]
-<Figures/Illumination.png, id=371, 459.7175pt x 170.6375pt>
+<Figures/Illumination.png, id=431, 459.7175pt x 170.6375pt>
 File: Figures/Illumination.png Graphic file (type png)
 <use Figures/Illumination.png>
 Package pdftex.def Info: Figures/Illumination.png  used on input line 107.
 (pdftex.def)             Requested size: 221.78923pt x 82.32425pt.
  [21 <./Figures/Orthographic_proj.png>] [22 <./Figures/Illumination.png>] [23]
-<Figures/ThinLenses.png, id=389, 518.93875pt x 281.05pt>
+<Figures/ThinLenses.png, id=448, 518.93875pt x 281.05pt>
 File: Figures/ThinLenses.png Graphic file (type png)
 <use Figures/ThinLenses.png>
 Package pdftex.def Info: Figures/ThinLenses.png  used on input line 147.
 (pdftex.def)             Requested size: 221.78923pt x 120.12009pt.
-<Figures/Focus.png, id=390, 959.585pt x 440.64626pt>
+<Figures/Focus.png, id=449, 959.585pt x 440.64626pt>
 File: Figures/Focus.png Graphic file (type png)
 <use Figures/Focus.png>
 Package pdftex.def Info: Figures/Focus.png  used on input line 155.
@@ -915,17 +924,96 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
  (./Chapter3.tex
 Chapter 3.
-) [27
+
+Underfull \hbox (badness 10000) in paragraph at lines 2--6
+
+ []
+
+<Figures/2DMotion.png, id=468, 584.1825pt x 289.08pt>
+File: Figures/2DMotion.png Graphic file (type png)
+<use Figures/2DMotion.png>
+Package pdftex.def Info: Figures/2DMotion.png  used on input line 11.
+(pdftex.def)             Requested size: 310.50357pt x 153.65717pt.
+<Figures/Example.png, id=469, 569.12625pt x 183.68625pt>
+File: Figures/Example.png Graphic file (type png)
+<use Figures/Example.png>
+Package pdftex.def Info: Figures/Example.png  used on input line 18.
+(pdftex.def)             Requested size: 310.50357pt x 100.22052pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[27
 
 
 
 
-]
+] [28 <./Figures/2DMotion.png> <./Figures/Example.png>]
+<Figures/Occlusion.png, id=482, 321.2pt x 264.99pt>
+File: Figures/Occlusion.png Graphic file (type png)
+<use Figures/Occlusion.png>
+Package pdftex.def Info: Figures/Occlusion.png  used on input line 49.
+(pdftex.def)             Requested size: 221.78923pt x 182.98077pt.
+ [29]
+<Figures/Aperture.jpg, id=487, 995.72pt x 501.875pt>
+File: Figures/Aperture.jpg Graphic file (type jpg)
+<use Figures/Aperture.jpg>
+Package pdftex.def Info: Figures/Aperture.jpg  used on input line 59.
+(pdftex.def)             Requested size: 310.50357pt x 156.50626pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[30 <./Figures/Occlusion.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 70--73
+
+ []
+
+[31 <./Figures/Aperture.jpg>]
+<Figures/OpticalFlow.png, id=499, 785.93625pt x 458.71375pt>
+File: Figures/OpticalFlow.png Graphic file (type png)
+<use Figures/OpticalFlow.png>
+Package pdftex.def Info: Figures/OpticalFlow.png  used on input line 92.
+(pdftex.def)             Requested size: 443.57848pt x 258.90077pt.
+<Figures/ChangeDetection.png, id=500, 896.34875pt x 407.5225pt>
+File: Figures/ChangeDetection.png Graphic file (type png)
+<use Figures/ChangeDetection.png>
+Package pdftex.def Info: Figures/ChangeDetection.png  used on input line 101.
+(pdftex.def)             Requested size: 310.50357pt x 141.1675pt.
+ [32 <./Figures/OpticalFlow.png>] [33 <./Figures/ChangeDetection.png>] [34]
+<Figures/FrameDifferencing.png, id=519, 496.85625pt x 144.54pt>
+File: Figures/FrameDifferencing.png Graphic file (type png)
+<use Figures/FrameDifferencing.png>
+Package pdftex.def Info: Figures/FrameDifferencing.png  used on input line 149.
+(pdftex.def)             Requested size: 248.4275pt x 72.2698pt.
+<Figures/DifferencingDiagram.jpeg, id=520, 334.24875pt x 371.28712pt>
+File: Figures/DifferencingDiagram.jpeg Graphic file (type jpg)
+<use Figures/DifferencingDiagram.jpeg>
+Package pdftex.def Info: Figures/DifferencingDiagram.jpeg  used on input line 152.
+(pdftex.def)             Requested size: 167.12396pt x 185.6431pt.
+
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 148--154
+[]$[]$ $[]$
+ []
+
+[35 <./Figures/FrameDifferencing.png> <./Figures/DifferencingDiagram.jpeg>]
+<Figures/BackgroundSub.png, id=527, 762.85pt x 140.525pt>
+File: Figures/BackgroundSub.png Graphic file (type png)
+<use Figures/BackgroundSub.png>
+Package pdftex.def Info: Figures/BackgroundSub.png  used on input line 183.
+(pdftex.def)             Requested size: 305.1346pt x 56.20898pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[36]) [37 <./Figures/BackgroundSub.png>]
 \openout2 = `Chapter4.aux'.
 
  (./Chapter4.tex
 Chapter 4.
-) [28
+) [38
 
 
 
@@ -935,7 +1023,7 @@ Chapter 4.
 
  (./Chapter5.tex
 Chapter 5.
-) [29
+) [39
 
 
 
@@ -945,7 +1033,7 @@ Chapter 5.
 
  (./Chapter6.tex
 Chapter 6.
-) [30
+) [40
 
 
 
@@ -955,7 +1043,7 @@ Chapter 6.
 
  (./Chapter7.tex
 Chapter 7.
-) [31
+) [41
 
 
 
@@ -965,7 +1053,7 @@ Chapter 7.
 
  (./Chapter8.tex
 Chapter 8.
-) [32
+) [42
 
 
 
@@ -974,7 +1062,7 @@ Chapter 8.
 
 LaTeX Warning: Empty `thebibliography' environment on input line 3.
 
-) [33
+) [43
 
 
 
@@ -983,21 +1071,21 @@ LaTeX Warning: Empty `thebibliography' environment on input line 3.
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 15C588A61CA28E593E820532E4EFFE49;5481.
+(rerunfilecheck)             Checksum: 0922E5B63EDFCF6341AFADB01AE4CEAE;7141.
  ) 
 Here is how much of TeX's memory you used:
- 20092 strings out of 478287
- 355329 string characters out of 5849289
- 704856 words of memory out of 5000000
- 37787 multiletter control sequences out of 15000+600000
- 477671 words of font info for 58 fonts, out of 8000000 for 9000
+ 20204 strings out of 478287
+ 357688 string characters out of 5849289
+ 704843 words of memory out of 5000000
+ 37855 multiletter control sequences out of 15000+600000
+ 478461 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 96i,12n,134p,1212b,555s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on main.pdf (37 pages, 992792 bytes).
+ 96i,12n,134p,1212b,580s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb>
+Output written on main.pdf (48 pages, 1507316 bytes).
 PDF statistics:
- 529 PDF objects out of 1000 (max. 8388607)
- 414 compressed objects within 5 object streams
- 98 named destinations out of 1000 (max. 500000)
- 431 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 666 PDF objects out of 1000 (max. 8388607)
+ 521 compressed objects within 6 object streams
+ 129 named destinations out of 1000 (max. 500000)
+ 564 words of extra memory for PDF output out of 10000 (max. 10000000)
 
