@@ -45,9 +45,10 @@
 \contentsline {subsection}{\numberline {3.2.3}Background subtraction}{36}{subsection.3.2.3}%
 \contentsline {subsubsection}{Adaptive background subtraction}{37}{section*.29}%
 \contentsline {subsection}{\numberline {3.2.4}Gaussian average}{37}{subsection.3.2.4}%
-\contentsline {subsection}{\numberline {3.2.5}Mixture of Gaussians}{37}{subsection.3.2.5}%
-\contentsline {chapter}{\numberline {4}Motion Tracking}{38}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Geometry}{39}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Local Feature Extraction}{40}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Classification}{41}{chapter.7}%
-\contentsline {chapter}{\numberline {8}Motion Capture}{42}{chapter.8}%
+\contentsline {subsubsection}{Improving the Gaussian average}{37}{section*.30}%
+\contentsline {subsection}{\numberline {3.2.5}Mixture of Gaussians}{38}{subsection.3.2.5}%
+\contentsline {chapter}{\numberline {4}Motion Tracking}{39}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Geometry}{40}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Local Feature Extraction}{41}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Classification}{42}{chapter.7}%
+\contentsline {chapter}{\numberline {8}Motion Capture}{43}{chapter.8}%

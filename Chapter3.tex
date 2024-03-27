@@ -142,7 +142,7 @@ Main things to consider are:
     \item If motion is parallel to the edge, then it can lead to artifacts;
     \item By changing the time scale, results can be significantly different.
 \end{itemize}
-Regardings the last point, we can observe the following:
+Regarding the last point, we can observe the following:
 \[D(N) = ||I(t)-I(t+N)||\]
 \begin{figure}[h]
     \begin{subfigure}{0.6\textwidth}
@@ -184,7 +184,7 @@ So, we calculate the difference between current frame and background and assign 
     \caption{Possible problems of Background Subtraction}
 \end{figure}
 \subsubsection{Adaptive background subtraction}
---TODO: tutto, era un casino quindi devo ragionarci su.
+--TODO: tutto, era un casino e devo ragionarci su.
 \subsection{Gaussian average}
 The idea is to model the background as a Gaussian distribution. The mean and the variance of the Gaussian are updated at each frame. The current frame is compared with the background model to detect moving objects.
 It may use a training sequence to initialize the background model, such as a possibly empty scene.
@@ -193,4 +193,26 @@ It take the current pixel value and the previous average and standard deviation.
     \mu_{t} = \alpha I_t + (1-\alpha)\mu_{t-1}
 \]
 The advantages are its computational efficiency and the low memory requirements.
+Pixel goes to foreground if: $|I_t - \mu_t| > k \sigma_t$
+Quality depends on a, a depends on the application, a too high value can lead to a slow adaptation to changes, a too low value can lead to a noisy background. Slow update = slow response to changes.
+\subsubsection{Improving the Gaussian average}
+To improve the Gaussian average we can use a binary operator to update values selectively, so only background values. M=1 if the pixel is foreground and 0 if it's background. This produces a more stable model and prevents pixels from being considered as background when they are not.
+\[
+    \mu_{t} = M\mu_{t-1} + (1-M)(\alpha I_t + (1-\alpha)\mu_{t-1})
+\]
+\\\textit{NB: only if you know the situation, perturbations of BG are legit.}
 \subsection{Mixture of Gaussians}
+With most techniques new objects are sooner or later absorbed in the background. This is because there are changes that appear and disappear faster than the update rate, such as tree leaves, rain, snow, water of a fountain, etc.
+It can be that the same pixel represents at different time instants tree leaves and sky/building behind.
+The idea is to model the background as a mixture of Gaussians, so using \textbf{K} Gaussian instead of a single one. 
+\[
+    p(x_t) = \sum_{i=1}^{K} w_{i,t} \mathcal{N}(x_t, \mu_{i,t}, \Sigma_{i,t})
+\]
+Each of them is used to model a foreground or background object. Theoretical model is complex, we have multi-variate gaussians to model RGB or YUV. In practice we have that components are independent (matrix is diagonal), and variance of each component is the same (\textit{NB: this means that collapse to $\sigma^2$}).  
+\\Let's take a deeper look\dots
+$w_[i,t] = $ weight for the current Gaussian, $\mu_{i,t} = $ mean for the current Gaussian, $\Sigma_{i,t} = $ variance for the current Gaussian.
+Select $K$, rank the Gaussians on the basis of weight, Standard deviation and Peak amplitude.
+Hint: the higher the peak and the more compact the distribution (low variance), the more pixel is likely to belong to the background $\Rightarrow$ strong evidence.
+Among the $K$ Gaussians, some belongs to the background and some to the foreground. The first $B$ Gaussians are associated to the BG if $\sum_{i=1}^B w_i > T$.
+Each incoming pixel is checked against the available models. In case no match is found, a new Gaussian is created. If a match is found (Es a match is found in the pixel is within $(x_t - \mu_{i, t})<2.5\sigma$), the model is updated. If the pixel is not matched with any model, the least probable Gaussian is replaced by the new one centered in $x_t$ with low weight and high variance.  
+Also here, update of the weights is necessary: $w_{k,t} = \alpha M_(k,t) + (1-\alpha)w_{k,t-1}$, where $M_(k,t)$ is 1 for the matching model and 0 otherwise (is it's not the matching model, the weight is decreased) and $\alpha$ is still the learning rate. 
