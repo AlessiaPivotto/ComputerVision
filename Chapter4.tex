@@ -1,1 +1,68 @@
 \chapter{Motion Tracking}
+Just to introduce the topic, we can say that motion tracking is the process of determining the movement of an object in a video sequence. 
+More in general, it regards the understanding of WHAT is moving in a scene and HOW it moves/interacts with the environment.
+This is a very important topic in computer vision, and it is used in many applications, such as video surveillance, traffic monitoring, human-computer interaction and biological applications (cell tracking). 
+At high level, motion tracking can be used for the discovery of activities, behavior understanding, and detection of threats.
+In this chapter, we will discuss the basic concepts of motion tracking, and we will present some of the most common algorithms used in this field.
+
+\section{Object Tracking}
+Object tracking is the process of locating a moving object over time. On the basis of the applications requirements, we can track the 2D coordinates (centroid), track in 3D (more cameras are required), or determine the position of complex objects (human body articulations).
+The main goal of object tracking is to estimate the state of the object at each frame, and to predict its future position.
+The applications of object tracking are numerous, and they include monitoring and surveillance, such as motion classification, identification of anomalous/suspicious behaviors, following a trajectory. 
+Or again, human machine interfaces, such as interacting with a device removing physical barriers (mouse, keyboard), natural language understanding; or even virtual reality, such as immersive presence, animation of virtual characters.
+Even mining and retrieval, such as browsing databases containing specific motion patterns.
+\\
+Some benefits of object tracking are:
+\begin{itemize}
+\item In HCI, control PC (or systems in general) à no need for additional tools;
+\item In surveillance, Automated / Semi-automated systems à reduce the stress of human operators;
+\item Virtual reality, computer animation à animate and drive the avatar;
+\item But also: Training of athletes, Gait disorders detection, Medical applications, etc.
+\end{itemize}
+
+\section{2D Tracking}
+Sometimes it is enough to track the object in 2D, for example when the object is moving on a plane.
+Exists different approaches to 2D tracking:
+\begin{itemize}
+\item \textbf{Region-based} $\Rightarrow$ set of pixels that share similar features (color);
+\item \textbf{Contour-based} $\Rightarrow$ determine position and shape of an object over time. Useful to track deformable objects;
+\item \textbf{Feature-based} $\Rightarrow$ select meaningful points (contours, corners);
+\item \textbf{Template-based} $\Rightarrow$ use specific models (hands, faces, eyes).
+\end{itemize}
+
+\subsection{Region-based tracking}
+When it comes to real-time applications, tracking regions with uniform appearance offers several benefits. 
+It enables swift processing, often exceeding 30 frames per second, while maintaining a commendable balance between quality and speed. 
+The idea revolves around identifying areas in an image that exhibit consistent color characteristics. 
+These regions are akin to patches of similar color projected onto the image plane, often achieved through segmentation techniques like background suppression.
+
+One fundamental requirement for successful region tracking is ensuring that these regions possess distinguishable colors. 
+However, this method faces challenges, particularly in scenarios with variable illumination. 
+Changes in lighting conditions can destabilize the uniformity of color, complicating the tracking process. 
+To mitigate this issue, various compensation techniques can be employed, such as utilizing the hue and saturation components of the HSV color space or normalizing the RGB values. 
+While these techniques work reasonably well indoors, outdoor settings may present more difficulties due to unpredictable lighting changes.
+
+In terms of what we aim to track, the possibilities are diverse. 
+It could involve monitoring any moving object, distinguishing between skin and non-skin regions (useful for applications like hand and face tracking), identifying specific colored areas, and more. 
+The approach typically involves techniques such as color thresholding for uniform regions or utilizing color histograms.
+
+However, tracking regions with uniform appearance isn't without its challenges. 
+Color variations over time due to changes in illumination or object posture pose significant hurdles. 
+Additionally, models of tracked objects need continual updates to adapt to evolving conditions.
+
+One conceivable approach to tackle these challenges involves breaking down the object into smaller regions. 
+Each region is then associated with a color vector or histogram, representing the average color values within that region. 
+During tracking, the color of each region is computed, and the similarity to a reference model is assessed. 
+If the ratio between the reference and current values is close to 1, it indicates a good match.
+
+Histograms serve as a valuable tool in this process. 
+They provide a quantified representation of the color distribution within a region, enabling comparisons between reference and current models. 
+Different similarity measures can be employed for evaluation, such as bin-by-bin comparison: \[\cup (O_i^t, O_i^r) \sum_{n=1}^{U} min \{O_{i,n}^r, O_{i,n}^t\} \]
+or Sum of Squared Differences (SSD): \[SSD(O_i^t, O_i^r) = \sum_{n=1}^{U} (O_{i,n}^r - O_{i,n}^t)^2 \]
+Careful consideration must be given to the number of bins used in the histograms, striking a balance between granularity and computational efficiency.
+
+In summary, tracking regions with uniform appearance offers a promising avenue for real-time applications, but it requires robust techniques to address challenges such as variable illumination and color changes over time. 
+Techniques involving region division and histogram analysis can help in achieving accurate and efficient tracking in such scenarios.
+\\\textit{NB: Shadows can be a problem in region-based tracking because are source of noise $\Rightarrow$ false positive. A shadow does not correspond to the motion of a real object, but it is a change in the color of the object. More specifically it's a variation of the luminance while chrominance remains ideally unaltered. To solve this problem, and obtain a proper tracking, shadows should be removed before tracking using a suitable algorithm.}
+
+\section{Blobs extraction} 

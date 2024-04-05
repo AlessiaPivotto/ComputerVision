@@ -48,7 +48,11 @@
 \contentsline {subsubsection}{Improving the Gaussian average}{37}{section*.30}%
 \contentsline {subsection}{\numberline {3.2.5}Mixture of Gaussians}{38}{subsection.3.2.5}%
 \contentsline {chapter}{\numberline {4}Motion Tracking}{39}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Geometry}{40}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Local Feature Extraction}{41}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Classification}{42}{chapter.7}%
-\contentsline {chapter}{\numberline {8}Motion Capture}{43}{chapter.8}%
+\contentsline {section}{\numberline {4.1}Object Tracking}{39}{section.4.1}%
+\contentsline {section}{\numberline {4.2}2D Tracking}{40}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Region-based tracking}{40}{subsection.4.2.1}%
+\contentsline {section}{\numberline {4.3}Blobs extraction}{42}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Geometry}{43}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Local Feature Extraction}{44}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Classification}{45}{chapter.7}%
+\contentsline {chapter}{\numberline {8}Motion Capture}{46}{chapter.8}%
