@@ -66,3 +66,54 @@ Techniques involving region division and histogram analysis can help in achievin
 \\\textit{NB: Shadows can be a problem in region-based tracking because are source of noise $\Rightarrow$ false positive. A shadow does not correspond to the motion of a real object, but it is a change in the color of the object. More specifically it's a variation of the luminance while chrominance remains ideally unaltered. To solve this problem, and obtain a proper tracking, shadows should be removed before tracking using a suitable algorithm.}
 
 \section{Blobs extraction} 
+An object can be made up by several blobs (\textit{NB:one for the torso, one for head...}), where blobs are aggregations of connected pixels that share common features.
+Talking about features, we can consider also position, so pixel with similar color but far from the object must be discarded.
+The typical application is in combination with a background suppression.
+\subsection{Target association}
+This is a procedure common to all trackers, not only region-based. In general it is worth noting that detection is not carried out on a frame-basis.
+This could lead to a lot of false positives, and it is computationally expensive.  
+The idea is that once detected, targets are followed on a proximity basis. So, for example, background subtraction informs about the presence of motion, histograms characterize each moving objects, and then, unless occlusion occur, the target in the next frame should be the closest blob.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{Figures/Target_association.png}
+\end{figure}
+
+The steps of target association can be sum up as follows:
+\begin{itemize}
+\item Overlapping blob (issues with scale $\Rightarrow$ depends on objects size);
+\item Centroid with minimum distance (as above);
+\item Overlapping bounding boxes (may fail due to perspective);
+\item Bounding box with minimum distance;
+\item Bounding box to centroid distance.
+\end{itemize}
+
+\textit{NB: When association has been completed, for each object or blob update the appearance model to account for small variations. In presence of occlusions, the last saved model can be used to disambiguate.}
+
+\subsection{Splitting}
+The splitting is a common problem in blob extraction, and it is due to the fact that the object is composed by several blobs. If objects are identified as single blobs, there are no problems. However, background subtraction may return ambiguous results. 
+Indeed, objects can be split into several small blobs, so this means that there is not enough separation between BG and FG. Or again, two objects can enter the scene together and then separate.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Figures/Splitting.png}
+\end{figure}
+
+It is important to accumulate evidence before saying if it is case 1 or 2. It's impossible to understand what's going on immediately, so it is necessary a temporal interval to tell if the object merged even though it's fragmented or if it's two objects that are close to each other.
+
+\section{Merging}
+\begin{wrapfigure}{l}{0.25\textwidth}
+    \centering
+    \includegraphics[width=0.25\textwidth]{Figures/Merging.png}
+\end{wrapfigure}
+Merging is the opposite of splitting, and it is due to the fact that two objects are identified as a single blob. This can happen when two objects are close to each other and move together consistently (then perhaps they're the same object).
+An example can be when a person’s arm and foot enter the scene first and are detected as two well-separated FG blobs. 
+Then also the rest of the body enters and a single blob is created. 
+
+\subsection{Criteria for splitting and merging}
+Observation is the key. We need to monitor the regions of interest and evaluate consistency in terms of:
+\begin{itemize}
+    \item Direction of motion;
+    \item Distance between centroids/bounding boxes;
+    \item Temporal range in which the phenomenon is observed;
+    \item Velocity;
+    \item Matching in features.
+\end{itemize}
