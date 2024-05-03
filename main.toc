@@ -56,7 +56,9 @@
 \contentsline {subsection}{\numberline {4.3.2}Splitting}{43}{subsection.4.3.2}%
 \contentsline {section}{\numberline {4.4}Merging}{44}{section.4.4}%
 \contentsline {subsection}{\numberline {4.4.1}Criteria for splitting and merging}{44}{subsection.4.4.1}%
-\contentsline {chapter}{\numberline {5}Geometry}{46}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Local Feature Extraction}{47}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Classification}{48}{chapter.7}%
-\contentsline {chapter}{\numberline {8}Motion Capture}{49}{chapter.8}%
+\contentsline {section}{\numberline {4.5}Occlusion}{45}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Tracking: Feature-based}{45}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}The Lucas-Kanade optical flow}{47}{subsection.4.6.1}%
+\contentsline {chapter}{\numberline {5}Geometry}{48}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Local Feature Extraction}{49}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Classification}{50}{chapter.7}%

@@ -118,3 +118,53 @@ Observation is the key. We need to monitor the regions of interest and evaluate 
     \item Matching in features.
 \end{itemize}
 
+\section{Occlusion}
+Occlusion is an anomalous, but very frequent, situation in tracking, and it occurs when moving objects overlap.
+Consequently, one or more objects disappear from the scene and bigger blobs appear as a result of the occlusion, with properties that don't belong to any of the models acquired previously, so the acquisition models are not reliable anymore.\textit{NB: Model update should be avoided during occlusions.}
+In order to solve this problem, we need to re-associate "A to A" and "B to B" (where A and B are the objects that are occluded). \textit{NB: Histograms are a good way out.}
+
+\section{Tracking: Feature-based}
+The objective is to retrieve the motion information of a set of features (such as points, corners, edges\dots) in the image.
+\\Considering
+\[A = \{A(0), A(1), A(2), \dots, A(j-1)\}\] as a set of images and
+\[m_i(x_i, y_i)i = [0, j-1] \] the position of the feature in the image plane in each frame.
+The objective is to determine the displacement vector \[d_i = (dx_i, dy_i)\] that best estimates the position of the feature in the next frame \[m_{i+1}(x_{i+1}, y_{i+1}) = m_i + d_i\]
+If needed, points can be grouped and objects can be represented using the bounding box or the convex hull.
+\\TODO: inserire immaginina maybe
+\\The question now is how to choose a good feature point that must has distinctive characteristic such as brightness, contrast, texture, edges, corners or point with high curvature.
+\\The main idea is that for each candidate point, we compute: 
+\\TODO: inserisci matrice
+\\Where $J_x$ and $J_y$ are the gradients evaluated on the point in $x$ and $y$ direction within $W$ ($nxn$ window). 
+A good feature point is the one that maximizes the function, so the point where the smallest eigenvalue of $Z$ is larger than a specific threshold.
+In practice, it highlights corner points and texture.
+\\To sum up a little bit the important things:
+\begin{itemize}
+    \item Eigenvalues should be above the image noise;
+    \item Small eigenvalues imply strong similarity within the window;
+    \item A large and a small eigenvalue means unidirectional patterns;
+    \item If both eigenvalues are large, the point is of high interest (salt\&pepper texture, corners).
+\end{itemize}
+
+For what concerns tracking them, we must ensure that the same points are tracked throughout the video sequence. 
+Ideally we would expect that $A_i(Dm-d)=A_{i+1}(m)$, where $A_i, A_{i+1}$ are the successive frames at time $i$ and $i+1$, $m$ is the 2D position of the feature point, $D$ the deformation matrix (affine transformation model) and $d$ is the displacement vector (translation models).
+\\ However, due to noise the equality does usually not hold. In addition, motion across successive frames is assumed to be small $\Rightarrow$ a translational model is a good approximation.
+Feature dissimilarity measure is used to quantify the change of appearance between the first and current frame
+\[
+    \varepsilon = \iint_{W} \left(A_i(m-d)-A_{i+1}(m)\right)^2 w(m) \, dm
+\]
+where $w$ is a weighting function such as Gaussian to emphasize the center of the window\dots
+\\When the feature dissimilarity grows too large, the feature point should be abandoned and a new one should be selected.
+To minimize the residual we differentiate w.r.t unknowns (d)
+\[
+    e = 2 \iint_{W} \left(A_i(m)-A_{i+1}(m)\right)g(m) \, w(m) \, dm
+\] 
+and 
+\[
+    g(m)=\begin{bmatrix}
+        \frac{\partial (A_i(m)-A_{i+1}(m))}{\partial x} \\
+        \\
+        \frac{\partial (A_i(m)-A_{i+1}(m))}{\partial y} 
+    \end{bmatrix}
+\]
+In this case the solution for the displacement vector can be expressed bu the 2x2 linear system of equations $Zd = e$.
+\subsection{The Lucas-Kanade optical flow}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.26)  9 APR 2024 11:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.26)  3 MAY 2024 12:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -507,7 +507,7 @@ Package glossaries Info: Writing glossary file main.acn on input line 39.
 File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count346
 \l__pdf_internal_box=\box61
-) (./main.aux (./TitlePage.aux) (./Chapter1.aux
+) (./main.aux (./TitlePage.aux) (./Chapters/Chapter1.aux
 
 LaTeX Warning: Label `fig:enter-label' multiply defined.
 
@@ -550,7 +550,7 @@ LaTeX Warning: Label `sub@fig:subim2' multiply defined.
 
 LaTeX Warning: Label `fig:image2' multiply defined.
 
-) (./Chapter2.aux
+) (./Chapters/Chapter2.aux
 
 LaTeX Warning: Label `fig:subim1' multiply defined.
 
@@ -566,11 +566,11 @@ LaTeX Warning: Label `sub@fig:subim2' multiply defined.
 
 LaTeX Warning: Label `fig:image2' multiply defined.
 
-) (./Chapter3.aux
+) (./Chapters/Chapter3.aux
 
 LaTeX Warning: Label `fig:image2' multiply defined.
 
-) (./Chapter4.aux) (./Chapter5.aux) (./Chapter6.aux) (./Chapter7.aux) (./Chapter8.aux))
+) (./Chapters/Chapter4.aux) (./Chapters/Chapter5.aux) (./Chapters/Chapter6.aux) (./Chapters/Chapter7.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -681,7 +681,7 @@ LaTeX Info: Redefining \nameref on input line 8.
 \openout2 = `TitlePage.aux'.
 
  (./TitlePage.tex
-<Figures/Logo.png, id=241, 341.275pt x 341.275pt>
+<Figures/Logo.png, id=249, 341.275pt x 341.275pt>
 File: Figures/Logo.png Graphic file (type png)
 <use Figures/Logo.png>
 Package pdftex.def Info: Figures/Logo.png  used on input line 4.
@@ -716,11 +716,11 @@ No file main.acr.
 [4
 
 ]
-\openout2 = `Chapter1.aux'.
+\openout2 = `Chapters/Chapter1.aux'.
 
- (./Chapter1.tex
+ (./Chapters/Chapter1.tex
 Chapter 1.
-<Figures/ProcessingChain.png, id=328, 616.3025pt x 318.18875pt>
+<Figures/ProcessingChain.png, id=339, 616.3025pt x 318.18875pt>
 File: Figures/ProcessingChain.png Graphic file (type png)
 <use Figures/ProcessingChain.png>
 Package pdftex.def Info: Figures/ProcessingChain.png  used on input line 13.
@@ -741,24 +741,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--29
 
  []
 
-<Figures/Sampling.png, id=334, 543.02875pt x 139.52126pt>
+<Figures/Sampling.png, id=344, 543.02875pt x 139.52126pt>
 File: Figures/Sampling.png Graphic file (type png)
 <use Figures/Sampling.png>
 Package pdftex.def Info: Figures/Sampling.png  used on input line 34.
 (pdftex.def)             Requested size: 271.5137pt x 69.76045pt.
 [2 <./Figures/ProcessingChain.png>] [3 <./Figures/Sampling.png>]
-<Figures/AdditiveModel.png, id=354, 550.055pt x 266.9975pt>
+<Figures/AdditiveModel.png, id=364, 550.055pt x 266.9975pt>
 File: Figures/AdditiveModel.png Graphic file (type png)
 <use Figures/AdditiveModel.png>
 Package pdftex.def Info: Figures/AdditiveModel.png  used on input line 67.
 (pdftex.def)             Requested size: 275.02682pt x 133.49841pt.
  [4] [5 <./Figures/AdditiveModel.png>]
-<Figures/HSV1.png, id=365, 368.37625pt x 273.02pt>
+<Figures/HSV1.png, id=375, 368.37625pt x 273.02pt>
 File: Figures/HSV1.png Graphic file (type png)
 <use Figures/HSV1.png>
 Package pdftex.def Info: Figures/HSV1.png  used on input line 102.
 (pdftex.def)             Requested size: 147.34789pt x 109.20605pt.
-<Figures/HSV2.png, id=366, 249.93375pt x 255.95625pt>
+<Figures/HSV2.png, id=376, 249.93375pt x 255.95625pt>
 File: Figures/HSV2.png Graphic file (type png)
 <use Figures/HSV2.png>
 Package pdftex.def Info: Figures/HSV2.png  used on input line 106.
@@ -774,7 +774,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 126--129
  []
 
 [7]
-<Figures/Histogram.png, id=378, 637.38126pt x 343.2825pt>
+<Figures/Histogram.png, id=388, 637.38126pt x 343.2825pt>
 File: Figures/Histogram.png Graphic file (type png)
 <use Figures/Histogram.png>
 Package pdftex.def Info: Figures/Histogram.png  used on input line 156.
@@ -784,7 +784,7 @@ Package pdftex.def Info: Figures/Histogram.png  used on input line 156.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [8]
-<Figures/Stretching.jpeg, id=384, 1284.8pt x 738.76pt>
+<Figures/Stretching.jpeg, id=394, 1284.8pt x 738.76pt>
 File: Figures/Stretching.jpeg Graphic file (type jpg)
 <use Figures/Stretching.jpeg>
 Package pdftex.def Info: Figures/Stretching.jpeg  used on input line 183.
@@ -794,13 +794,13 @@ Package pdftex.def Info: Figures/Stretching.jpeg  used on input line 183.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [9 <./Figures/Histogram.png>]
-<Figures/OperationsHist.png, id=391, 773.89125pt x 190.7125pt>
+<Figures/OperationsHist.png, id=401, 773.89125pt x 190.7125pt>
 File: Figures/OperationsHist.png Graphic file (type png)
 <use Figures/OperationsHist.png>
 Package pdftex.def Info: Figures/OperationsHist.png  used on input line 198.
 (pdftex.def)             Requested size: 386.94467pt x 95.356pt.
  [10 <./Figures/Stretching.jpeg> <./Figures/OperationsHist.png>]
-<Figures/Convolution.png, id=400, 778.91pt x 386.44376pt>
+<Figures/Convolution.png, id=410, 778.91pt x 386.44376pt>
 File: Figures/Convolution.png Graphic file (type png)
 <use Figures/Convolution.png>
 Package pdftex.def Info: Figures/Convolution.png  used on input line 238.
@@ -811,7 +811,7 @@ Overfull \hbox (40.50987pt too wide) in paragraph at lines 218--242
  []
 
 [11] [12 <./Figures/Convolution.png>]
-<Figures/Noise.png, id=411, 846.16125pt x 310.15875pt>
+<Figures/Noise.png, id=421, 846.16125pt x 310.15875pt>
 File: Figures/Noise.png Graphic file (type png)
 <use Figures/Noise.png>
 Package pdftex.def Info: Figures/Noise.png  used on input line 261.
@@ -821,18 +821,18 @@ Package pdftex.def Info: Figures/Noise.png  used on input line 261.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [13] [14 <./Figures/Noise.png>]
-<Figures/Dilatation.png, id=426, 488.82625pt x 185.69376pt>
+<Figures/Dilatation.png, id=436, 488.82625pt x 185.69376pt>
 File: Figures/Dilatation.png Graphic file (type png)
 <use Figures/Dilatation.png>
 Package pdftex.def Info: Figures/Dilatation.png  used on input line 284.
 (pdftex.def)             Requested size: 244.41252pt x 92.84665pt.
  [15 <./Figures/Dilatation.png>]
-<Figures/Erosion.png, id=433, 488.82625pt x 185.69376pt>
+<Figures/Erosion.png, id=443, 488.82625pt x 185.69376pt>
 File: Figures/Erosion.png Graphic file (type png)
 <use Figures/Erosion.png>
 Package pdftex.def Info: Figures/Erosion.png  used on input line 298.
 (pdftex.def)             Requested size: 244.41252pt x 92.84665pt.
-<Figures/Opening.png, id=434, 657.45625pt x 222.8325pt>
+<Figures/Opening.png, id=444, 657.45625pt x 222.8325pt>
 File: Figures/Opening.png Graphic file (type png)
 <use Figures/Opening.png>
 Package pdftex.def Info: Figures/Opening.png  used on input line 311.
@@ -842,7 +842,7 @@ Overfull \hbox (41.18861pt too wide) in paragraph at lines 311--312
 [][] 
  []
 
-<Figures/Closing.png, id=435, 657.45625pt x 222.8325pt>
+<Figures/Closing.png, id=445, 657.45625pt x 222.8325pt>
 File: Figures/Closing.png Graphic file (type png)
 <use Figures/Closing.png>
 Package pdftex.def Info: Figures/Closing.png  used on input line 316.
@@ -858,11 +858,11 @@ Overfull \hbox (2.61107pt too wide) in paragraph at lines 310--321
  []
 
 ) [16 <./Figures/Erosion.png> <./Figures/Opening.png> <./Figures/Closing.png>] [17]
-\openout2 = `Chapter2.aux'.
+\openout2 = `Chapters/Chapter2.aux'.
 
- (./Chapter2.tex
+ (./Chapters/Chapter2.tex
 Chapter 2.
-<Figures/Pinhole.png, id=450, 917.4275pt x 442.65375pt>
+<Figures/Pinhole.png, id=460, 917.4275pt x 442.65375pt>
 File: Figures/Pinhole.png Graphic file (type png)
 <use Figures/Pinhole.png>
 Package pdftex.def Info: Figures/Pinhole.png  used on input line 8.
@@ -876,7 +876,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 ] [19 <./Figures/Pinhole.png>]
-<Figures/Perspective_proj1.jpeg, id=462, 1284.8pt x 654.445pt>
+<Figures/Perspective_proj1.jpeg, id=472, 1284.8pt x 654.445pt>
 File: Figures/Perspective_proj1.jpeg Graphic file (type jpg)
 <use Figures/Perspective_proj1.jpeg>
 Package pdftex.def Info: Figures/Perspective_proj1.jpeg  used on input line 38.
@@ -886,7 +886,7 @@ Overfull \hbox (35.16621pt too wide) in paragraph at lines 38--40
 [][]
  []
 
-<Figures/Perspective_proj.jpeg, id=463, 681.54625pt x 335.2525pt>
+<Figures/Perspective_proj.jpeg, id=473, 681.54625pt x 335.2525pt>
 File: Figures/Perspective_proj.jpeg Graphic file (type jpg)
 <use Figures/Perspective_proj.jpeg>
 Package pdftex.def Info: Figures/Perspective_proj.jpeg  used on input line 42.
@@ -901,24 +901,24 @@ Overfull \hbox (2.61107pt too wide) in paragraph at lines 37--46
 []$[]$ $[]$
  []
 
-<Figures/Orthographic_proj.png, id=464, 580.1675pt x 259.97125pt>
+<Figures/Orthographic_proj.png, id=474, 580.1675pt x 259.97125pt>
 File: Figures/Orthographic_proj.png Graphic file (type png)
 <use Figures/Orthographic_proj.png>
 Package pdftex.def Info: Figures/Orthographic_proj.png  used on input line 68.
 (pdftex.def)             Requested size: 221.78923pt x 99.38115pt.
 [20 <./Figures/Perspective_proj1.jpeg> <./Figures/Perspective_proj.jpeg>]
-<Figures/Illumination.png, id=471, 459.7175pt x 170.6375pt>
+<Figures/Illumination.png, id=482, 459.7175pt x 170.6375pt>
 File: Figures/Illumination.png Graphic file (type png)
 <use Figures/Illumination.png>
 Package pdftex.def Info: Figures/Illumination.png  used on input line 107.
 (pdftex.def)             Requested size: 221.78923pt x 82.32425pt.
  [21 <./Figures/Orthographic_proj.png>] [22 <./Figures/Illumination.png>] [23]
-<Figures/ThinLenses.png, id=489, 518.93875pt x 281.05pt>
+<Figures/ThinLenses.png, id=499, 518.93875pt x 281.05pt>
 File: Figures/ThinLenses.png Graphic file (type png)
 <use Figures/ThinLenses.png>
 Package pdftex.def Info: Figures/ThinLenses.png  used on input line 147.
 (pdftex.def)             Requested size: 221.78923pt x 120.12009pt.
-<Figures/Focus.png, id=490, 959.585pt x 440.64626pt>
+<Figures/Focus.png, id=500, 959.585pt x 440.64626pt>
 File: Figures/Focus.png Graphic file (type png)
 <use Figures/Focus.png>
 Package pdftex.def Info: Figures/Focus.png  used on input line 155.
@@ -928,21 +928,21 @@ Package pdftex.def Info: Figures/Focus.png  used on input line 155.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [24 <./Figures/ThinLenses.png>]) [25 <./Figures/Focus.png>] [26]
-\openout2 = `Chapter3.aux'.
+\openout2 = `Chapters/Chapter3.aux'.
 
- (./Chapter3.tex
+ (./Chapters/Chapter3.tex
 Chapter 3.
 
 Underfull \hbox (badness 10000) in paragraph at lines 2--6
 
  []
 
-<Figures/2DMotion.png, id=508, 584.1825pt x 289.08pt>
+<Figures/2DMotion.png, id=518, 584.1825pt x 289.08pt>
 File: Figures/2DMotion.png Graphic file (type png)
 <use Figures/2DMotion.png>
 Package pdftex.def Info: Figures/2DMotion.png  used on input line 11.
 (pdftex.def)             Requested size: 310.50357pt x 153.65717pt.
-<Figures/Example.png, id=509, 569.12625pt x 183.68625pt>
+<Figures/Example.png, id=519, 569.12625pt x 183.68625pt>
 File: Figures/Example.png Graphic file (type png)
 <use Figures/Example.png>
 Package pdftex.def Info: Figures/Example.png  used on input line 18.
@@ -959,13 +959,13 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 ] [28 <./Figures/2DMotion.png> <./Figures/Example.png>]
-<Figures/Occlusion.png, id=522, 321.2pt x 264.99pt>
+<Figures/Occlusion.png, id=532, 321.2pt x 264.99pt>
 File: Figures/Occlusion.png Graphic file (type png)
 <use Figures/Occlusion.png>
 Package pdftex.def Info: Figures/Occlusion.png  used on input line 49.
 (pdftex.def)             Requested size: 221.78923pt x 182.98077pt.
  [29]
-<Figures/Aperture.jpg, id=527, 995.72pt x 501.875pt>
+<Figures/Aperture.jpg, id=537, 995.72pt x 501.875pt>
 File: Figures/Aperture.jpg Graphic file (type jpg)
 <use Figures/Aperture.jpg>
 Package pdftex.def Info: Figures/Aperture.jpg  used on input line 59.
@@ -980,23 +980,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 70--73
  []
 
 [31 <./Figures/Aperture.jpg>]
-<Figures/OpticalFlow.png, id=539, 785.93625pt x 458.71375pt>
+<Figures/OpticalFlow.png, id=549, 785.93625pt x 458.71375pt>
 File: Figures/OpticalFlow.png Graphic file (type png)
 <use Figures/OpticalFlow.png>
 Package pdftex.def Info: Figures/OpticalFlow.png  used on input line 92.
 (pdftex.def)             Requested size: 443.57848pt x 258.90077pt.
-<Figures/ChangeDetection.png, id=540, 896.34875pt x 407.5225pt>
+<Figures/ChangeDetection.png, id=550, 896.34875pt x 407.5225pt>
 File: Figures/ChangeDetection.png Graphic file (type png)
 <use Figures/ChangeDetection.png>
 Package pdftex.def Info: Figures/ChangeDetection.png  used on input line 101.
 (pdftex.def)             Requested size: 310.50357pt x 141.1675pt.
  [32 <./Figures/OpticalFlow.png>] [33 <./Figures/ChangeDetection.png>] [34]
-<Figures/FrameDifferencing.png, id=559, 496.85625pt x 144.54pt>
+<Figures/FrameDifferencing.png, id=569, 496.85625pt x 144.54pt>
 File: Figures/FrameDifferencing.png Graphic file (type png)
 <use Figures/FrameDifferencing.png>
 Package pdftex.def Info: Figures/FrameDifferencing.png  used on input line 149.
 (pdftex.def)             Requested size: 248.4275pt x 72.2698pt.
-<Figures/DifferencingDiagram.jpeg, id=560, 334.24875pt x 371.28712pt>
+<Figures/DifferencingDiagram.jpeg, id=570, 334.24875pt x 371.28712pt>
 File: Figures/DifferencingDiagram.jpeg Graphic file (type jpg)
 <use Figures/DifferencingDiagram.jpeg>
 Package pdftex.def Info: Figures/DifferencingDiagram.jpeg  used on input line 152.
@@ -1007,7 +1007,7 @@ Overfull \hbox (2.61107pt too wide) in paragraph at lines 148--154
  []
 
 [35 <./Figures/FrameDifferencing.png> <./Figures/DifferencingDiagram.jpeg>]
-<Figures/BackgroundSub.png, id=567, 762.85pt x 140.525pt>
+<Figures/BackgroundSub.png, id=577, 762.85pt x 140.525pt>
 File: Figures/BackgroundSub.png Graphic file (type png)
 <use Figures/BackgroundSub.png>
 Package pdftex.def Info: Figures/BackgroundSub.png  used on input line 183.
@@ -1017,9 +1017,9 @@ Package pdftex.def Info: Figures/BackgroundSub.png  used on input line 183.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [36] [37 <./Figures/BackgroundSub.png>]) [38]
-\openout2 = `Chapter4.aux'.
+\openout2 = `Chapters/Chapter4.aux'.
 
- (./Chapter4.tex
+ (./Chapters/Chapter4.tex
 Chapter 4.
 [39
 
@@ -1027,91 +1027,75 @@ Chapter 4.
 
 
 ] [40] [41]
-<Figures/Target_association.png, id=597, 790.955pt x 400.49625pt>
+<Figures/Target_association.png, id=608, 790.955pt x 400.49625pt>
 File: Figures/Target_association.png Graphic file (type png)
 <use Figures/Target_association.png>
 Package pdftex.def Info: Figures/Target_association.png  used on input line 78.
 (pdftex.def)             Requested size: 310.50357pt x 157.21956pt.
  [42]
-<Figures/Splitting.png, id=603, 631.35875pt x 256.96pt>
+<Figures/Splitting.png, id=613, 631.35875pt x 256.96pt>
 File: Figures/Splitting.png Graphic file (type png)
 <use Figures/Splitting.png>
 Package pdftex.def Info: Figures/Splitting.png  used on input line 97.
 (pdftex.def)             Requested size: 310.50357pt x 126.37416pt.
  [43 <./Figures/Target_association.png>]
-<Figures/Merging.png, id=610, 240.9pt x 153.57375pt>
+<Figures/Merging.png, id=620, 240.9pt x 153.57375pt>
 File: Figures/Merging.png Graphic file (type png)
 <use Figures/Merging.png>
 Package pdftex.def Info: Figures/Merging.png  used on input line 105.
 (pdftex.def)             Requested size: 110.8946pt x 70.69398pt.
- [44 <./Figures/Splitting.png> <./Figures/Merging.png>]) [45]
-\openout2 = `Chapter5.aux'.
+ [44 <./Figures/Splitting.png> <./Figures/Merging.png>] [45] [46]) [47]
+\openout2 = `Chapters/Chapter5.aux'.
 
- (./Chapter5.tex
+ (./Chapters/Chapter5.tex
 Chapter 5.
-) [46
-
-
-
-
-]
-\openout2 = `Chapter6.aux'.
-
- (./Chapter6.tex
-Chapter 6.
-) [47
-
-
-
-
-]
-\openout2 = `Chapter7.aux'.
-
- (./Chapter7.tex
-Chapter 7.
 ) [48
 
 
 
 
 ]
-\openout2 = `Chapter8.aux'.
+\openout2 = `Chapters/Chapter6.aux'.
 
- (./Chapter8.tex
-Chapter 8.
+ (./Chapters/Chapter6.tex
+Chapter 6.
 ) [49
 
 
 
 
-] (./main.bbl
+]
+\openout2 = `Chapters/Chapter7.aux'.
 
-LaTeX Warning: Empty `thebibliography' environment on input line 3.
-
+ (./Chapters/Chapter7.tex
+Chapter 7.
 ) [50
 
 
 
-] (./main.aux (./TitlePage.aux) (./Chapter1.aux) (./Chapter2.aux) (./Chapter3.aux) (./Chapter4.aux) (./Chapter5.aux) (./Chapter6.aux) (./Chapter7.aux) (./Chapter8.aux))
+
+]
+No file main.bbl.
+(./main.aux (./TitlePage.aux) (./Chapters/Chapter1.aux) (./Chapters/Chapter2.aux) (./Chapters/Chapter3.aux) (./Chapters/Chapter4.aux) (./Chapters/Chapter5.aux) (./Chapters/Chapter6.aux) (./Chapters/Chapter7.aux))
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: B444C4A7D4A0107E07FCBA1D35A90E25;8291.
+(rerunfilecheck)             Checksum: 4E0BD3379E7C6DF4417A983696E4FD5A;8663.
  ) 
 Here is how much of TeX's memory you used:
- 20326 strings out of 478287
- 359850 string characters out of 5849289
- 706093 words of memory out of 5000000
- 37951 multiletter control sequences out of 15000+600000
+ 20300 strings out of 478287
+ 360860 string characters out of 5849289
+ 705628 words of memory out of 5000000
+ 37932 multiletter control sequences out of 15000+600000
  478461 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  96i,12n,134p,1212b,555s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on main.pdf (55 pages, 1610891 bytes).
+Output written on main.pdf (55 pages, 1620141 bytes).
 PDF statistics:
- 750 PDF objects out of 1000 (max. 8388607)
- 592 compressed objects within 6 object streams
- 148 named destinations out of 1000 (max. 500000)
- 643 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 760 PDF objects out of 1000 (max. 8388607)
+ 601 compressed objects within 7 object streams
+ 149 named destinations out of 1000 (max. 500000)
+ 659 words of extra memory for PDF output out of 10000 (max. 10000000)
 
