@@ -59,6 +59,9 @@
 \contentsline {section}{\numberline {4.5}Occlusion}{45}{section.4.5}%
 \contentsline {section}{\numberline {4.6}Tracking: Feature-based}{45}{section.4.6}%
 \contentsline {subsection}{\numberline {4.6.1}The Lucas-Kanade optical flow}{47}{subsection.4.6.1}%
-\contentsline {chapter}{\numberline {5}Geometry}{48}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Local Feature Extraction}{49}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Classification}{50}{chapter.7}%
+\contentsline {subsection}{\numberline {4.6.2}Pyramidal implementation}{48}{subsection.4.6.2}%
+\contentsline {subsection}{\numberline {4.6.3}Bayesian tracking}{48}{subsection.4.6.3}%
+\contentsline {subsection}{\numberline {4.6.4}Bayesian traking- toy example}{49}{subsection.4.6.4}%
+\contentsline {chapter}{\numberline {5}Geometry}{51}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Local Feature Extraction}{52}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Classification}{53}{chapter.7}%
