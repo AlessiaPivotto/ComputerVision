@@ -65,3 +65,10 @@
 \contentsline {chapter}{\numberline {5}Geometry}{51}{chapter.5}%
 \contentsline {chapter}{\numberline {6}Local Feature Extraction}{52}{chapter.6}%
 \contentsline {chapter}{\numberline {7}Classification}{53}{chapter.7}%
+\contentsline {section}{\numberline {7.1}The classification process}{54}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Subject to failure}{55}{subsection.7.1.1}%
+\contentsline {section}{\numberline {7.2}Regression}{56}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}The ROC curve, Precision and Recall}{58}{subsection.7.2.1}%
+\contentsline {section}{\numberline {7.3}The face detection problem}{58}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Recursion}{60}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}AdaBoost}{61}{subsection.7.3.2}%
