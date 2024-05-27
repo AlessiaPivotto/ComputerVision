@@ -184,13 +184,60 @@ Our goal is to be able to map what's happening in the real world to the image pl
 
 \({}^w P_j = D_{x0,y0} S_s R_\theta {}^i P_i\)
 
+We can describe this combination of transformations with the formula above, where \(D_{x0,y0}\) is the translation matrix, \(S_s\) is the scaling matrix, \(R_\theta\) is the rotation matrix, \(w\) is the world coordinates, \(i\) is the image coordinates and \(j\) a generic point.
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{Figures/comb.png}
     \caption{Here we are applying a translation, a rotation and a scaling to the point \(P\)}
     \label{fig:comb}
 \end{figure}
+
+We can write the formula above as a matrix multiplication:
+
+\[
+    \begin{bmatrix}
+    x_w \\
+    y_w \\
+    1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    1 & 0 & x_0 \\
+    0 & 1 & y_0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        s & 0 & 0 \\
+        0 & s & 0 \\
+        0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+    \cos\theta & -\sin\theta & 0 \\
+    \sin\theta & \cos\theta & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        y \\
+        1
+    \end{bmatrix}
+\]
+
+So to obtain the transformation matrix we need to solve a system of euqations with 4 unknowns, the 4 parameters we mentioned before. To obtain 4 equations we can use 2 points called control points ( obtaining \(x_1, y_1\) and \(x_2, y_2\) ), such points must be clearly visible both in the image and in the real world and must be very clear in both planes. Once I have found these two points i'm able to map these coordinates on the image plane.
+
+We keep referring to the transformations in Figure \ref{fig:comb} as \(2D -> 2D \) transformations, this implies I have a ground plane on which i'm working on and a camera plane, the camera plane is the image plane that might be scaled, translated with respect to the ground plane. At the moment we are not considering a rotation of the camera, we are assuming the image plane is parallel to the ground plane.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{Figures/planes.png}
+    \caption{The camera plane we are considering now is parallel to the ground plane}
+    \label{fig:planes}
+\end{figure}
+
+
+
+\subsection{General Affine Transformations}
 
 
 

@@ -1,4 +1,5 @@
 *.aux
+*/*.aux
 *.fls
 *.ist
 *.log
