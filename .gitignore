@@ -7,4 +7,6 @@
 *.pdf
 *.gz
 *.toc
+*.acn
+*.glo
 *.fdb_latexmk
