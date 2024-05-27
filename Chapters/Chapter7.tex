@@ -26,12 +26,12 @@ So I can isolate some segment, so areas, which are potentially good for being a 
 Or again, I can do a segmentation of the picture filtering out the colors that do not mach the range of color of the skin.
 To sum up, segmentation is an option, a step that can be conducted and otherwise I'm proceeding with one of the most relevant steps in the classification, which is the extraction of features.
 \\
-Extraction of features means that i?m looking to the history of the gradients which are being located in a certain portion of the segment of the picture itself.
+Extraction of features means that i'm looking to the history of the gradients which are being located in a certain portion of the segment of the picture itself.
 Basically we compare the picture vector with the feature vector that I used for the training phase, where the feature vector is the one that describes what I have extracted from the picture.
 So I feed this information into the machine that will start reasoning about what it sees as an input and in the end it would return an output.
 But here we are doing a process called recognition, which is an additional step forward to the detection.
-\\
-Just to wrap up a little bit, The classification problem can be summarize in 4 steps:
+\section{The classification process}
+Just to wrap up a little bit, The classification process can be summarize in 4 steps:
 \begin{itemize}
     \item Segment the image if necessary;
     \item Extract the features;
@@ -43,6 +43,7 @@ We realize they have learned the concept by the time they see a new sample and t
 Basically, teaching a computer works the same way.
 Without entering in the realm of NN, let's take a generic recognition system. It requires a high number of examples in order to be able to distinguish across different classes.
 Indeed, the creation of a dataset is the most tough job, moreover the dataset need to be annotated (labelled).
+\subsection{Subject to failure}
 Machines may take days or weeks in order to learn concepts. However, they still tend to fail because of lack of data, wrong annotations, occlusions, perspective, similarity among classes \dots
 Systems typically are not able to generalize, so for example, you have classifiers that are mounted on cars which are very robust in detecting cars, but only from a precise perspective.
 But what is the pipeline overall over classifier?
@@ -88,7 +89,7 @@ We feed samples into the algorithm and he progressively adjust the positioning o
 As an output you may have correct or incorrect detection, in a binary classification problem you can have True positive (hit), True negative, False positive or False negative (miss).
 \\
 If we have a classifier for cat and dog and feed a bird into the system we obtain that the likelihood is extremely low, so we can implement a so-called reject option, in which the system prefers to just reject the examples and not give an answer. 
-\subsection{The ROC curve}
+\subsection{The ROC curve, Precision and Recall}
 The ROC (Receiver Operating Characteristic) curve is a plot of the True Positive Rate vs the False Positive Rate. Each setup of the system is a point in the ROC space.
 \begin{figure}[h]
     \centering
@@ -100,7 +101,7 @@ Given TRP and FPR we can define other two basic parameters which are the precisi
 \\Precision: $TP/(TP+FP) = hit/(all retrieved) \Rightarrow$ probability that a randomly selected elements is relevant.
 \\Recall: $TP/(TP+FN) = hit/(hit+miss) \Rightarrow$ probability that a randomly relevant element is retrieved in the search.
 If we extend the concept to more complex scenario where we have multiple classes, we can create a confusion matrix. 
-\subsection{The face detection problem}
+\section{The face detection problem}
 Once I have identified the significant features for the object that I'm looking for, I can take some samples and train the classifier.
 If I’m looking for faces the problem can be to find all faces (so binary detection), or find Bart-Lisa-Homer-Marge (recognition).
 The two scenarios are very different and involve the application of different algorithms.
@@ -137,7 +138,6 @@ We obtain that the sum of the values in D is $0$:
         D & = 4 - (2 + 3 - 1) 
     \end{split}
 \end{equation}
-
 \subsection{Recursion}
 Using the following recursions, the integral image can be computed over the entire image in one single pass:
 \[s(x,y)=s(x,y-1)+i(x,y)\]
