@@ -93,7 +93,7 @@ Indeed, looking at the image above we can identify the gray scale along the diag
 
 In RGB we have a major response in the green component, while red and blue are less relevant. In addition, human eye is more sensitive to luminance and contrast variations than color so maybe a different representation would be more effective.
 Indeed, more effective is the YCbCr color space, where Y, the luminance is separated from Cb and Cr that are the chrominance.
-\textit{PS: YCbCr is a generalization of YUV, just a matter of conversion matrices. (TODO: Downsampling)}
+\textit{PS: YCbCr is a generalization of YUV, just a matter of conversion matrices (Downsampling).}
 \\
 Another color space is the HSV, where H is the hue (color), S is the saturation (brightness) and V is the value (intensity).
 
@@ -141,8 +141,6 @@ And again, if the analysis concerns a video, instead of an image, what is the ad
 Consistency of the features over time, evolution of the scene and objects displacement and, of course, objects that may enter or exit the scene.
 \\So in the end, what makes a scene complex to analyze and process?
 The presence of multiple objects, occlusions, shadows, noise, motion, illumination changes, clutter and non-rigid objects.
-    TODO: vedi se aggiungere gli esempi.
-
 \subsection{Histogram}
 The histogram is a simple way to describe the color distribution of a picture, indeed, it can be seen as a probability density function and it represents the occurrence of all colors on a graph.
 In other words it’s a statistical representation of the pixel values. For an MxN image
