@@ -239,7 +239,457 @@ We keep referring to the transformations in Figure \ref{fig:comb} as \(2D -> 2D 
 
 \subsection{General Affine Transformations}
 
+Starting from the previous transformations we can see that the 3 matrices are of the same sive and if we compute the product between all of them we can think of these transformations as an end-to-end transformation where we can embed all these parameters in a single matrix.
+
+\[
+    \begin{bmatrix}
+    u \\
+    v \\
+    1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    a_{11} & a_{12} & a_{13} \\
+    a_{21} & a_{22} & a_{23} \\
+    0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        y \\
+        1
+    \end{bmatrix}
+\]
+
+This transformation is the set of coefficients, we don't know exactly the contribution of each of the 3 matrices, but it results in a certain trasformation which is represented by what is called in general the \textbf{Camera Matrix}. It tells me exaclty how to move from a certain plane where \(x, y\) lie to where they will be in the camera plane, and vice versa.
+
+We see that we have 6 coefficients instead of the 4 parameters, to determine them it's the same as we did before, with the exception that isntead of 2 we need 3 matching control points which we know the position of in the real world and in the image plane. However finding these points might now be trivial,
+the main difficulty is being precise in picking them.
+
+What is usually done is, instead of using the minimum required control points, we pick up more points with the hope that on average we are making a very small mistake, averaging out the errors. This way we might end up with 12, 20 equations and 6 unknowns (an \textit{over-determined system}), our goal is to find the 6 equations that minimize the error. We use the \textit{least-squares method} to find the best solution that minimizes the error.
 
 
+\[
+    \varepsilon (a_{11}, a_{12}, a_{13}, a_{21}, a_{22}, a_{23}) = 
+\sum_{j=1}^{n} (a_{11}x_j + a_{12}y_j + a_{13} - u_j)^2 
++ (a_{21}x_j + a_{22}y_j + a_{23} - v_j)^2
+\]
 
-\end{document}
+
+What we are trying to get is to find the best configuration of these coefficients in a way that the difference between what's expected from the transformation and what's observed is minimized. The resulting equation system is:
+
+\[
+    \begin{bmatrix}
+        \sum x^2_j & \sum x_jy_j & \sum x_j & 0 & 0 & 0 \\
+        \sum x_jy_j & \sum y^2_j & \sum y_j & 0 & 0 & 0 \\
+        0 & 0 & 0 & \sum x^2_j & \sum x_jy_j & \sum x_j \\
+        0 & 0 & 0 & \sum x_jy_j & \sum y^2_j & \sum y_j \\
+        0 & 0 & 0 & \sum x_j & \sum y_j & \sum 1 
+    \end{bmatrix}
+    \begin{bmatrix}
+        a_{11} \\
+        a_{12} \\
+        a_{13} \\
+        a_{21} \\
+        a_{22} \\
+        a_{23}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \sum x_ju_j \\
+        \sum y_ju_j \\
+        \sum u_j \\
+        \sum x_jv_j \\
+        \sum y_jv_j \\
+        \sum v_j
+    \end{bmatrix}
+\]
+
+The solution is found by computing the minimum of the error, or in other terms compute the \textit{partial derivative} with respect to each unknown and set them to zero, making sure the error between the result of the transformation and the observed points is minimized.
+
+And this is how the whole thing works, how we determine the \textbf{2D camera matrix} used to map the real world plane to the camera plane. Remembder that the reference are two different planes one on top of the other, we don't have full 3D rotations \textit{yet}.
+
+\section{Going 3D}
+
+We are now moving to more general solutions, we can't expect from the system we'll take in consideraton to end up in the easy scenario where the two planes are parallel and facing each other.
+More in general what happens is that the image plane we are dealing with it's something that results from a generic camera prospective where what we see in the image plane is something that look more like shown in Figure \ref{fig:3d}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{Figures/3d.png}
+    \caption{A generinc 3D scenario.}
+    \label{fig:3d}
+\end{figure}
+
+We need to go thru a process called \textbf{calibration} where we'll need to determined the so called \textbf{intrinsic} and \textbf{extrinsic} parameters of the camera. The projections that we have seen so far won't be enough to describe the 3D world, we'll need to add an \textit{additional view} to make possible to determiine the unique 3D coordinates \(X Y Z\) that are necessary to describe the position of a point in the real world. With that additional information I can do many tasks:
+
+\begin{itemize} 
+    \item Point Clouds
+    \item Structure From Motion
+    \item Mesh Reconstruction
+\end{itemize}
+
+\subsection{Intrinsic and Extrinsic Parameters}
+
+\begin{itemize} 
+    \item\textit{Intrisic parameters} refer to the specific characteristics of the camera, such as the focal length, the distortion of the lens, the position of the principal point, etc. These parameters are fixed and don't change with the position of the camera. They are necessary because we want to link the pixel coordinates with the corresponding coordinates in the camera coordinates system.
+
+    \item\textit{Extrinsic parameters} refer to the position of the camera in the real world, such as the rotation and translation of the camera with respect to the world coordinates. These parameters are not fixed and change with the position of the camera.
+\end{itemize}
+
+When we try to estimate these parameters we go thru a process called \textbf{calibration}, where we try to find a suitable matrix which helps us mapping the points in the real world to what we see thru the camera.
+
+\subsection{3D Affine Transformations}
+
+At this point we need to go through a the transformations that we have seen in the 2D case, extending them by adding a new dimension. The main difference is that our starting point is a set of 3D coordinates.
+
+\[ [P_x, P_y, P_z] \rightarrow  [sP_x, sP_y, sP_z, s] \]
+
+Also in this case we move from a 3D vector to a 4D vector with the addition of the scaling factor of the homomogeneous coordinates.
+
+Now we have a system for each camera so a triplet of coordinates for Camera 1 and a triplet of coordinates for Camera 2, these two cameras are looking at the world coordinates, in some cases it could be interesing to also know the coordinates of the model in the world (although it's not common). We end up with
+
+\begin{itemize} 
+    \item Model coordinates
+    \item World coordinates
+    \item Camera 1 coordinates
+    \item Camera 2 coordinates
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/coo.png}
+    \caption{The new model with two camera views.}
+    \label{fig:coo}
+\end{figure}
+
+We can see all these 4 systems linked by a transformation, which is nothing more than a rotation-translation to go from any of the 3 systems to the other. At the end it means that we need to deal with a rotation matrix and a translation vector.
+
+
+\({}^wP = T R {}^mP\) and same for \({}^1P\) and \({}^2P\).
+
+Where T is a translation vector and R a rotation matrix. It must be noted that the point seen from the first camera and the second camera might be different from the second camera, both in terms of coordinates and in the sense that Camera 1 and Camera 2 might have opposite views, meaning that there might be no one-to-one mapping of all points, there's a supset of points that's visible from both cameras, we'll be able to recontruct the 3D position only for the points visible from both cameras.
+
+
+NB:
+The notation for the next section will be \({}^kP_j\) where \(k\) is the camera number and \(j\) is the point number.
+
+
+\subsection{3D Translation}
+
+Across the two views in order to move the point from a camera to the other we apply a translation,
+it consists of applying a translation \(x_0, y_0, z_0\) to the point and no scaling.
+
+\[
+  {}^2P = T(x_0, y_0, z_0) {}^1P 
+\]
+
+\[
+    \begin{bmatrix}
+        {}^2P_x \\
+        {}^2P_y \\
+        {}^2P_z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        1 & 0 & 0 & x_0 \\
+        0 & 1 & 0 & y_0 \\
+        0 & 0 & 1 & z_0 \\
+        0 & 0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^1P_x \\
+        {}^1P_y \\
+        {}^1P_z \\
+        1
+    \end{bmatrix}   
+\]
+
+\subsection{3D Scaling}
+
+Here, similarly to the previous case, we can have different scaling factors although usually we have the same scaling factor for all the axis.
+
+\[
+  {}^2P = S(s_x, s_y, s_z) {}^1P 
+\]
+
+\[
+    \begin{bmatrix}
+        {}^2P_x \\
+        {}^2P_y \\
+        {}^2P_z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        s_x & 0 & 0 & 0 \\
+        0 & s_y & 0 & 0 \\
+        0 & 0 & s_z & 0 \\
+        0 & 0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^1P_x \\
+        {}^1P_y \\
+        {}^1P_z \\
+        1
+    \end{bmatrix}   
+\]
+
+\subsection{3D Rotation}
+
+In terms of rotation, things become a little more complicated, we don't have a single rotation (in the 2D space we have to deal with a single angle) but since now we have an additional axis we have a rotation arounf the three axis, if we want to do the same analysis as we did in the 2D case with the unit vector we end up with three matrices of coefficients that describe the rotation around each of the three axis.
+
+\begin{multicols}{2}
+
+    
+
+\[
+  {}^2P = R(X, \varTheta ) {}^1P 
+\]
+
+\[
+    \begin{bmatrix}
+        {}^2P_x \\
+        {}^2P_y \\
+        {}^2P_z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & \cos\theta & -\sin\theta & 0 \\
+        0 & \sin\theta & \cos\theta & 0 \\
+        0 & 0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^1P_x \\
+        {}^1P_y \\
+        {}^1P_z \\
+        1
+    \end{bmatrix}   
+\]
+
+\[
+  {}^2P = R(Y, \varTheta ) {}^1P 
+\]
+
+\[
+    \begin{bmatrix}
+        {}^2P_x \\
+        {}^2P_y \\
+        {}^2P_z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \cos\theta & 0 & \sin\theta & 0 \\
+        0 & 1 & 0 & 0 \\
+        -\sin\theta & 0 & \cos\theta & 0 \\
+        0 & 0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^1P_x \\
+        {}^1P_y \\
+        {}^1P_z \\
+        1
+    \end{bmatrix}   
+\]
+\end{multicols}
+\[
+  {}^2P = R(Z, \varTheta ) {}^1P 
+\]
+
+\[
+    \begin{bmatrix}
+        {}^2P_x \\
+        {}^2P_y \\
+        {}^2P_z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \cos\theta & \sin\theta & 0 & 0 \\
+        -\sin\theta & \cos\theta & 0 & 0 \\
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^1P_x \\
+        {}^1P_y \\
+        {}^1P_z \\
+        1
+    \end{bmatrix}   
+\]
+
+\subsection{3D General Configuration}
+
+Our goal is to then put everything together in a single matrix, this is the generic 3D affine transformation that maps a point in the 3D coordinates of the first system to the 3D coordinates of the second system.
+
+\[
+    \begin{bmatrix}
+        {}^2P_x \\
+        {}^2P_y \\
+        {}^2P_z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+       r_{11} & r_{12} & r_{13} & t_x \\
+       r_{21} & r_{22} & r_{23} & t_y \\
+       r_{31} & r_{32} & r_{33} & t_z \\
+        0 & 0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^1P_x \\
+        {}^1P_y \\
+        {}^1P_z \\
+        1
+    \end{bmatrix}   
+\]
+
+It's some sort of a camera matrix, but at this point we are dealing with something that return 3D coordinates and unfurtunately doesn't help us much because at the end what we have is an image plane where the coordinates are only rows and columns, \(x, y\). It means that we need to further modify this matrix in order to end up with a representation that 2D. We need to add to our transformation what are the proprieties of the camera, that give us the opportunity to move from the 3D coordinates (in our case the world \(W\)) to a 2D plane \(I\).
+
+\[
+    {}^IP = {}^I_W C^WP
+\]
+
+This matrix here flattens the information and returns a 2D vector corresponding to the position in the rows and columns of the image plane and this happens by adopting a 3 by 4 matrix that gives us the chance to move from the 3D world to the 2D camera coordinates.
+
+\[
+    \begin{bmatrix}
+        s^IP_r \\
+        s^IP_c \\
+        s
+    \end{bmatrix}
+    =
+    {}^I_W C^W
+    \begin{bmatrix}
+        {}^WP_x \\
+        {}^WP_y \\
+        {}^WP_z \\
+        1
+    \end{bmatrix}  
+    = 
+    \begin{bmatrix}
+        c_{11} & c_{12} & c_{13} & c_{14} \\
+        c_{21} & c_{22} & c_{23} & c_{24} \\
+        c_{31} & c_{32} & c_{33} & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^WP_x \\
+        {}^WP_y \\
+        {}^WP_z \\
+        1
+    \end{bmatrix}
+\]
+
+unfurtunately we are still not happy because while it's true that we have the camera coordinates on the image plane but that would be a continuous hypotetical image plane where we do not have pixels (basically an implementation of the pinhole, but it's not discretized). It's a 2D representation but it's not the one that we want.
+
+We need to work again on these transformation moving from the camera to some additional coordinates:
+\textit{(While important the following part till the end of the section is was covered briefly)}
+\[
+    \begin{bmatrix}
+        {}^CP_x \\
+        {}^CP_y \\
+        {}^CP_z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+       r_{11} & r_{12} & r_{13} & t_x \\
+       r_{21} & r_{22} & r_{23} & t_y \\
+       r_{31} & r_{32} & r_{33} & t_z \\
+        0 & 0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^WP_x \\
+        {}^WP_y \\
+        {}^WP_z \\
+        1
+    \end{bmatrix}   
+\]
+
+\[
+    {}^CP = {}^C_W TR(\alpha, \beta, \gamma, t_x, t_y, t_z) {}^WP
+\]
+
+\({}^CP\) is about the \textit{camera coordinates}, and
+not the \textit{image coordinates} \({}^FP\), we need to project these on the image coordinates and successively discretize them in the pixel coordinates.
+
+\[
+    {}^FP = {}^F_C \varPi (f) {}^CP
+\]
+
+\[
+    {}^FP = {}^F_C \varPi (f) TR(\alpha, \beta, \gamma, t_x, t_y, t_z) {}^WP
+\]
+
+
+\[
+    \begin{bmatrix}
+        s^FP_r \\
+        s^FP_c \\
+        s
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        d_{11} & d_{12} & d_{13} & d_{14} \\
+        d_{21} & d_{22} & d_{23} & d_{24} \\
+        d_{31} & d_{32} & d_{33} & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^WP_x \\
+        {}^WP_y \\
+        {}^WP_z \\
+        1
+    \end{bmatrix}
+\]
+
+The conversion from mm to pixel consists of a scaling factor related to the real size of the pixels where \(d_x\) is the size of the pixel in the x direction and \(d_y\) is the size of the pixel in the y direction.
+
+\[
+  {}^IP={}^I_F S^F P  
+\]
+
+
+\[
+    {}^I_F S^F
+    = 
+    \begin{bmatrix}
+        0 & -1/d_y & 0\\
+        1/d_x & 0 & 0\\
+        0 & 0 & 1
+    \end{bmatrix}
+\]
+
+The minus sign is due to the fact that the origin is usually bottom left but in the image it's top left so we flip the coordinates.
+
+Overall in order to get the position rows and columns on the image plane we need to go from 3D generic world coordinates to the camera coordinates than we need the intrinsic information of the camera and then we need to discretize the pixels.
+
+\[
+  [p_r, p_c]^T = {}^IP = {}^I_F S^F_C \varPi (f)^C_W TR(\alpha, \beta, \gamma, t_x, t_y, t_z) {}^WP
+\]
+
+And we finally get out final camera matrix:
+
+\[
+    \begin{bmatrix}
+        s^Ip_r \\
+        s^Ip_c \\
+        s
+    \end{bmatrix}
+    = 
+    \begin{bmatrix}
+        c_{11} & c_{12} & c_{13} & c_{14} \\
+        c_{21} & c_{22} & c_{23} & c_{24} \\
+        c_{31} & c_{32} & c_{33} & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^WP_x \\
+        {}^WP_y \\
+        {}^WP_z \\
+        1
+    \end{bmatrix}
+\]
+
+At the end the entire iter of transformations that we use to go from the 3D points in space to the pixel coordinates is included in the 3 x 4 camera matrix. It means that overall we need to compute 11 parameters (we are not considering the scaling parameter) and in order to create a reasonable mapping of the points we need to compute these coefficients. We'll see that the process that we follow to obtain the coefficients if basically the same as the 2D case.
