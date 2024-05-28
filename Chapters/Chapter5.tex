@@ -313,7 +313,7 @@ And this is how the whole thing works, how we determine the \textbf{2D camera ma
 We are now moving to more general solutions, we can't expect from the system we'll take in consideraton to end up in the easy scenario where the two planes are parallel and facing each other.
 More in general what happens is that the image plane we are dealing with it's something that results from a generic camera prospective where what we see in the image plane is something that look more like shown in Figure \ref{fig:3d}.
 
-\begin{figure}[H]
+\begin{figure}[h!]
     \centering
     \includegraphics[width=0.2\textwidth]{Figures/3d.png}
     \caption{A generinc 3D scenario.}
@@ -693,3 +693,157 @@ And we finally get out final camera matrix:
 \]
 
 At the end the entire iter of transformations that we use to go from the 3D points in space to the pixel coordinates is included in the 3 x 4 camera matrix. It means that overall we need to compute 11 parameters (we are not considering the scaling parameter) and in order to create a reasonable mapping of the points we need to compute these coefficients. We'll see that the process that we follow to obtain the coefficients if basically the same as the 2D case.
+
+\section{Calibration}
+
+What we did till now was introducing some geometry problems by saying that what we want to do is to find the relationships between different domains: what happens in the real world and what happens on the camera side. During the process of acquisition the relationships between the two domains change through rotations, translations and scaling. To describe them we came up with a \textit{camera matrix} that helps us mapping what happens in the real world with what happens in the camera.
+
+The \(3 \times 4\) camera matrix contains 12 coefficients, 11 of which are unknown, we need to find them in order to map the points in the real world to the image plane. The process of finding these coefficients is called \textbf{calibration}.
+
+In order to determine the 11 unknowns we need 6 matching pairs (12 equations) which are enough to solve the system. To pick them we do the same as in the simpler 2D case, we choose points in the real world for whom we know the coordinates and we choose the same points in the image plane, we need to be very precise in picking these points so usually we pick an \textit{higher number} of points to average out the errors.
+
+It's common to use an object of known geometry (a calibration patter) for which we know the relative position of the points and for this we compute the matching.
+
+
+\subsection{Calibration Procedure}
+
+As we have seen before, we have the points in the 3D world, we have the matching 2D projections and we can start constructing our equations system.
+
+
+Given a 3D point \([{}^WP_x {}^WP_y {}^WP_z]\) and its projection \([{}^IP_r {}^IP_c] = [u v]\) for each point in the calibration process we can write the system of equations:
+\setcounter{MaxMatrixCols}{20}
+
+\[
+    \begin{bmatrix}
+        x_j & y_j & z_j & 1 & 0 & 0 & 0 & 0 & -x_ju_j & -y_ju_j & -z_ju_j \\
+        0 & 0 & 0 & 0 & x_j & y_j & z_j & 1 & -x_jv_j & -y_jv_j & -z_jv_j \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        c_{11} \\
+        c_{12} \\
+        c_{13} \\
+        c_{14} \\
+        c_{21} \\
+        c_{22} \\
+        c_{23} \\
+        c_{24} \\
+        c_{31} \\
+        c_{32} \\
+        c_{33} \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        u_j \\
+        v_j
+    \end{bmatrix}
+\]
+
+As usual our goal is to rely on the least square to find the configuration of the matrix the minimizes the error between the observed points and the points that we expect from the transformation, the error between the actual image point measurements and the world points comes from
+
+\[
+    {}^IP={}^I_WC^WP  
+\]
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Figures/proj.png}
+    \caption{Error in the projection.}
+    \label{fig:proj}
+\end{figure}
+
+In an ideal world all the points coming from the real world all the points are being projected on the center of projection, we can trace  the ray through the camera plane and that's it. In the real world we make mistakes, and as shown in Figure \ref{fig:proj} the points are not exactly where we expect them to be, the error is the difference between the expected and the observed points, what we are triyng to do is to minimize this error.
+
+\subsection{Computing the 3D position of a point}
+
+Now we are in the situation where we can map points in the real world on the image plane and can get closer to one of our biggest issues: with just a single camera we cannot compute the full 3D coordinates of a point. If we add an additional camera we can have two different systems, at that point we have 4 equations (2 for each camera) and if we know the camera matrixes for each camera we can come up with the 3D position of the point.
+
+Given a generic point \([x, y, z] \) and given two projections \([r_1, c_1]\) and \([r_2, c_2]\) we can write:
+
+\begin{multicols}{2}
+
+    \[
+        \begin{bmatrix}
+            sr_1 \\
+            sc_1 \\
+            s
+        \end{bmatrix}  
+        =
+        \begin{bmatrix}
+            b_{11} & b_{12} & b_{13} & b_{14} \\
+            b_{21} & b_{22} & b_{23} & b_{24} \\
+            b_{31} & b_{32} & b_{33} & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            x \\
+            y \\
+            z \\
+            1
+        \end{bmatrix}
+    \]
+
+    \[
+        \begin{bmatrix}
+            tr_2 \\
+            tc_2 \\
+            t
+        \end{bmatrix}  
+        =
+        \begin{bmatrix}
+            c_{11} & c_{12} & c_{13} & c_{14} \\
+            c_{21} & c_{22} & c_{23} & c_{24} \\
+            c_{31} & c_{32} & c_{33} & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            x \\
+            y \\
+            z \\
+            1
+        \end{bmatrix}
+    \]
+\end{multicols}
+
+To compute and recontruct the 3D posintion of the point we can solve the system of equations and find a solution.
+
+If we assume we have the projections we know that they are subject to a certain error and that error caused by an approximation of the projection can be seen in the real world as an error in the intersection of the two rays.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Figures/inter.png}
+    \caption{Error in the intersection.}
+    \label{fig:inter}
+\end{figure}
+
+Usually what's done is to take the distance between the two lines and use the middle point as the 3D position of the point. 
+
+\section{The Binocular Stereo}
+
+As the name suggests it's basically a system that looks like Figure \ref{fig:inter} where we have two cameras and we try to come up with few equations to model that situation, which by no coincidence is the same system humans are equipped with. It can be scaled up with multiple cameras but the idea is the same as it becomes a pairwise binocular system. The computation of the 3D position of a points usually goes through 2 steps:
+
+\begin{itemize}
+    \item Computation of the correspondencies (main source of error)
+    \item Reconstruction of the 3D position (basically deterministic)
+\end{itemize}
+
+The conditions for a binocular system is that overall we have two cameras positioned anywhere in the real world pointing at a scene where there's an area that overlaps. From the area that's visible by both camera I can compute the reconstruction.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Figures/binoc.png}
+    \caption{This is also a specific case where both cameras are parallel and aligned (coplanar) as in most commercial stereo systems.}
+    \label{fig:binoc}
+\end{figure}
+
+
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Figures/coplan.png}
+    \caption{Coplanar views.}
+    \label{fig:coplan}
+\end{figure}
+
+In the case of coplanar cameras the difference between the views will be just a small offset as shown in Figure \ref{fig:coplan}. Points will result shifted, and the shift will depend on the depth of the point, the further the point the smaller the shift, this leads to the \textbf{parallax}, apparent motion.  
+
