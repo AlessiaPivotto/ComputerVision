@@ -847,3 +847,125 @@ The conditions for a binocular system is that overall we have two cameras positi
 
 In the case of coplanar cameras the difference between the views will be just a small offset as shown in Figure \ref{fig:coplan}. Points will result shifted, and the shift will depend on the depth of the point, the further the point the smaller the shift, this leads to the \textbf{parallax}, apparent motion.  
 
+\subsection{Computing Correspondencies}
+
+The first step is to compute the correspondencies, in order to do so we need to find those points that are representing the same portion of the real world and this is possible mostly because if we have a good acquisition system the distance is not too big, it's normal to look for a certain match in the local area around the point of interest.
+
+We can rely also on the \textbf{Epipolar Constraint} which tells us that the correspondencies can be met along a horizontal line called the \textit{epipolar line}.
+
+\subsection{Stereo Vision and Epipolar Geometry}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Figures/stereo.png}
+    \caption{A generic stereo system.}
+    \label{fig:stereo}
+\end{figure}
+
+This is a slightly more complex system compared to the coplanar one. We have a Left and a Right camera, both will have their camera coordinates system and we also have to coordinates of the real world. Our objective is to start from a point aviable in the real world , look where the point is being projected in the first and second camera and use the information of this projection to infer the coordinates of \({}^WP\).
+
+\[
+    \begin{bmatrix}
+        x \\
+        y
+    \end{bmatrix}
+    \begin{bmatrix}
+        x' \\
+        y'
+    \end{bmatrix}
+    \rightarrow 
+    \begin{bmatrix}
+        X \\
+        Y \\
+        Z
+    \end{bmatrix}
+\]
+
+We need to go through the \textbf{Epipolar Geometry}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Figures/epipolar.png}
+    \caption{Epipolar geometry.}
+    \label{fig:epipolar}
+\end{figure}
+
+The \textbf{epipolar plane} is what connects the  \({}^WP\) with the two cameras, this plane can be seen as something anchored to axis \(f_L\) and \(f_R\), since they dont move, depending of where the point is in the world what chances in the inclination of the plane. The intersection in between the epipolar plane and the image plane is what we call the \textbf{epipolar lines}. The points \(e\) and \(e'\) are the \textbf{epipoles} and they are the intersection of the epipolar lines with the image plane, they are useful because, for example, as the \({}^WP\) moves along it's projection line on \(f_R\) (basically the ray that goes from \(f_R\) to \({}^WP\)) it's projection on the right image plane will remain the same meanwhile its projection on the left image plane will move exlusively along the epiploar line, so we \textit{know} that we only need to look in that area to find the correspondence. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Figures/epipolar_above.png}
+    \caption{The same system from above.}
+    \label{fig:epipolar_above}
+\end{figure}
+
+We have 
+
+
+\[{}^RP = ({}^RP_x, {}^RP_y, {}^RP_z) \;\;\;\;
+{}^LP = ({}^LP_x, {}^LP_y, {}^LP_z)\;\;\;\;
+{}^WP = ({}^WP_x, {}^WP_y, {}^WP_z)\]
+
+
+\[
+    {}^RP = {}^RR{}^WP+{}^RT
+\]
+\[
+    {}^LP = {}^LR{}^WP+{}^LT  
+\]
+
+We know that the point seen from the camera systems will be the result of a some roto-translations of the point in the real world to the coordinate system of the cameras, \(R\) and \(T\) are related to the extrinsic parameters of the cameras.
+
+The only common term between the two last equations is \({}^WP\) so we can sobstitute and get:
+
+\[
+    {}^LP = {}^LR{}^RR^{-1}{}^RP-{}^LR{}^RR^{-1}{}^RT+{}^LT
+\]
+
+\[
+    = M^RP+B
+\]
+
+Where the term \(M\) that multiplies the \({}^RP\) and a term \(B\). This tells us that in between the \(L\) and the \(R\) we have a roto-translation. Using the simplified perspective projections (Z > f) we obtain the coordinates on the two image planes:
+
+\begin{multicols}{2}
+
+\(
+    {}^Lp_x = f\frac{{}^LP_x}{{}^LP_z}  
+\) \\
+\(
+    {}^Lp_y = f\frac{{}^LP_y}{{}^LP_z}
+\)
+
+\end{multicols}
+
+\begin{multicols}{2}
+
+\(
+    {}^Rp_x = f\frac{{}^RP_x}{{}^RP_z}  
+\) \\
+\(
+    {}^Rp_y = f\frac{{}^RP_y}{{}^RP_z}
+\)
+    
+\end{multicols}
+
+from which we obtain 
+
+\[
+    \frac{{}^LP_z}{f}
+    \begin{bmatrix}
+        {}^Lp_x \\
+        {}^Lp_y \\
+        f
+    \end{bmatrix}
+    =
+    \frac{{}^RP_z}{f}
+    M
+    \begin{bmatrix}
+        {}^Rp_x \\
+        {}^Rp_y \\
+        f 
+    \end{bmatrix}
+    + B
+\]
