@@ -969,3 +969,97 @@ from which we obtain
     \end{bmatrix}
     + B
 \]
+
+\subsection{Esitmation of the 3D position}
+
+Some of the computations are not trivial so we will see the simplified situation where the cameras are parallel and aligned, the mathing problem is always the same: we want to get the coordinates of \({}^WP\) given the two projections on the two image planes.
+
+\begin{figure}[H]
+\[
+        \bm{{}^WP_z = \frac{fb}{{}^Lp_x-{}^Rp_x}}
+\]
+\caption{Formula do compute the depth of the point.}
+\end{figure}
+
+It's \textit{strongly} recommended to memorize this formula.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Figures/epi_comp.png}
+    \caption{Computations to get the depth of a point from the projections.}
+    \label{fig:epi_comp}
+\end{figure}
+
+In Figure \ref{fig:epi_comp} it's shown our complanar stereo system with focal length \(f\), \({}^WP\) is the point in the real world, the two projections on image planes are \({}^Lp_x\) and \({}^Rp_x\) and in order to complete to complete the system we need the \({}^LP_x\) and \({}^RP_x\) which are the coordinates of the point with respect to the camera systems. 
+
+We can say that: 
+
+\begin{figure}[H]    
+\[
+    {}^Lp_x = \frac{f{}^LPx}{P_z}\;\;\;\;\;   
+    {}^Rp_x = \frac{f{}^RPx}{P_z}  
+\]
+\caption{Projection equations.}
+\label{eq:proj}
+\end{figure}
+Note that we are using \(P_z\) for both because the cameras are parallel and aligned so it's the same, also I can say that:
+
+\[
+    {}^WP_z = {}^LP_z = {}^RP_z
+\]
+
+Because I put the origin of the world in the origin of one of the two cameras, this is what happens in real stereo systems. From here we can play around with equations \ref{eq:proj}:
+
+\[
+    {}^LP_x = \frac{{}^Lp_xP_z}{f}    
+\]
+
+If the cameras are distant one from the other by a certain amout \(b\) we can say:
+
+\[
+    {}^LP_x = b+{}^RP_x
+\]
+
+At this point we use this expression to evaluate the projection on the right camera:
+
+\[
+    {}^Rp_x = \frac{f({}^LP_x-b)}{P_z}    
+\]
+
+We know already what was out \({}^LP_x\) so what we can say is that: 
+
+\[
+    {}^Rp_x = \frac{f({}^LP_x-b)}{P_z}    
+    =
+    \frac{f({}^Lp_xPz)}{fP_z}-\frac{fb}{P_z}
+\]
+\[
+    {}^Rp_x ={}^Lp_x-\frac{fb}{P_z}
+\]
+\[
+    {}^Lp_x- {}^Rp_x = \frac{fb}{P_z}
+\]
+\[
+    \bm{{P_z} = \frac{fb}{{}^Lp_x- {}^Rp_x}}
+\]
+Finally we have the component \(P_z\) that we have been looking for. To get to this point we have many values that play a role:
+\begin{itemize}
+    \item \(b\)  something that relates to the extrinsic parameters of the camera
+    \item \(f\) one of the intrinsic parameters of the camera
+    \item \({}^Rp_x \;\; {}^Rp_x\) the projections of the point in the two cameras. This term is also called the \textbf{disparity} and it's the offset between the two projections, this disparity term changes according to the distance of the object to the cameras.
+\end{itemize}
+
+: 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Figures/mistake.png}
+    \caption{Typical exam question: \textit{Please, tell how we compute the 3D coordinates of a point starting from a camera system that is parallel and aligned.} Don't draw this. Just don't.}
+    \label{fig:mistake}
+\end{figure}
+
+\subsection{Matching points}
+
+Now that we know how do get the 3 coordinates given the projections we need to understand how to compute the match, and define an evaluation function to understand how good the match is. 
+
+The matching is usually done by looking at the intensity of the pixels, we can use the \textbf{Sum of Absolute Differences} (SAD) or the \textbf{Sum of Squared Differences} (SSD) to evaluate the match.
