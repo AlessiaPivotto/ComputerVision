@@ -1122,15 +1122,32 @@ Where \(d\) represents the window shift, \(w\) and \(w'\) are the vectorized win
 \[
 C(d) = \sum_{(u,v) \in W(x,y)} [\hat{I}(u,v) \hat{I}(u-d,v)] = w\cdot w' = \cos\theta    
 \]
-In the normalized case, the correlation is maximum if the
-original brightness of the two windows is shifted by an offset
-and a scale factor
+In the normalized case, the correlation is maximum if the original brightness of the two windows is shifted by an offset and a scale factor. This means that by the time we compute the correlation with have normalized the vectors (for instance between 0 and 1) and that the correlation is maximum when the angle between the two vectors in 0, \textit{however} it can be that the vecors are in fact, shifted and scaled, while maintaining the same angle. 
+
+\begin{multicols}{2}
 \[
 \hat{I} = \lambda I + \mu
 \]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.1\textwidth]{Figures/vectors.png}
+    \caption{Scaled and shifted vectors with maximum correlation.}
+    \label{fig:vectors}
+\end{figure}
+\end{multicols}
 
 Computing the correlation at each frame for the whole image
 can be expensive, in practice we have windows that overlap so one of the tricks in the implementation is to keep track of the parts of the window that are common between the two windows and update the correlation accordingly. In addition usually the correlation is carreied out taking into account the disparity.
 
 \subsection{General Stereo Configuration}
 
+Now we want to move from the simplified stereo rig to a better characterization of a general stereo configuration, we still have our two cameras which are observing an object in the real world, we still have our \({}^WP=[{}^WP_x, {}^WP_y,{}^WP_z]\) and then we have two arbitrary cameras positioned somwhere in the real world. Again we want to find the correspondencies between the point \({}^WP\) which is seen by the camera C1 in position \({}^1P\) and by the camera C2 in position \({}^2P\).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{Figures/duck.png}
+    \caption{Quack.}
+    \label{fig:duck}
+\end{figure}
+
+We know already theat the two lines in Figure \ref{fig:duck} will never match exactly but we want to find the configuration that minimizes the error.
