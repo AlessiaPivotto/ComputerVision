@@ -1062,4 +1062,75 @@ Finally we have the component \(P_z\) that we have been looking for. To get to t
 
 Now that we know how do get the 3 coordinates given the projections we need to understand how to compute the match, and define an evaluation function to understand how good the match is. 
 
-The matching is usually done by looking at the intensity of the pixels, we can use the \textbf{Sum of Absolute Differences} (SAD) or the \textbf{Sum of Squared Differences} (SSD) to evaluate the match.
+The matching is usually done by looking at the intensity of the pixels, a common technique is to use \textbf{Window-based approaches}. They are very generic in computer vision at it goes like this:
+
+\begin{itemize}
+    \item Take a window around the point of interest in the left image
+    \item Along the epipolar line find the windows that best match the right and left image, shifting of a handful of pixels at a time or even pixel by pixel.
+    \item Compute an error function (MSE, SAD, SSD)
+    \item Find the minimum
+    \item Winner-take-all and that's the \textit{disparity}. Usually we define a range of disparaties, otherwise we would have to look along the entire epipolar line.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Figures/sad.png}
+    \caption{Moving the window along the epipolar line.}
+    \label{fig:sad}
+\end{figure}
+
+
+
+\subsection{Image Normalization}
+
+Unfurtunately the two cameras are not \textit{exactly} the same, and might have small differences in the acquisition in terms of colors, even with an offset of just one or two grayscale values, our metric could become noisy, this why images get \textbf{normalized}
+
+
+\begin{multicols}{2}
+\[
+\bar{I} = \frac{1}{|W(x,y)|} \sum_{(u,v) \in W(x,y)} I(u,v)
+\]
+We can compute the average value of the pixels in the window.
+
+\end{multicols}
+
+\begin{multicols}{2}
+\[
+\| I \|_{W(x,y)} = \sqrt{\sum_{(u,v) \in W(x,y)} [I(u,v) - \bar{I}]^2}
+\]
+Compute the window magnitude.
+\end{multicols}
+
+\begin{multicols}{2}
+\[
+\hat{I}(x,y) = \frac{I(x,y) - \bar{I}}{\| I - \bar{I} \|_{W(x,y)}}
+\]
+
+Calculate the normalize values, with this normalization we can eliminate the offset between the two images.
+\end{multicols}
+
+This makes it possible to compute the distance because we now know that what we have on the right side and the left side is the same. Since this normalization makes the windows comparable we can now compute the SAD or the \textbf{Sum of Squared Differences}:
+\[
+SSD(x,y,d) = \sum_{(u,v) \in W(x,y)} [\hat{I}_L(u,v) - \hat{I}_R(u-d,v)]^2
+\]
+
+Another metric is called the \textbf{Correlation}, a big error correspons to small correlation and viceversa. What happens in this case is that instead of comparing the pixel to pixel values, we take the window and represent it as a vector. For instance a \(3\times 3\) window will be represented as a \(1\times9\) dimensional vector, we can then compute the correlation between the two vectors.
+\[
+C(d) = \frac{1}{|w-\bar{w}|}\frac{1}{|w'- \bar{w}'|}(w-\bar{w})(w'-\bar{w}')
+\]
+Where \(d\) represents the window shift, \(w\) and \(w'\) are the vectorized windows and \(\bar{w}\) and \(\bar{w}'\) are the averages of the vectorized windows. Besically it's a comparision between vectors where we want to measure the angle between \(w - \bar{w}\) and \(w' - \bar{w}'\).
+\[
+C(d) = \sum_{(u,v) \in W(x,y)} [\hat{I}(u,v) \hat{I}(u-d,v)] = w\cdot w' = \cos\theta    
+\]
+In the normalized case, the correlation is maximum if the
+original brightness of the two windows is shifted by an offset
+and a scale factor
+\[
+\hat{I} = \lambda I + \mu
+\]
+
+Computing the correlation at each frame for the whole image
+can be expensive, in practice we have windows that overlap so one of the tricks in the implementation is to keep track of the parts of the window that are common between the two windows and update the correlation accordingly. In addition usually the correlation is carreied out taking into account the disparity.
+
+\subsection{General Stereo Configuration}
+
