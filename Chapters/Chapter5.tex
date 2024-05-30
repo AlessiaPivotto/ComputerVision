@@ -1238,7 +1238,7 @@ Given a foundamental matrix \(F\) for an object it's impossible to determine the
 
 Where \(H\) is a projective transformation that does not affect the projection of \({}^WP\) onto the image plane 
 
-\subsection{The Planar Homography}
+\section{Homography and friends}
 
 The planar homography \(H\) is a transformation that helps us making the mapping in beetween two planes that live in different domain. 
 
@@ -1252,4 +1252,143 @@ The planar homography \(H\) is a transformation that helps us making the mapping
 In Figure \ref{fig:homo} we can see how we are mapping a ground plane on the image plane, they are roto-translated and scaled by certain transformation but we want to match these two planes in order to understand how things can be transferred from one domain to the other. This is the point where we go back to the real world.
 
 We have the foundamental matrix that deal with the camera configuration and we use the homography information to bind the views with the real world, we are talking about planes so in the same way as we did before what we do is to grab some \textit{control points}, easily seen by both planes, such that if I know how this transformation occurs I can determine the correspondece of a displacement in the image plane to the displacement in the real plane. I can know that a displacement of 5px corresponds to a displacement of 3m in the real world thanks to the Homography Matrix \(H\).
+\\
+\\
+\\
+This is the basic element in order to determine the trajectory of something that moves on the ground plane, the process is the following:
+\begin{itemize}
+    \item Calibrate the cameras in a way that we are rectifying the distortion
+    \item Determine the foundamental matrix, so where two points correspond in one view and in the other
+    \item Take a reference on the real world, once we have that any movement in the image plane can be mapped to the real plane and can be converted in real coordinates.
+\end{itemize}
 
+In principle we could do this even with a single camera, and we could use the second view to solve problems as occlusion. 
+
+\subsection{2D Homography}
+
+It's an invertible transformation between two planes, in fact in our first computation we try to match what is in the real world with what is in the image plane, once we have that we can track the movement in the image plane and we can convert it to the real world. The Homography matrix defined as \(H\) is the one that satisfies the following equation:
+\[
+    p' = Hp    
+\]
+
+Where \(p\) is a point in the world ground plane and \(p'\) is the corresponding point in the image plane. Since any vector crossed with itself gives 0 we can rewrite is as:
+
+\[
+    p' \times Hp = 0    
+\]
+
+We rely on this constraint in order to compute the matrix \(H\).
+
+\begin{multicols}{2}
+    
+
+\[
+    p' =
+    \begin{bmatrix}
+        x' \\
+        y' \\
+        1
+    \end{bmatrix}
+    =
+    H
+    \begin{bmatrix}
+        x \\
+        y \\
+        1
+    \end{bmatrix}
+\]
+
+\[
+    p'= Hp
+\]
+\[
+    p' \times Hp = 0
+\]
+\end{multicols}
+
+We want to find a linear solution for \(H\), we can rewrite the vector \(Hp\) as:
+
+\[
+    Hp = 
+    \begin{pmatrix}
+        h^{1T}p\\
+        h^{2T}p\\
+        h^{3T}p
+    \end{pmatrix}
+\]
+
+Now we want to compute the cross product, which is given as follows:
+
+\[
+    \begin{bmatrix}
+        \hat{i} & \hat{j} & \hat{k} \\
+        x' & y' & w' \\
+        h^{1T}p & h^{2T}p & h^{3T}p
+    \end{bmatrix}    
+    =
+    \begin{bmatrix}
+        y'h^{3T}p - w'h^{2T}p \\
+        -x'h^{3T}p + w'h^{1T}p \\
+        x'h^{2T}p - y'h^{1T}p
+    \end{bmatrix}
+\]
+
+And that's the result of the cross product, we can now rewrite the equation as a function of the components of \(H\):
+
+\[
+    \begin{bmatrix}
+        0 & -w'p & y'p \\
+        w'p & 0 & -x'p \\
+        -y'p & x'p & 0
+    \end{bmatrix}  
+    \begin{bmatrix}
+        h^{1T} \\
+        h^{2T} \\
+        h^{3T}
+    \end{bmatrix}  
+\]
+
+At this point we know what's in the first matrix because we know the point in the second plane, we know the coordinates of the point in the first image plane \(P\) because we are matching coordinates, now our goal is to find the unknowns for \(H\).
+Only two out of the 3 equations are independent, so one can be discared, what we get in the end is a \(2\times 9\) matrix for which we need to determine the coefficients \(h\).
+
+\[
+    \begin{bmatrix}
+        0 & -w'p & y'p \\
+        w'p & 0 & -x'p \\
+    \end{bmatrix}  
+    \begin{bmatrix}
+        h^{1T} \\
+        h^{2T} \\
+        h^{3T}
+    \end{bmatrix}  
+\]
+For each matching point we have two equations, playing around with the number of points that we take we can solve the matrix, 4 points yield to the minimum number of equations to solve the system, but the more points we take the more robust the solution will be. The implementation aviable in OpenCV relies on the DLT but otherwise we can use the regular Least-Squares approach.
+\\
+\\
+We managed  to set up two cameras, link them to the real world thanks to the Homography matrix in such a way that we are able to determine the position of the object even in the case it's occluded. This is a very effective solution, we are only looking at the ground plane, not at the depth map, these solutions tend to be more robust and less noisy. It depends of course on the specific problem if it's needed or not to get the entire information about the scene depth.
+
+\subsection{Multiple view geometry}
+
+With multiple we are referring to more than two. So far we have seen stereo systems with two cameras but of course we can generalize to an arbitrary number of views, this might be required in the case we need, for instance, a detailed point cloud. In this case we would end up in the area of so colled \textbf{voxels} with respect to pixels, small volume elements instead of screen elements.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/multiv.png}
+    \caption{Even in this case we can scale down to a two camera problem.}
+    \label{fig:multiv}
+\end{figure}
+
+In Figure \ref{fig:multiv} can see how the point \({}^WP\) is being observed by the 3 cameras with projections \(P_1, P_2, P_3\). However we know that these cameras can be linked together with epipolar geometry, provided some parameters of the cameras we should be able to determine the position of \({}^WP\) even with just two of them, and the same can be said for any two cameras. This system can be constructed as a combination of pairs of cameras, in this way the geometry constraints are fullfilled and using the essential matrix (or the foundamental matrix if we consider the instrinsic parameters) we can determine the position of the point in the real world and define the epipolar constraint as:
+ 
+\[
+    p^T_1E_{12}p_2=0
+\]
+\[
+    p^T_2E_{23}p_3=0
+\]
+\[
+    p^T_3E_{31}p_1=0
+\]
+
+
+At the end we can use any of the two equations to determine the position of the point in the real world, for instance I could use Camera 1 and Camera 2 in the case Camera 3 is occluded, sharing all these elements make it possible to come oìup with a very robust tracker. All this scales up to what we call the \textbf{problem of transfer}: make the network communicate in a way that the information is actually shared between the different cameras.
