@@ -6,6 +6,10 @@
 *.pdf
 *.gz
 *.toc
-*.acn
-*.glo
 *.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.bcf
+*.glo
+*.acn
