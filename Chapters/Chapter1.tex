@@ -22,8 +22,7 @@ Remember that the sensor is a device that responds to a physical stimulus (light
 \textit{PS: The representation is in a standard format.}
 \\
 \subsection{Digital Images}
-A digital image is a representation of a two-dimensional image as a finite set of digital values, called picture elements or pixels. 
-The digital image contains a fixed number of rows and columns of pixels and so is a collection of coordinates. Pixels are the smallest individual element in an image, a single pixel represent a projection of a portion of the real world, holding quantized values that represent the brightness of a given color at any specific point. Pixels can be \textbf{Grayscale} or \textbf{Color}. 
+A digital image is a representation of a two-dimensional image as a finite set of digital values, called picture elements or pixels. The digital image contains a fixed number of rows and columns of pixels, it's a collection of coordinates. Pixels are the smallest individual element in an image, a single pixel represents a projection of a portion of the real world, holding quantized values that represent the brightness of a given color at any specific point. Pixels can be \textbf{Grayscale} or \textbf{Color}. 
 Grayscale images are represented by a single component, typically 8bit, while color images are represented by three components, typically 24bits.
 \\
 \subsection{Sampling}
@@ -56,7 +55,7 @@ The perception of color is possible through cones in the fovea that has around 1
 But going back to the main topic, data can be processed locally but even transmitted remotely or archived on a storage unit. The problem is that images and videos require a lot of bandwidth, so we need to compress them with a codec.
 A codec is a device or computer program for encoding or decoding a digital data stream or signal in the compressed domain. It stands for coder-decoder, and it's a way to reduce the dimension of the file (e.g JPEG, MPEG, DIVX). 
 \\It is important to mention that compression is lossy, so reduces quality (we lose some information) and can even introduce visual artifacts such as blocking, blurring, chromatic aberrations(plus some noise from the sensor). However, the loss is not a problem because the human visual system is not perfect.
-\\\textit{NB1: Exist even lossless compression, but it's not used much.
+\\\textit{NB1: There exists even lossless compression, but it's not used much.
 \\NB2: Processing is typically done in the uncompressed domain.}
 \\To make a final comparison, raw images are usually stored in a 1D vector of pixels, while compressed images reduce the dimension of the file with or without loss of information.
 
@@ -143,7 +142,7 @@ It’s closer to what humans do every day.
 A video is a sequence of 2D images that represent a projection of moving 3D scene onto the video camera image plane. It's expected that adjacent frames are strongly correlated.
 For what concerns the resolution, the images are up to 50mp, while in video is typically lower, $4$k is $3840\times2160=8.3$mp, $8$k is $7680\times4320=33.2$mp and full HD is around $2$mp.
 The reasons are that video can last hours, so we need to store a lot of data, and that the human eye is less sensitive to resolution in motion. 
-Just move on a little bit, when analyzing an image, key features of interest include color distribution and the presence of edges and contours, which help identify and define objects.
+Just to move on a little bit, when analyzing an image, key features of interest include color distribution and the presence of edges and contours, which help identify and define objects.
 
 In the context of video analysis, additional benefits emerge. Consistency of features over time allows for tracking object movement, while changes in the scene can reveal dynamic interactions. Videos also enable the detection of objects entering or exiting the frame.
 
