@@ -6,11 +6,7 @@ The pinhole camera model is the simplest model used to describe the imaging proc
 \\\textit{PS: If the object is far, it appears small in the image. If the object is close, it appears large in the image.}
 \subsection{Features of the Pinhole Camera Model}
 In an image, parallel lines in the real world converge at a single point, known as the vanishing point. Parallel lines on the same plane converge to collinear vanishing points, forming a line called the horizon for that plane. Additionally, vertical lines in the image are perpendicular to this horizon.
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=1\textwidth]{Figures/Pinhole.png}
-\end{figure}
-\\\textit{PS: If the object is far, it appears small in the image. If the object is close, it appears large in the image.}
+
 \subsection{Features of the Pinhole Camera Model}
 
 \begin{figure}[H]
@@ -35,7 +31,11 @@ In an image, parallel lines in the real world converge at a single point, known 
 
 The intuition behind the projection of the pinhole camera model is based on the concept of similar triangles. In Figure \ref{fig:triangles} we can see how the triangles formed by the object and the image plane are similar, \(f\) is the \textit{focal length} of the camera, \(Z\) is the distance of the object to the pinhole and \(X\) and \(X'\) are respectively the position of the object and its projection on the image plane. This means that the ratio of the sides of the triangles is the same, this concept is used to derive the projection equations. 
 
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Figures/Pinhole.png}
+    \caption{If the object is far, it appears small in the image. If the object is close, it appears large in the image.}
+\end{figure}
 \section{Projection}
 Projection is the fundamental process of mapping 3D points, including time, to 2D points. When projecting a 3D point onto the image plane, a line is defined between the point and the center of projection. The intersection of this line with the image plane yields the 2D projection of the 3D point. This process forms the basis of how 3D scenes are represented in 2D images.
 \[
