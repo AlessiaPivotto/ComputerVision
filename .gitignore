@@ -6,16 +6,6 @@
 *.pdf
 *.gz
 *.toc
-<<<<<<< HEAD
-*.fdb_latexmk
-*.synctex.gz
-*.bbl
-*.blg
-*.bcf
-*.glo
-*.acn
-=======
 *.acn
 *.glo
 *.fdb_latexmk
->>>>>>> 4905fdb50fd2f7ad131a70cd00d448cf8a2f5b55
