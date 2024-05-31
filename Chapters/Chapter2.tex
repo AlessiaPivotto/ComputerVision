@@ -9,12 +9,30 @@ The pinhole camera model is the simplest model used to describe the imaging proc
 \end{figure}
 \\\textit{PS: If the object is far, it appears small in the image. If the object is close, it appears large in the image.}
 \subsection{Features of the Pinhole Camera Model}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/horizon.jpg}
+    \caption{The behavior lines in the world and in the image.}
+    \label{fig:horizon}
+\end{figure}
 \begin{itemize}
     \item Parallel lines in the world converge to a single point in the image;
-    \item Parallel lines on the same plane lead to \textit{collinear vanishing} points;
-    \item The line is called the \textit{horizon} for that plane;
-    \item Vertical lines are perpendicular to the horizon.
+    \item Parallel lines on the same plane lead to \textit{collinear vanishing} points. In Figure \ref{fig:horizon} we can see how the blue and green lines that lie parallel on two different planes, eveltually converge to the same point in the image plane;
+    \item The line where coplanar parallel lines end up is called the \textit{horizon} for that plane;
+    \item Vertical lines (red) are perpendicular to the horizon.
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/triangles.jpg}
+    \caption{Similar triangles in the projection.}
+    \label{fig:triangles}
+\end{figure}
+
+The intuition behind the projection of the pinhole camera model is based on the concept of similar triangles. In Figure \ref{fig:triangles} we can see how the triangles formed by the object and the image plane are similar, \(f\) is the \textit{focal length} of the camera, \(Z\) is the distance of the object to the pinhole and \(X\) and \(X'\) are respectively the position of the object and its projection on the image plane. This means that the ratio of the sides of the triangles is the same, this concept is used to derive the projection equations. 
+
+
 \section{Projection}
 The projection is the process of mapping 3D points (+time) to 2D points. The projection of a 3D point onto the image plane is defined by a line that passes through the point and the center of projection. The intersection of this line with the image plane gives the 2D projection of the 3D point. 
 \[
