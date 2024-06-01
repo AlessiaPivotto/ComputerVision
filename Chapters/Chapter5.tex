@@ -1,10 +1,10 @@
 \chapter{Geometry}
 
-Pixels in the image plane have a direct mapping to the position of the camera in the real world. When we use the approximation of the image we might lose some relevant pices of information such as the depth of the objects in the scene or the speed of objects, which will appear slower the further they are from the camera. 
+Pixels in the image plane have a direct mapping to the position of the camera in the real world. When we use the approximation of the image we might lose some relevant pieces of information such as the depth of the objects in the scene or the speed of objects, which will appear slower the further they are from the camera. 
 
 In this chapter we will introduce the basic concepts of geometry that will allow us to understand the relationship between the camera and the real world.
 
-Typically we represent a point (pixel) as a set of coordinates:
+Typically, we represent a point (pixel) as a set of coordinates:
 
 \[ P = [ x, y ]^t = \begin{bmatrix} x \\ y \end{bmatrix}\]
 
@@ -19,7 +19,7 @@ Sometimes we can also omit the " \(^t\) " and write the coordinates as a row vec
 
 \section{Affine Transformations}
 
-Now formally the pixel is a vector so in general we can apply all the kind of transofmations we want, which usually turn out to be combinations of summations and multiplications. 
+Now formally the pixel is a vector so in general we can apply all the kind of transformations we want, which usually turn out to be combinations of summations and multiplications. 
 The most common transformations are:
 
 \begin{itemize} 
@@ -31,7 +31,7 @@ The most common transformations are:
 
 \subsection{Scaling}
 
-In scaling we take one point or a set of points and we transform them by a multiplaying factor.
+In scaling we take one point or a set of points and we transform them by a multiplaying factor. 
 
 \[
 \begin{bmatrix}
@@ -84,7 +84,7 @@ Rotation is the result of applying a rotation angle to the coordinate points, if
     \label{fig:rotation}
 \end{figure}
 
-For instance we can see on the horizontal unit vector how the \(x\) gets reduced while a \(y\) component appears correspondin to the sine of the angle.
+For instance, we can see on the horizontal unit vector how the \(x\) gets reduced while a \(y\) component appears corresponding to the sine of the angle.
 
 By the time we have a point that's been shifter by a certain amount \(\theta\), saying that the points rotates equals to keeping the point fixed and rotating the coordinate system by the same amount. The resulting operation that we have in our matrix is the multiplication of the point with the transformation of the unit vectors.
 
@@ -115,7 +115,7 @@ Both scaling and rotation can be constructed using a simple 2 by 2 matrix.
 A translation is simply a shift of the points of our objects into new coordinates.
 Just like we can think of rotation as a change in the coordinate system, we can think of translation as a change in the origin of the coordinate system.
 
-If we apply a displacenent vector it's the same as moving the origin of the coordinate system to the new point and we can model this easily:
+If we apply a displacement vector it's the same as moving the origin of the coordinate system to the new point and we can model this easily:
 
 \( D([x, y]) = [x + x_0, y + y_0] \)
 
@@ -142,7 +142,7 @@ At this point we can't use anymore a 2 by 2 matrix because we have to introduce 
         \end{bmatrix}
 \]
 
-The new coordinates are nothing but a multiplication of a scaling matrix of facor 1.0 by the coordinates \(x, y\) and then the addition of the translation vector.
+The new coordinates are nothing but a multiplication of a scaling matrix of factor 1.0 by the coordinates \(x, y\) and then the addition of the translation vector.
 
 
 To bring the displacement vector inside the matrix we can use the homogeneous coordinates, we can add a third coordinate to the vector and then we can multiply the matrix by the vector.
@@ -224,9 +224,9 @@ We can write the formula above as a matrix multiplication:
     \end{bmatrix}
 \]
 
-So to obtain the transformation matrix we need to solve a system of euqations with 4 unknowns, the 4 parameters we mentioned before. To obtain 4 equations we can use 2 points called control points ( obtaining \(x_1, y_1\) and \(x_2, y_2\) ), such points must be clearly visible both in the image and in the real world and must be very clear in both planes. Once I have found these two points i'm able to map these coordinates on the image plane.
+So to obtain the transformation matrix we need to solve a system of equations with 4 unknowns, the 4 parameters we mentioned before. To obtain 4 equations we can use 2 points called control points (obtaining \(x_1, y_1\) and \(x_2, y_2\)), such points must be clearly visible both in the image and in the real world and must be very clear in both planes. Once I have found these two points I'm able to map these coordinates on the image plane.
 
-We keep referring to the transformations in Figure \ref{fig:comb} as \(2D -> 2D \) transformations, this implies I have a ground plane on which i'm working on and a camera plane, the camera plane is the image plane that might be scaled, translated with respect to the ground plane. At the moment we are not considering a rotation of the camera, we are assuming the image plane is parallel to the ground plane.
+We keep referring to the transformations in Figure \ref{fig:comb} as \(2D -> 2D \) transformations, this implies I have a ground plane on which I'm working on and a camera plane, the camera plane is the image plane that might be scaled, translated with respect to the ground plane. At the moment we are not considering a rotation of the camera, we are assuming the image plane is parallel to the ground plane.
 
 \begin{figure}[H]
     \centering
@@ -239,7 +239,7 @@ We keep referring to the transformations in Figure \ref{fig:comb} as \(2D -> 2D 
 
 \subsection{General Affine Transformations}
 
-Starting from the previous transformations we can see that the 3 matrices are of the same sive and if we compute the product between all of them we can think of these transformations as an end-to-end transformation where we can embed all these parameters in a single matrix.
+Starting from the previous transformations we can see that the 3 matrices are of the same size and if we compute the product between all of them we can think of these transformations as an end-to-end transformation where we can embed all these parameters in a single matrix.
 
 \[
     \begin{bmatrix}
@@ -260,9 +260,9 @@ Starting from the previous transformations we can see that the 3 matrices are of
     \end{bmatrix}
 \]
 
-This transformation is the set of coefficients, we don't know exactly the contribution of each of the 3 matrices, but it results in a certain trasformation which is represented by what is called in general the \textbf{Camera Matrix}. It tells me exaclty how to move from a certain plane where \(x, y\) lie to where they will be in the camera plane, and vice versa.
+This transformation is the set of coefficients, we don't know exactly the contribution of each of the 3 matrices, but it results in a certain transformation which is represented by what is called in general the \textbf{Camera Matrix}. It tells me exactly how to move from a certain plane where \(x, y\) lie to where they will be in the camera plane, and vice versa.
 
-We see that we have 6 coefficients instead of the 4 parameters, to determine them it's the same as we did before, with the exception that isntead of 2 we need 3 matching control points which we know the position of in the real world and in the image plane. However finding these points might now be trivial,
+We see that we have 6 coefficients instead of the 4 parameters, to determine them it's the same as we did before, with the exception that instead of 2 we need 3 matching control points which we know the position of in the real world and in the image plane. However, finding these points might now be trivial,
 the main difficulty is being precise in picking them.
 
 What is usually done is, instead of using the minimum required control points, we pick up more points with the hope that on average we are making a very small mistake, averaging out the errors. This way we might end up with 12, 20 equations and 6 unknowns (an \textit{over-determined system}), our goal is to find the 6 equations that minimize the error. We use the \textit{least-squares method} to find the best solution that minimizes the error.
@@ -306,21 +306,21 @@ What we are trying to get is to find the best configuration of these coefficient
 
 The solution is found by computing the minimum of the error, or in other terms compute the \textit{partial derivative} with respect to each unknown and set them to zero, making sure the error between the result of the transformation and the observed points is minimized.
 
-And this is how the whole thing works, how we determine the \textbf{2D camera matrix} used to map the real world plane to the camera plane. Remembder that the reference are two different planes one on top of the other, we don't have full 3D rotations \textit{yet}.
+And this is how the whole thing works, how we determine the \textbf{2D camera matrix} used to map the real world plane to the camera plane. Remember that the reference are two different planes one on top of the other, we don't have full 3D rotations \textit{yet}.
 
 \section{Going 3D}
 
-We are now moving to more general solutions, we can't expect from the system we'll take in consideraton to end up in the easy scenario where the two planes are parallel and facing each other.
-More in general what happens is that the image plane we are dealing with it's something that results from a generic camera prospective where what we see in the image plane is something that look more like shown in Figure \ref{fig:3d}.
+We are now moving to more general solutions, we can't expect from the system we'll take in consideration to end up in the easy scenario where the two planes are parallel and facing each other.
+More in general what happens is that the image plane we are dealing with is something that results from a generic camera prospective where what we see in the image plane is something that look more like shown in Figure \ref{fig:3d}.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.2\textwidth]{Figures/3d.png}
-    \caption{A generinc 3D scenario.}
+    \caption{A generic 3D scenario.}
     \label{fig:3d}
 \end{figure}
 
-We need to go thru a process called \textbf{calibration} where we'll need to determined the so called \textbf{intrinsic} and \textbf{extrinsic} parameters of the camera. The projections that we have seen so far won't be enough to describe the 3D world, we'll need to add an \textit{additional view} to make possible to determiine the unique 3D coordinates \(X Y Z\) that are necessary to describe the position of a point in the real world. With that additional information I can do many tasks:
+We need to go through a process called \textbf{calibration} where we'll need to determined the so called \textbf{intrinsic} and \textbf{extrinsic} parameters of the camera. The projections that we have seen so far won't be enough to describe the 3D world, we'll need to add an \textit{additional view} to make possible to determine the unique 3D coordinates \(X Y Z\) that are necessary to describe the position of a point in the real world. With that additional information I can do many tasks:
 
 \begin{itemize} 
     \item Point Clouds
@@ -331,22 +331,22 @@ We need to go thru a process called \textbf{calibration} where we'll need to det
 \subsection{Intrinsic and Extrinsic Parameters}
 
 \begin{itemize} 
-    \item\textit{Intrisic parameters} refer to the specific characteristics of the camera, such as the focal length, the distortion of the lens, the position of the principal point, etc. These parameters are fixed and don't change with the position of the camera. They are necessary because we want to link the pixel coordinates with the corresponding coordinates in the camera coordinates system.
+    \item\textit{Intrinsic parameters} refer to the specific characteristics of the camera, such as the focal length, the distortion of the lens, the position of the principal point, etc. These parameters are fixed and don't change with the position of the camera. They are necessary because we want to link the pixel coordinates with the corresponding coordinates in the camera coordinates system.
 
     \item\textit{Extrinsic parameters} refer to the position of the camera in the real world, such as the rotation and translation of the camera with respect to the world coordinates. These parameters are not fixed and change with the position of the camera.
 \end{itemize}
 
-When we try to estimate these parameters we go thru a process called \textbf{calibration}, where we try to find a suitable matrix which helps us mapping the points in the real world to what we see thru the camera.
+When we try to estimate these parameters we go through a process called \textbf{calibration}, where we try to find a suitable matrix which helps us to map the points in the real world to what we see through the camera.
 
 \subsection{3D Affine Transformations}
 
-At this point we need to go through a the transformations that we have seen in the 2D case, extending them by adding a new dimension. The main difference is that our starting point is a set of 3D coordinates.
+At this point we need to go through the transformations that we have seen in the 2D case, extending them by adding a new dimension. The main difference is that our starting point is a set of 3D coordinates.
 
 \[ [P_x, P_y, P_z] \rightarrow  [sP_x, sP_y, sP_z, s] \]
 
 Also in this case we move from a 3D vector to a 4D vector with the addition of the scaling factor of the homomogeneous coordinates.
 
-Now we have a system for each camera so a triplet of coordinates for Camera 1 and a triplet of coordinates for Camera 2, these two cameras are looking at the world coordinates, in some cases it could be interesing to also know the coordinates of the model in the world (although it's not common). We end up with
+Now we have a system for each camera so a triplet of coordinates for Camera 1 and a triplet of coordinates for Camera 2, these two cameras are looking at the world coordinates, in some cases it could be interesting to also know the coordinates of the model in the world (although it's not common). We end up with
 
 \begin{itemize} 
     \item Model coordinates
@@ -367,7 +367,7 @@ We can see all these 4 systems linked by a transformation, which is nothing more
 
 \({}^wP = T R {}^mP\) and same for \({}^1P\) and \({}^2P\).
 
-Where T is a translation vector and R a rotation matrix. It must be noted that the point seen from the first camera and the second camera might be different from the second camera, both in terms of coordinates and in the sense that Camera 1 and Camera 2 might have opposite views, meaning that there might be no one-to-one mapping of all points, there's a supset of points that's visible from both cameras, we'll be able to recontruct the 3D position only for the points visible from both cameras.
+Where T is a translation vector and R a rotation matrix. It must be noted that the point seen from the first camera and the second camera might be different from the second camera, both in terms of coordinates and in the sense that Camera 1 and Camera 2 might have opposite views, meaning that there might be no one-to-one mapping of all points, there's a supset of points that's visible from both cameras, we'll be able to reconstruct the 3D position only for the points visible from both cameras.
 
 
 NB:
@@ -407,7 +407,7 @@ it consists of applying a translation \(x_0, y_0, z_0\) to the point and no scal
 
 \subsection{3D Scaling}
 
-Here, similarly to the previous case, we can have different scaling factors although usually we have the same scaling factor for all the axis.
+Here, similarly to the previous case, we can have different scaling factors, although usually we have the same scaling factor for all the axis.
 
 \[
   {}^2P = S(s_x, s_y, s_z) {}^1P 
@@ -437,7 +437,7 @@ Here, similarly to the previous case, we can have different scaling factors alth
 
 \subsection{3D Rotation}
 
-In terms of rotation, things become a little more complicated, we don't have a single rotation (in the 2D space we have to deal with a single angle) but since now we have an additional axis we have a rotation arounf the three axis, if we want to do the same analysis as we did in the 2D case with the unit vector we end up with three matrices of coefficients that describe the rotation around each of the three axis.
+In terms of rotation, things become a little more complicated, we don't have a single rotation (in the 2D space we have to deal with a single angle) but since now we have an additional axis we have a rotation around the three axis, if we want to do the same analysis as we did in the 2D case with the unit vector we end up with three matrices of coefficients that describe the rotation around each of the three axis.
 
 \begin{multicols}{2}
 
@@ -547,7 +547,7 @@ Our goal is to then put everything together in a single matrix, this is the gene
     \end{bmatrix}   
 \]
 
-It's some sort of a camera matrix, but at this point we are dealing with something that return 3D coordinates and unfurtunately doesn't help us much because at the end what we have is an image plane where the coordinates are only rows and columns, \(x, y\). It means that we need to further modify this matrix in order to end up with a representation that 2D. We need to add to our transformation what are the proprieties of the camera, that give us the opportunity to move from the 3D coordinates (in our case the world \(W\)) to a 2D plane \(I\).
+It's some sort of camera matrix, but at this point we are dealing with something that return 3D coordinates and unfortunately doesn't help us much because at the end what we have is an image plane where the coordinates are only rows and columns, \(x, y\). It means that we need to further modify this matrix in order to end up with a representation that 2D. We need to add to our transformation what are the proprieties of the camera, that give us the opportunity to move from the 3D coordinates (in our case the world \(W\)) to a 2D plane \(I\).
 
 \[
     {}^IP = {}^I_W C^WP
@@ -583,10 +583,10 @@ This matrix here flattens the information and returns a 2D vector corresponding 
     \end{bmatrix}
 \]
 
-unfurtunately we are still not happy because while it's true that we have the camera coordinates on the image plane but that would be a continuous hypotetical image plane where we do not have pixels (basically an implementation of the pinhole, but it's not discretized). It's a 2D representation but it's not the one that we want.
+Unfortunately we are still not happy because while it's true that we have the camera coordinates on the image plane but that would be a continuous hypotetical image plane where we do not have pixels (basically an implementation of the pinhole, but it's not discretized). It's a 2D representation but it's not the one that we want.
 
-We need to work again on these transformation moving from the camera to some additional coordinates:
-\textit{(While important the following part till the end of the section is was covered briefly)}
+We need to work again on these transformations moving from the camera to some additional coordinates:
+\textit{(While important the following part till the end of the section was covered briefly)}
 \[
     \begin{bmatrix}
         {}^CP_x \\
@@ -662,7 +662,7 @@ The conversion from mm to pixel consists of a scaling factor related to the real
     \end{bmatrix}
 \]
 
-The minus sign is due to the fact that the origin is usually bottom left but in the image it's top left so we flip the coordinates.
+The minus sign is due to the fact that the origin is usually bottom left but in the image it's top left, so we flip the coordinates.
 
 Overall in order to get the position rows and columns on the image plane we need to go from 3D generic world coordinates to the camera coordinates than we need the intrinsic information of the camera and then we need to discretize the pixels.
 
@@ -696,7 +696,7 @@ At the end the entire iter of transformations that we use to go from the 3D poin
 
 \section{Calibration}
 
-What we did till now was introducing some geometry problems by saying that what we want to do is to find the relationships between different domains: what happens in the real world and what happens on the camera side. During the process of acquisition the relationships between the two domains change through rotations, translations and scaling. To describe them we came up with a \textit{camera matrix} that helps us mapping what happens in the real world with what happens in the camera.
+What we did till now was introducing some geometry problems by saying that what we want to do is to find the relationships between different domains: what happens in the real world and what happens on the camera side. During the process of acquisition the relationships between the two domains change through rotations, translations and scaling. To describe them we came up with a \textit{camera matrix} that helps us to map what happens in the real world with what happens in the camera.
 
 The \(3 \times 4\) camera matrix contains 12 coefficients, 11 of which are unknown, we need to find them in order to map the points in the real world to the image plane. The process of finding these coefficients is called \textbf{calibration}.
 
@@ -707,7 +707,7 @@ It's common to use an object of known geometry (a calibration patter) for which 
 
 \subsection{Calibration Procedure}
 
-As we have seen before, we have the points in the 3D world, we have the matching 2D projections and we can start constructing our equations system.
+As we have seen before, we have the points in the 3D world, we have the matching 2D projections and we can start constructing our' equations system.
 
 
 Given a 3D point \([{}^WP_x {}^WP_y {}^WP_z]\) and its projection \([{}^IP_r {}^IP_c] = [u v]\) for each point in the calibration process we can write the system of equations:
@@ -752,11 +752,11 @@ As usual our goal is to rely on the least square to find the configuration of th
     \label{fig:proj}
 \end{figure}
 
-In an ideal world all the points coming from the real world all the points are being projected on the center of projection, we can trace  the ray through the camera plane and that's it. In the real world we make mistakes, and as shown in Figure \ref{fig:proj} the points are not exactly where we expect them to be, the error is the difference between the expected and the observed points, what we are triyng to do is to minimize this error.
+In an ideal world all the points coming from the real world all the points are being projected in the center of projection, we can trace  the ray through the camera plane and that's it. In the real world we make mistakes, and as shown in Figure \ref{fig:proj} the points are not exactly where we expect them to be, the error is the difference between the expected and the observed points, what we are trying to do is to minimize this error.
 
 \subsection{Computing the 3D position of a point}
 
-Now we are in the situation where we can map points in the real world on the image plane and can get closer to one of our biggest issues: with just a single camera we cannot compute the full 3D coordinates of a point. If we add an additional camera we can have two different systems, at that point we have 4 equations (2 for each camera) and if we know the camera matrixes for each camera we can come up with the 3D position of the point.
+Now we are in the situation where we can map points in the real world on the image plane and can get closer to one of our biggest issues: with just a single camera we cannot compute the full 3D coordinates of a point. If we add an additional camera we can have two different systems, at that point we have 4 equations (2 for each camera) and if we know the camera matrices for each camera we can come up with the 3D position of the point.
 
 Given a generic point \([x, y, z] \) and given two projections \([r_1, c_1]\) and \([r_2, c_2]\) we can write:
 
@@ -803,7 +803,7 @@ Given a generic point \([x, y, z] \) and given two projections \([r_1, c_1]\) an
     \]
 \end{multicols}
 
-To compute and recontruct the 3D posintion of the point we can solve the system of equations and find a solution.
+To compute and reconstruct the 3D position of the point we can solve the system of equations and find a solution.
 
 If we assume we have the projections we know that they are subject to a certain error and that error caused by an approximation of the projection can be seen in the real world as an error in the intersection of the two rays.
 
@@ -819,10 +819,10 @@ Usually what's done is to take the distance between the two lines and use the mi
 
 \section{The Binocular Stereo}
 
-As the name suggests it's basically a system that looks like Figure \ref{fig:inter} where we have two cameras and we try to come up with few equations to model that situation, which by no coincidence is the same system humans are equipped with. It can be scaled up with multiple cameras but the idea is the same as it becomes a pairwise binocular system. The computation of the 3D position of a points usually goes through 2 steps:
+As the name suggests it's basically a system that looks like Figure \ref{fig:inter} where we have two cameras and we try to come up with few equations to model that situation, which by no coincidence is the same system humans are equipped with. It can be scaled up with multiple cameras but the idea is the same as it becomes a pairwise binocular system. The computation of the 3D position of a point usually goes through 2 steps:
 
 \begin{itemize}
-    \item Computation of the correspondencies (main source of error)
+    \item Computation of the correspondencies (main source of error) 
     \item Reconstruction of the 3D position (basically deterministic)
 \end{itemize}
 
@@ -862,7 +862,7 @@ We can rely also on the \textbf{Epipolar Constraint} which tells us that the cor
     \label{fig:stereo}
 \end{figure}
 
-This is a slightly more complex system compared to the coplanar one. We have a Left and a Right camera, both will have their camera coordinates system and we also have to coordinates of the real world. Our objective is to start from a point aviable in the real world , look where the point is being projected in the first and second camera and use the information of this projection to infer the coordinates of \({}^WP\).
+This is a slightly more complex system compared to the coplanar one. We have a Left and a Right camera, both will have their camera coordinates system and we also have to coordinates of the real world. Our objective is to start from a point available in the real world, look where the point is being projected in the first and second camera and use the information of this projection to infer the coordinates of \({}^WP\).
 
 \[
     \begin{bmatrix}
@@ -890,7 +890,7 @@ We need to go through the \textbf{Epipolar Geometry}.
     \label{fig:epipolar}
 \end{figure}
 
-The \textbf{epipolar plane} is what connects the  \({}^WP\) with the two cameras, this plane can be seen as something anchored to axis \(f_L\) and \(f_R\), since they dont move, depending of where the point is in the world what chances in the inclination of the plane. The intersection in between the epipolar plane and the image plane is what we call the \textbf{epipolar lines}. The points \(e\) and \(e'\) are the \textbf{epipoles} and they are the intersection of the epipolar lines with the image plane, they are useful because, for example, as the \({}^WP\) moves along it's projection line on \(f_R\) (basically the ray that goes from \(f_R\) to \({}^WP\)) it's projection on the right image plane will remain the same meanwhile its projection on the left image plane will move exlusively along the epiploar line, so we \textit{know} that we only need to look in that area to find the correspondence. 
+The \textbf{epipolar plane} is what connects the  \({}^WP\) with the two cameras, this plane can be seen as something anchored to axis \(f_L\) and \(f_R\), since they dont move, depending of where the point is in the world what chances in the inclination of the plane. The intersection in between the epipolar plane and the image plane is what we call the \textbf{epipolar lines}. The points \(e\) and \(e'\) are the \textbf{epipoles} and they are the intersection of the epipolar lines with the image plane, they are useful because, for example, as the \({}^WP\) moves along it's projection line on \(f_R\) (basically the ray that goes from \(f_R\) to \({}^WP\)) it's projection on the right image plane will remain the same meanwhile its projection on the left image plane will move exclusively along the epiploar line, so we \textit{know} that we only need to look in that area to find the correspondence. 
 
 \begin{figure}[H]
     \centering
@@ -916,7 +916,7 @@ We have
 
 We know that the point seen from the camera systems will be the result of a some roto-translations of the point in the real world to the coordinate system of the cameras, \(R\) and \(T\) are related to the extrinsic parameters of the cameras.
 
-The only common term between the two last equations is \({}^WP\) so we can sobstitute and get:
+The only common term between the two last equations is \({}^WP\), so we can substitute and get:
 
 \[
     {}^LP = {}^LR{}^RR^{-1}{}^RP-{}^LR{}^RR^{-1}{}^RT+{}^LT
@@ -972,7 +972,7 @@ from which we obtain
 
 \subsection{Esitmation of the 3D position}
 
-Some of the computations are not trivial so we will see the simplified situation where the cameras are parallel and aligned, the mathing problem is always the same: we want to get the coordinates of \({}^WP\) given the two projections on the two image planes.
+Some computations are not trivial so we will see the simplified situation where the cameras are parallel and aligned, the mathing problem is always the same: we want to get the coordinates of \({}^WP\) given the two projections on the two image planes.
 
 \begin{figure}[H]
 \[
@@ -981,7 +981,7 @@ Some of the computations are not trivial so we will see the simplified situation
 \caption{Formula do compute the depth of the point.}
 \end{figure}
 
-It's \textit{strongly} recommended to memorize this formula.
+It's \textit{strongly} recommended memorizing this formula.
 
 \begin{figure}[H]
     \centering
@@ -990,7 +990,7 @@ It's \textit{strongly} recommended to memorize this formula.
     \label{fig:epi_comp}
 \end{figure}
 
-In Figure \ref{fig:epi_comp} it's shown our complanar stereo system with focal length \(f\), \({}^WP\) is the point in the real world, the two projections on image planes are \({}^Lp_x\) and \({}^Rp_x\) and in order to complete to complete the system we need the \({}^LP_x\) and \({}^RP_x\) which are the coordinates of the point with respect to the camera systems. 
+In Figure \ref{fig:epi_comp} it's shown our complanar stereo system with focal length \(f\), \({}^WP\) is the point in the real world, the two projections on image planes are \({}^Lp_x\) and \({}^Rp_x\) and in order to complete the system we need the \({}^LP_x\) and \({}^RP_x\) which are the coordinates of the point with respect to the camera systems. 
 
 We can say that: 
 
@@ -1002,7 +1002,7 @@ We can say that:
 \caption{Projection equations.}
 \label{eq:proj}
 \end{figure}
-Note that we are using \(P_z\) for both because the cameras are parallel and aligned so it's the same, also I can say that:
+Note that we are using \(P_z\) for both because the cameras are parallel and aligned, so it's the same, also I can say that:
 
 \[
     {}^WP_z = {}^LP_z = {}^RP_z
@@ -1014,7 +1014,7 @@ Because I put the origin of the world in the origin of one of the two cameras, t
     {}^LP_x = \frac{{}^Lp_xP_z}{f}    
 \]
 
-If the cameras are distant one from the other by a certain amout \(b\) we can say:
+If the cameras are distant one from the other by a certain amount \(b\) we can say:
 
 \[
     {}^LP_x = b+{}^RP_x
@@ -1083,7 +1083,7 @@ The matching is usually done by looking at the intensity of the pixels, a common
 
 \subsection{Image Normalization}
 
-Unfurtunately the two cameras are not \textit{exactly} the same, and might have small differences in the acquisition in terms of colors, even with an offset of just one or two grayscale values, our metric could become noisy, this why images get \textbf{normalized}
+Unfortunately the two cameras are not \textit{exactly} the same, and might have small differences in the acquisition in terms of colors, even with an offset of just one or two grayscale values, our metric could become noisy, this why images get \textbf{normalized}
 
 
 \begin{multicols}{2}
@@ -1106,7 +1106,7 @@ Compute the window magnitude.
 \hat{I}(x,y) = \frac{I(x,y) - \bar{I}}{\| I - \bar{I} \|_{W(x,y)}}
 \]
 
-Calculate the normalize values, with this normalization we can eliminate the offset between the two images.
+Calculate the normalized values, with this normalization we can eliminate the offset between the two images.
 \end{multicols}
 
 This makes it possible to compute the distance because we now know that what we have on the right side and the left side is the same. Since this normalization makes the windows comparable we can now compute the SAD or the \textbf{Sum of Squared Differences}:
@@ -1118,11 +1118,11 @@ Another metric is called the \textbf{Correlation}, a big error correspons to sma
 \[
 C(d) = \frac{1}{|w-\bar{w}|}\frac{1}{|w'- \bar{w}'|}(w-\bar{w})(w'-\bar{w}')
 \]
-Where \(d\) represents the window shift, \(w\) and \(w'\) are the vectorized windows and \(\bar{w}\) and \(\bar{w}'\) are the averages of the vectorized windows. Besically it's a comparision between vectors where we want to measure the angle between \(w - \bar{w}\) and \(w' - \bar{w}'\).
+Where \(d\) represents the window shift, \(w\) and \(w'\) are the vectorized windows and \(\bar{w}\) and \(\bar{w}'\) are the averages of the vectorized windows. Basically it's a comparision between vectors where we want to measure the angle between \(w - \bar{w}\) and \(w' - \bar{w}'\).
 \[
 C(d) = \sum_{(u,v) \in W(x,y)} [\hat{I}(u,v) \hat{I}(u-d,v)] = w\cdot w' = \cos\theta    
 \]
-In the normalized case, the correlation is maximum if the original brightness of the two windows is shifted by an offset and a scale factor. This means that by the time we compute the correlation with have normalized the vectors (for instance between 0 and 1) and that the correlation is maximum when the angle between the two vectors in 0, \textit{however} it can be that the vecors are in fact, shifted and scaled, while maintaining the same angle. 
+In the normalized case, the correlation is maximum if the original brightness of the two windows is shifted by an offset and a scale factor. This means that by the time we compute the correlation with have normalized the vectors (for instance between 0 and 1) and that the correlation is maximum when the angle between the two vectors in 0, \textit{however} it can be that the vectors are in fact, shifted and scaled, while maintaining the same angle. 
 
 \begin{multicols}{2}
 \[
@@ -1137,11 +1137,11 @@ In the normalized case, the correlation is maximum if the original brightness of
 \end{multicols}
 
 Computing the correlation at each frame for the whole image
-can be expensive, in practice we have windows that overlap so one of the tricks in the implementation is to keep track of the parts of the window that are common between the two windows and update the correlation accordingly. In addition usually the correlation is carreied out taking into account the disparity.
+can be expensive, in practice we have windows that overlap so one of the tricks in the implementation is to keep track of the parts of the window that are common between the two windows and update the correlation accordingly. In addition, usually the correlation is carried out taking into account the disparity.
 
 \subsection{General Stereo Configuration}
 
-Now we want to move from the simplified stereo rig to a better characterization of a general stereo configuration, we still have our two cameras which are observing an object in the real world, we still have our \({}^WP=[{}^WP_x, {}^WP_y,{}^WP_z]\) and then we have two arbitrary cameras positioned somwhere in the real world. Again we want to find the correspondencies between the point \({}^WP\) which is seen by the camera C1 in position \({}^1P\) and by the camera C2 in position \({}^2P\).
+Now we want to move from the simplified stereo rig to a better characterization of a general stereo configuration, we still have our two cameras which are observing an object in the real world, we still have our \({}^WP=[{}^WP_x, {}^WP_y,{}^WP_z]\) and then we have two arbitrary cameras positioned somewhere in the real world. Again we want to find the correspondencies between the point \({}^WP\) which is seen by the camera C1 in position \({}^1P\) and by the camera C2 in position \({}^2P\).
 
 \begin{figure}[H]
     \centering
@@ -1150,7 +1150,7 @@ Now we want to move from the simplified stereo rig to a better characterization 
     \label{fig:duck}
 \end{figure}
 
-We know already theat the two lines in Figure \ref{fig:duck} will never match exactly but we want to find the configuration that minimizes the error.
+We know already that the two lines in Figure \ref{fig:duck} will never match exactly but we want to find the configuration that minimizes the error.
 
 
 What do we need?
@@ -1159,7 +1159,7 @@ What do we need?
 length, we know that this information is embedded in the camera matrix, which defines the relationship between the points in the real world and the image plane.
 \item The same stuff for C2.
 \item The corresponding matchings of \({}^WP\) in the two image planes.
-\item Finally compute the 3D position of \({}^WP\) starting from the positions of \({}^1P\) and \({}^2P\).
+\item Finally, compute the 3D position of \({}^WP\) starting from the positions of \({}^1P\) and \({}^2P\).
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -1170,7 +1170,7 @@ length, we know that this information is embedded in the camera matrix, which de
 
 \subsection{The Foundamental Matrix}
 
-It's the rapresentation of the epipolar geometry in case of two generic views, it's a \(3\times3\) matrix that can map \(p\) into \(p'\) 
+It's the representation of the epipolar geometry in case of two generic views, it's a \(3\times3\) matrix that can map \(p\) into \(p'\) 
 
 \[
     p' {}^TFp=0

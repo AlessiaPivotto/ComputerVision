@@ -63,22 +63,24 @@ Careful consideration must be given to the number of bins used in the histograms
 
 In summary, tracking regions with uniform appearance offers a promising avenue for real-time applications, but it requires robust techniques to address challenges such as variable illumination and color changes over time. 
 Techniques involving region division and histogram analysis can help in achieving accurate and efficient tracking in such scenarios.
-\\\textit{NB: Shadows can be a problem in region-based tracking because are source of noise $\Rightarrow$ false positive. A shadow does not correspond to the motion of a real object, but it is a change in the color of the object. More specifically it's a variation of the luminance while chrominance remains ideally unaltered. To solve this problem, and obtain a proper tracking, shadows should be removed before tracking using a suitable algorithm.}
+\\\textit{NB: Shadows can be a problem in region-based tracking because are source of noise $\Rightarrow$ false positive. A shadow does not correspond to the motion of a real object, but it is a change in the color of the object. 
+More specifically it's a variation of the luminance while chrominance remains ideally unaltered. To solve this problem, and obtain a proper tracking, shadows should be removed before tracking using a suitable algorithm.}
 
 \section{Blobs extraction} 
 An object can be made up by several blobs (\textit{NB:one for the torso, one for head...}), where blobs are aggregations of connected pixels that share common features.
 Talking about features, we can consider also position, so pixel with similar color but far from the object must be discarded.
 The typical application is in combination with a background suppression.
 \subsection{Target association}
-This is a procedure common to all trackers, not only region-based. In general it is worth noting that detection is not carried out on a frame-basis.
+This is a procedure common to all trackers, not only region-based. In general, it is worth noting that detection is not carried out on a frame-basis.
 This could lead to a lot of false positives, and it is computationally expensive.  
-The idea is that once detected, targets are followed on a proximity basis. So, for example, background subtraction informs about the presence of motion, histograms characterize each moving objects, and then, unless occlusion occur, the target in the next frame should be the closest blob.
+The idea is that once detected, targets are followed on a proximity basis. 
+So, for example, background subtraction informs about the presence of motion, histograms characterize each moving objects, and then, unless occlusion occur, the target in the next frame should be the closest blob.
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.7\textwidth]{Figures/Target_association.png}
 \end{figure}
 
-The steps of target association can be sum up as follows:
+The steps of target association can be summed up as follows:
 \begin{itemize}
 \item Overlapping blob (issues with scale $\Rightarrow$ depends on objects size);
 \item Centroid with minimum distance (as above);
@@ -147,7 +149,7 @@ In practice, it highlights corner points and texture.
 
 For what concerns tracking them, we must ensure that the same points are tracked throughout the video sequence. 
 Ideally we would expect that $A_i(Dm-d)=A_{i+1}(m)$, where $A_i, A_{i+1}$ are the successive frames at time $i$ and $i+1$, $m$ is the 2D position of the feature point, $D$ the deformation matrix (affine transformation model) and $d$ is the displacement vector (translation models).
-\\ However, due to noise the equality does usually not hold. In addition, motion across successive frames is assumed to be small $\Rightarrow$ a translational model is a good approximation.
+\\ However, due to noise the equality usually does not hold. In addition, motion across successive frames is assumed to be small $\Rightarrow$ a translational model is a good approximation.
 Feature dissimilarity measure is used to quantify the change of appearance between the first and current frame
 \[
     \varepsilon = \iint_{W} \left(A_i(m-d)-A_{i+1}(m)\right)^2 w(m) \, dm
@@ -166,7 +168,7 @@ and
         \frac{\partial (A_i(m)-A_{i+1}(m))}{\partial y} 
     \end{bmatrix}
 \]
-In this case the solution for the displacement vector can be expressed bu the 2x2 linear system of equations $Zd = e$.
+In this case the solution for the displacement vector can be expressed by the 2x2 linear system of equations $Zd = e$.
 \subsection{The Lucas-Kanade optical flow}
 Substantially is a two-frame differential method for optical flow estimation.
 Consider $u=\left[u_x, u_y\right]$ in frame $I$ and $v=\left[v_x, v_y\right]$ in frame $J$ the goal is to find $d$ that satisfies the equation $v = u + d$ such as $I$ and $J$ are similar(translation model).
