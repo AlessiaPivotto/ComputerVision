@@ -229,9 +229,9 @@ Pixels that significantly differ from the background are classified as foregroun
 \\
 To adapt to changes over time, the background model is continually updated based on new observations. 
 \\
-More formally, we use a learning rate $a$ to weight the contributions.
-\[ B_t=aI_t + (1 -a)B_{t-1}\]
-\\Notice that if $a=0 \Rightarrow$ we have background subtraction (so no update), while if we have $a=1 \Rightarrow$ we obtain frame differencing.
+More formally, we use a learning rate $\alpha$ to weight the contributions.
+\[ B_t=\alpha I_t + (1 -\alpha)B_{t-1}\] 
+\\Notice that if $\alpha =0 \Rightarrow$ we have background subtraction (so no update), while if we have $\alpha =1 \Rightarrow$ we obtain frame differencing.
 \subsection{Gaussian average}
 In Gaussian average background modeling, we conceptualize the background as a Gaussian distribution, characterized by its mean and variance. 
 With each new frame, these parameters are updated to reflect any changes in the scene.
@@ -257,39 +257,34 @@ To improve the Gaussian average we can use a binary operator to update values se
 \]
 \\\textit{NB: only if you know the situation, perturbations of BG are legit.}
 \subsection{Mixture of Gaussians}
+
 With most techniques new objects are sooner or later absorbed in the background. This is because there are changes that appear and disappear faster than the update rate, such as tree leaves, rain, snow, water of a fountain, etc.
 It can be that the same pixel represents at different time' instants tree leaves and sky/building behind.
-The idea is to model the background as a mixture of Gaussians, so using \textbf{K} Gaussian instead of a single one. 
+Unlike single Gaussian models, MoG represents the background as a combination of multiple Gaussians (\textbf{K} Gaussians), allowing better representation of complex scenes. 
 \[
     p(x_t) = \sum_{i=1}^{K} w_{i,t} \mathcal{N}(x_t, \mu_{i,t}, \Sigma_{i,t})
 \]
-Each of them is used to model a foreground or background object. Theoretical model is complex, we have multi-variate Gaussians to model RGB or YUV. In practice, we have that components are independent (matrix is diagonal), and variance of each component is the same (\textit{NB: this means that collapse to $\sigma^2$}).  
-\\Let's take a deeper look\dots
+Each of them is used to model a foreground or background object. Theoretical model is complex, we have multi-variate Gaussians to model RGB or YUV. 
+\\
+Practically, the theoretical complexity is simplified by assuming independence among components and uniform variance across dimensions (\textit{NB: this means that collapse to $\sigma^2$}), leading to a diagonal covariance matrix. 
+\\Let's take a deeper look\dots\\
 $w_[i,t] = $ weight for the current Gaussian, $\mu_{i,t} = $ mean for the current Gaussian, $\Sigma_{i,t} = $ variance for the current Gaussian.
-Select $K$, rank the Gaussians on the basis of weight, Standard deviation and Peak amplitude.
-Hint: the higher the peak and the more compact the distribution (low variance), the more pixel is likely to belong to the background $\Rightarrow$ strong evidence.
-Among the $K$ Gaussians, some belongs to the background and some to the foreground. The first $B$ Gaussians are associated to the BG if $\sum_{i=1}^B w_i > T$.
-Each incoming pixel is checked against the available models. In case no match is found, a new Gaussian is created. If a match is found (Es a match is found in the pixel is within $(x_t - \mu_{i, t})<2.5\sigma$), the model is updated. If the pixel is not matched with any model, the least probable Gaussian is replaced by the new one centered in $x_t$ with low weight and high variance.  
-Also, here update of the weights is necessary: $w_{k,t} = \alpha M_(k,t) + (1-\alpha)w_{k,t-1}$, where $M_(k,t)$ is 1 for the matching model and 0 otherwise (is it's not the matching model, the weight is decreased) and $\alpha$ is still the learning rate. 
-\\
-\\
-With most techniques new objects are sooner or later absorbed in the background. 
-This is because there are changes that appear and disappear faster than the update rate, such as tree leaves, rain, snow, water of a fountain, etc.
-It can be that the same pixel represents at different time' instants tree leaves and sky/building behind.
-\\
-Unlike single Gaussian models, MoG represents the background as a combination of multiple Gaussians (K Gaussians), allowing better representation of complex scenes. 
-Each Gaussian component encapsulates information about both foreground and background elements, with weights $w_[i,t] = $, means $\mu_{i,t} = $, and variances $\Sigma_{i,t} = $ dynamically adjusted with each new frame.
-\\
-Practically, the theoretical complexity is simplified by assuming independence among components and uniform variance across dimensions, leading to a diagonal covariance matrix. 
-This simplification enables efficient computation while retaining the essence of the model.
 \\
 The process involves iteratively updating the model parameters based on incoming pixel observations. 
 Pixels are compared against existing Gaussian models, and if no match is found, a new Gaussian is created. 
 When a match is detected, the corresponding model is updated to reflect the pixel's characteristics.
 \\
-An essential aspect of MoG is the dynamic adaptation of weights, crucial for accurately tracking changes in the scene over time. 
-The update process incorporates a learning rate to balance the influence of new observations with existing model parameters.
+So, select $K$, rank the Gaussians on the basis of weight, Standard deviation and Peak amplitude.
 \\
-In determining the association of Gaussians to either background or foreground, weighting factors  are evaluated against a threshold (TT). 
-Gaussians contributing significantly to the accumulated weight  are considered part of the background model.
+Notice that the higher the peak and the more compact the distribution (low variance), the more pixel is likely to belong to the background $\Rightarrow$ strong evidence.
+Among the $K$ Gaussians, some belongs to the background and some to the foreground. The first $B$ Gaussians are associated to the BG if $\sum_{i=1}^B w_i > T$.
+Each incoming pixel is checked against the available models. In case no match is found, a new Gaussian is created. 
+If a match is found (Es a match is found in the pixel is within $(x_t - \mu_{i, t})<2.5\sigma$), the model is updated. 
+If the pixel is not matched with any model, the least probable Gaussian is replaced by the new one centered in $x_t$ with low weight and high variance.  
+Also, update of the weights is necessary: 
+\[
+    w_{k,t} = \alpha M_(k,t) + (1-\alpha)w_{k,t-1}
+\] 
+where $M_(k,t)$ is 1 for the matching model and 0 otherwise (if it's not the matching model, the weight is decreased). 
 \\
+As you can see, the update process incorporates a learning rate $\alpha$ to balance the influence of new observations with existing model parameters.
