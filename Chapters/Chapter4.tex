@@ -1,16 +1,24 @@
 \chapter{Motion Tracking}
 Just to introduce the topic, we can say that motion tracking is the process of determining the movement of an object in a video sequence. 
-More in general, it regards the understanding of \textit{what} is moving in a scene and \textit{how} it moves/interacts with the environment.
-This is a very important topic in computer vision, and it is used in many applications, such as video surveillance, traffic monitoring, human-computer interaction and biological applications (cell tracking). 
+More in general, it regards the understanding of \textit{what} is moving in a scene and \textit{how} it moves or interacts with the environment.
+
+This is a very important topic in computer vision, and it is used in many applications, such as video surveillance, traffic monitoring, human-computer interaction and biological applications (such as cell tracking). 
 At high level, motion tracking can be used for the discovery of activities, behavior understanding, and detection of threats.
+
 In this chapter, we will discuss the basic concepts of motion tracking, and we will present some of the most common algorithms used in this field.
 
 \section{Object Tracking}
-Object tracking is the process of locating a moving object over time. On the basis of the applications requirements, we can track the 2D coordinates (centroid), track in 3D (more cameras are required), or determine the position of complex objects (human body articulations).
-The main goal of object tracking is to estimate the state of the object at each frame, and to predict its future position.
-The applications of object tracking are numerous, and they include monitoring and surveillance, such as motion classification, identification of anomalous/suspicious behaviors, following a trajectory. 
-Or again, human machine interfaces, such as interacting with a device removing physical barriers (mouse, keyboard), natural language understanding; or even virtual reality, such as immersive presence, animation of virtual characters.
-Even mining and retrieval, such as browsing databases containing specific motion patterns.
+Object tracking is the process of continuously locating a moving object over time. 
+Depending on the application's requirements, tracking can be done in various ways: tracking the 2D coordinates of an object's centroid, tracking in 3D (which requires multiple cameras), or determining the positions of complex objects, such as the articulations of a human body.
+
+The primary goal of object tracking is to estimate the object's state in each frame and predict its future position. 
+This capability has a wide range of applications. In monitoring and surveillance, object tracking can be used for motion classification, identifying anomalous or suspicious behaviors, and following a trajectory.
+
+In human-machine interfaces, it enables interaction with devices without physical barriers like a mouse or keyboard, and aids in natural language understanding. 
+In virtual reality, object tracking contributes to creating immersive experiences and animating virtual characters.
+
+Additionally, object tracking is valuable in mining and retrieval applications, such as browsing databases for specific motion patterns. 
+Overall, object tracking is a versatile technology with numerous practical uses across various fields.
 \\
 Some benefits of object tracking are:
 \begin{itemize}
@@ -57,19 +65,19 @@ If the ratio between the reference and current values is close to 1, it indicate
 
 Histograms serve as a valuable tool in this process. 
 They provide a quantified representation of the color distribution within a region, enabling comparisons between reference and current models. 
-Different similarity measures can be employed for evaluation, such as bin-by-bin comparison: \[\cup (O_i^t, O_i^r) \sum_{n=1}^{U} min \{O_{i,n}^r, O_{i,n}^t\} \]
+\\Different similarity measures can be employed for evaluation, such as bin-by-bin comparison: \[\cup (O_i^t, O_i^r) \sum_{n=1}^{U} min \{O_{i,n}^r, O_{i,n}^t\} \]
 or Sum of Squared Differences (SSD): \[SSD(O_i^t, O_i^r) = \sum_{n=1}^{U} (O_{i,n}^r - O_{i,n}^t)^2 \]
 Careful consideration must be given to the number of bins used in the histograms, striking a balance between granularity and computational efficiency.
 
 In summary, tracking regions with uniform appearance offers a promising avenue for real-time applications, but it requires robust techniques to address challenges such as variable illumination and color changes over time. 
-Techniques involving region division and histogram analysis can help in achieving accurate and efficient tracking in such scenarios.
-\\\textit{NB: Shadows can be a problem in region-based tracking because are source of noise $\Rightarrow$ false positive. A shadow does not correspond to the motion of a real object, but it is a change in the color of the object. 
-More specifically it's a variation of the luminance while chrominance remains ideally unaltered. To solve this problem, and obtain a proper tracking, shadows should be removed before tracking using a suitable algorithm.}
-
+Techniques involving region division and histogram analysis can help achieve accurate and efficient tracking in these scenarios.
+\\\textit{NB: Shadows can be problematic in region-based tracking as they introduce noise, leading to false positives. 
+A shadow does not correspond to the motion of a real object; rather, it represents a change in the object's color, specifically a variation in luminance while chrominance remains ideally unaltered. 
+To ensure proper tracking, shadows should be removed beforehand using a suitable algorithm.}
 \section{Blobs extraction} 
-An object can be made up by several blobs (\textit{NB:one for the torso, one for head...}), where blobs are aggregations of connected pixels that share common features.
-Talking about features, we can consider also position, so pixel with similar color but far from the object must be discarded.
-The typical application is in combination with a background suppression.
+An object can consist of multiple blobs, such as one for the torso and one for the head. Blobs are aggregations of connected pixels that share common features. 
+When considering features, position is also important, so pixels with similar color but located far from the object must be discarded. 
+This approach is typically used in combination with background suppression to enhance object detection and tracking.
 \subsection{Target association}
 This is a procedure common to all trackers, not only region-based. In general, it is worth noting that detection is not carried out on a frame-basis.
 This could lead to a lot of false positives, and it is computationally expensive.  
@@ -92,59 +100,74 @@ The steps of target association can be summed up as follows:
 \textit{NB: When association has been completed, for each object or blob update the appearance model to account for small variations. In presence of occlusions, the last saved model can be used to disambiguate.}
 
 \subsection{Splitting}
-The splitting is a common problem in blob extraction, and it is due to the fact that the object is composed by several blobs. If objects are identified as single blobs, there are no problems. However, background subtraction may return ambiguous results. 
-Indeed, objects can be split into several small blobs, so this means that there is not enough separation between BG and FG. Or again, two objects can enter the scene together and then separate.
+Splitting is a common problem in blob extraction because an object can be made up of several blobs. 
+If each object is identified as a single blob, there are no issues. 
+However, background subtraction can give confusing results. 
+Objects might be broken into several small blobs, meaning there isn't a clear separation between background and foreground. 
+Similarly, two objects might enter the scene together and then separate.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.7\textwidth]{Figures/Splitting.png}
-\end{figure}
-
-It is important to accumulate evidence before saying if it is case 1 or 2. It's impossible to understand what's going on immediately, so it is necessary a temporal interval to tell if the object merged even though it's fragmented or if it's two objects that are close to each other.
-
+\end{figure}\\
+To figure out what's happening, it's important to gather more information over time. 
+It's impossible to understand right away whether it's a single object that looks fragmented or two objects close together. 
+Therefore, we need to observe for a while to decide if the blobs belong to one object or two separate ones.
 \section{Merging}
-\begin{wrapfigure}{r}{0.4\textwidth}
+\begin{wrapfigure}[4]{r}{0.4\textwidth}
     \centering
     \includegraphics[width=0.25\textwidth]{Figures/Merging.png}
 \end{wrapfigure}
 Merging is the opposite of splitting, and it is due to the fact that two objects are identified as a single blob. This can happen when two objects are close to each other and move together consistently (then perhaps they're the same object).
 An example can be when a person’s arm and foot enter the scene first and are detected as two well-separated FG blobs. 
-Then also the rest of the body enters and a single blob is created. 
+Then also the rest of the body enters, and a single blob is created. 
 
 \subsection{Criteria for splitting and merging}
-Observation is the key. We need to monitor the regions of interest and evaluate consistency in terms of:
-\begin{itemize}
-    \item Direction of motion;
-    \item Distance between centroids/bounding boxes;
-    \item Temporal range in which the phenomenon is observed;
-    \item Velocity;
-    \item Matching in features.
-\end{itemize}
+Observation is crucial in determining whether regions should be split or merged. 
+To make accurate decisions, we need to monitor regions of interest and evaluate their consistency based on several factors. 
+Consistent direction of motion can indicate that multiple regions belong to the same object, while the distance between centroids or bounding boxes helps to identify whether regions are part of the same object based on their proximity. 
+By observing the temporal range, we can determine if regions consistently behave as a single entity over time. 
+Additionally, regions moving at similar speeds are likely part of the same object, and feature matching (comparing characteristics like color, texture, or shape) further aids in deciding whether regions should be considered as one object. 
+Evaluating these criteria ensures more accurate tracking and identification of objects.
 
 \section{Occlusion}
 Occlusion is an anomalous, but very frequent, situation in tracking, and it occurs when moving objects overlap.
-Consequently, one or more objects disappear from the scene and bigger blobs appear as a result of the occlusion, with properties that don't belong to any of the models acquired previously, so the acquisition models are not reliable anymore.\textit{NB: Model update should be avoided during occlusions.}
-In order to solve this problem, we need to re-associate "A to A" and "B to B" (where A and B are the objects that are occluded). \textit{NB: Histograms are a good way out.}
+Consequently, one or more objects disappear from the scene and bigger blobs appear as a result of the occlusion, with properties that don't belong to any of the models acquired previously, so the acquisition models are not reliable anymore.
+\\\textit{NB: Model update should be avoided during occlusions.}
+
+In order to solve this problem, we need to re-associate "A to A" and "B to B" (where A and B are the objects that are occluded). 
+\\\textit{NB: Histograms are a good way out.}
 
 \section{Tracking: Feature-based}
 The objective is to retrieve the motion information of a set of features (such as points, corners, edges\dots) in the image.
 \\Considering
 \[A = \{A(0), A(1), A(2), \dots, A(j-1)\}\] as a set of images and
 \[m_i(x_i, y_i)i = [0, j-1] \] the position of the feature in the image plane in each frame.
+
+\begin{wrapfigure}[4]{r}{0.2\textwidth}
+    \includegraphics[scale=0.3]{Figures/Tracking.png}
+\end{wrapfigure}
 The objective is to determine the displacement vector \[d_i = (dx_i, dy_i)\] that best estimates the position of the feature in the next frame \[m_{i+1}(x_{i+1}, y_{i+1}) = m_i + d_i\]
+
 If needed, points can be grouped and objects can be represented using the bounding box or the convex hull.
-\\TODO: inserire immaginina maybe
-\\The question now is how to choose a good feature point that must has distinctive characteristic such as brightness, contrast, texture, edges, corners or point with high curvature.
+
+The question now is how to choose a good feature point that must has distinctive characteristic such as brightness, contrast, texture, edges, corners or point with high curvature.
 \\The main idea is that for each candidate point, we compute: 
-\\TODO: inserisci matrice
+\[
+    Z = \begin{bmatrix}
+        \sum_{W}^{}J_x^2 & \sum_{W}^{}J_xJ_y \\
+        \\
+        \sum_{W}^{}J_xJ_y & \sum_{W}^{}J_y^2
+    \end{bmatrix}
+\]
 \\Where $J_x$ and $J_y$ are the gradients evaluated on the point in $x$ and $y$ direction within $W$ ($nxn$ window). 
 A good feature point is the one that maximizes the function, so the point where the smallest eigenvalue of $Z$ is larger than a specific threshold.
 In practice, it highlights corner points and texture.
-\\To sum up a little bit the important things:
+\\In summary, it's important to consider the following key points when analyzing eigenvalues:
 \begin{itemize}
-    \item Eigenvalues should be above the image noise;
-    \item Small eigenvalues imply strong similarity within the window;
-    \item A large and a small eigenvalue means unidirectional patterns;
-    \item If both eigenvalues are large, the point is of high interest (salt\&pepper texture, corners).
+    \item Eigenvalues should surpass the image noise level to ensure reliable information.
+    \item Small eigenvalues indicate strong similarity within the analyzed window.
+    \item Presence of one large and one small eigenvalue suggests unidirectional patterns in the image.
+    \item Points with two large eigenvalues are of high interest, indicating features like salt and pepper texture or corners.
 \end{itemize}
 
 For what concerns tracking them, we must ensure that the same points are tracked throughout the video sequence. 
