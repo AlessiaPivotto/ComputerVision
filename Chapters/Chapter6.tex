@@ -1,13 +1,13 @@
 \chapter{Local Feature Extraction}
 In this chapter we will provide you a couple of additional feature sets that are commonly used in computer vision applications.
 More specifically, we are talking about the local features extraction modules. 
-First of all, we define it \textit{local} because the features points are extracted not at an object level, but from little patches. 
+First, we define it \textit{local} because the features points are extracted not at an object level, but from little patches. 
 So we are not considering the whole object, but only a small part of it that can help to characterize the object itself such as intensity and direction of edges.
 \\
 In particular, we will focus on two different algorithms: HOG and SIFT.
 \section{HOG}
 The first algorithm we are going to introduce is the Histogram of Oriented Gradients.
-We already know that gradient is what characterizes the edges of an image, where the edge means that we are dealing with the transition from a grey level to another one.
+We already know that gradient is what characterizes the edges of an image, where the edge means that we are dealing with the transition from a gray level to another one.
 In the Histogram of Oriented Gradients we can easily recognize the object in the image by looking at the vectors. The stronger the gradient, the brighter the arrow will be.
 While where the edges are weaker the arrow will be less intense.
 So basically, what we are doing inside the picture is to divide it into small patches and look at the gradient of each pixel in the patch.
@@ -17,7 +17,7 @@ At the end of the process we can construct a descriptor which can be used by nex
 First of all, we need to divide the image into a number of rectangular or radial cells of arbitrary size.
 \textit{NB: It's good practice to have only one main edge component inside a cell.} Then, for each pixel in the cell we compute the orientation of edges(\textit{Take a pixel, take his neighbor and see if there is an edge or not}).
 This means that each pixel can cast a weighted vote for an orientation histogram based on the values found in the gradient computation.
-In other words, each cell is represented through a 1D array (that corresponds to a single bin of the histogram) of gradient directions casted on the magnitude.
+In other words, each cell is represented through a 1D array (that corresponds to a single bin of the histogram) of gradient directions casting on the magnitude.
 In addition, intensity is locally normalized in the RGB or LAB color space using L1 or L2-norm, to account for illumination changes and shadowing especially when using larger areas (blocks), consisting of more cells.
 \\Just to wrap up, let's take a look to the pipeline:
 \begin{figure}[h]
@@ -27,11 +27,11 @@ In addition, intensity is locally normalized in the RGB or LAB color space using
 \\It basically consists of taking the input image, computing the gradients and then the voting for each pixel, applying some additional normalization and finally getting the descriptor.
 But what does it mean having a descriptor? It means that, for an object, we have a full description of its shape, a concatenation of all the cells, where each cell represents the gradient information within a small patch of the image.
 \\\textit{NB: I decide to skip all the configuration and the performance part (performance depends on configuration), but there is an important thing that I want to mention. The algorithm takes blocks that overlaps, this helps to have a smooth transition of the information across different blocks.}
-As final notes, just an advice for obtain the best performance: we suggest you to use overlapping blocks with a relatively high number of orientation bins and a moderate block size.
+As final notes, just advice for obtain the best performance: we suggest you to use overlapping blocks with a relatively high number of orientation bins and a moderate block size.
 \subsection{The problem of scale}
 The problem of scale is a common issue even in current classifiers. The fact is that in video the pedestrian can be detected at different sizes.
 This can be due to the spacial resolution of the camera, the distance from the object and even the object itself.
-So, how can we solve this problem? A possible solution is to use a multi-scale approach. This means that we need to resize the window at different scales and then apply the algorithm on all different sizes.
+So, how can we solve this problem? A possible solution is to use a multiscale approach. This means that we need to resize the window at different scales and then apply the algorithm on all different sizes.
 \subsection{Feature compression}
 TODO: da finire\\\\
 The last thing we want to mention is the feature compression. The descriptor can be very large, so we need to compress it in order to reduce the computational cost for delivering.
@@ -69,7 +69,7 @@ More generally, we are trying to highlight what survives subtraction after subtr
 \\To grab the most salient points from the DOGs, each pixel from a given DOG is compared to its 26 neighbors (8 in the same scale, 9 above and 9 below).
 A pixel is kept as a key-point only if it is greater (maximum) or smaller (minimum) than its neighbors.
 \\However, the selection of the points might be noisy, so we can apply the derivative set to $0$. 
-Through this derivative we can obtain the maximum and minimum and construct an Hessian matrix $H$.
+Through this derivative we can obtain the maximum and minimum and construct a Hessian matrix $H$.
 The Hessian matrix is the one that told us if the point that we have found are actually good or not.
 Having it we can construct the trace and the determinant of the matrix to define a threshold.
 \[

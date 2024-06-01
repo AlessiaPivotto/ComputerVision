@@ -18,11 +18,11 @@ The first element that we need to understand is actually what is a class.
 In a general representation a class is nothing but a set of properties, which can consist in colors, textures, patterns \dots
 \\\textit{NB: Objects or some parts of objects can be overall represented under the same umbrella over class.}
 \\
-A class is typically made up of a set of descriptions provided by observing a large number of examples and classes contain items that share similar properties
+A class is typically made up of a set of descriptions provided by observing numerous examples and classes contain items that share similar properties
 Basically, goal of a classifier is to take an object as input and to output the class label it belongs to.
 So, we typically start from an input image and it can be taken as a whole or it can be segmented in advance. 
 For example, if we want to detect the pedestrians in a scene, it could be an option to run a detector in a way that I can isolate the portion of the screen where things are moving, and I'm expecting that pedestrian are moving.
-So I can isolate some segment, so areas, which are potentially good for being a pedestrian (just a simplify example).
+So I can isolate some segment, so areas, which are potentially good for being a pedestrian (just a simple example).
 Or again, I can do a segmentation of the picture filtering out the colors that do not mach the range of color of the skin.
 To sum up, segmentation is an option, a step that can be conducted and otherwise I'm proceeding with one of the most relevant steps in the classification, which is the extraction of features.
 \\
@@ -31,7 +31,7 @@ Basically we compare the picture vector with the feature vector that I used for 
 So I feed this information into the machine that will start reasoning about what it sees as an input and in the end it would return an output.
 But here we are doing a process called recognition, which is an additional step forward to the detection.
 \section{The classification process}
-Just to wrap up a little bit, The classification process can be summarize in 4 steps:
+Just to wrap up a little bit, The classification process can be summarized in 4 steps:
 \begin{itemize}
     \item Segment the image if necessary;
     \item Extract the features;
@@ -41,8 +41,8 @@ Just to wrap up a little bit, The classification process can be summarize in 4 s
 In order to make the concept simple let's take as example children. They learn new things by examples, so, to distinguish a dog from a cat they rely on observing samples of these two animals. 
 We realize they have learned the concept by the time they see a new sample and they’re able to recognize it.
 Basically, teaching a computer works the same way.
-Without entering in the realm of NN, let's take a generic recognition system. It requires a high number of examples in order to be able to distinguish across different classes.
-Indeed, the creation of a dataset is the most tough job, moreover the dataset need to be annotated (labelled).
+Without entering the realm of NN, let's take a generic recognition system. It requires a high number of examples in order to be able to distinguish across different classes.
+Indeed, the creation of a dataset is the tougher job, moreover the dataset need to be annotated (labelled).
 \subsection{Subject to failure}
 Machines may take days or weeks in order to learn concepts. However, they still tend to fail because of lack of data, wrong annotations, occlusions, perspective, similarity among classes \dots
 Systems typically are not able to generalize, so for example, you have classifiers that are mounted on cars which are very robust in detecting cars, but only from a precise perspective.
@@ -51,15 +51,15 @@ But what is the pipeline overall over classifier?
     \centering
     \includegraphics[scale=0.6]{Figures/PipelineClassifier.png}
 \end{figure}
-So basically, once the model is trained and has found the boundary that separates the two classes, if we put a cat image it falls on the right part, while if it is a dog one it falls on the left area. But if th points fall around the line it can be that we are making mistakes.
+So basically, once the model is trained and has found the boundary that separates the two classes, if we put a cat image it falls on the right part, while if it is a dog one it falls on the left area. But if the points fall around the line it can be that we are making mistakes.
 In this case we would reduce the performance of our classifier. From this we obtain that one of the simplest problems in classification is regression.
 \section{Regression}
 To explain it we take an example as a use case. We are trying to predict the share price of a company that is about to go public.
 So, if we want to go public, what is the expected price? We need to have some examples in order to determine what is the shape, the inclination of this line in terms of slope and intercept.
 And we're doing it by looking at other companies similar to ours, at their revenue and the corresponding share price(features).
 In this way we create the training set that will be useful for us to define the parameters of the line,
-By looking at the line we have we could try to predict a new pair of coordinates and then compare with the real point. This process is the simplify version of the creation of a loss function.
-Meaning that we are trying through this loss function to understand how close we grt to our ground truth.
+By looking at the line we have we could try to predict a new pair of coordinates and then compare with the real point. This process is the simplified version of the creation of a loss function.
+Meaning that we are trying through this loss function to understand how close we are to our ground truth.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4]{Figures/Regression.png}
@@ -84,7 +84,7 @@ It tends to not have very sharp boundaries and the function which is typically u
 Very quickly, we are moving into the probabilistic domain, in which we say that $f_i(X)$ estimates $P(Y=i|X)$, where $Y$ is a class (finite integer) and the loss function is the negative conditional log-likelihood.
 Of course we have the constraint that the entire sum of all these functions are mapped with one. \[f_Y(X)>= 0\] \[\sum_{i}^{}f_i(X)=1\] 
 Another way for multi class classification is in the world of unsupervised learning, we are talking about clustering. In this case we do not provide any prior knowledge to the classifier about the input data.
-We feed samples into the algorithm and he progressively adjust the positioning of the different clusters and associates the different input in blind. Basically, through clustering the space is partitioned in regions centered around a prototype (centroid).
+We feed samples into the algorithm and it progressively adjusts the positioning of the different clusters and associates the different input in blind. Basically, through clustering the space is partitioned in regions centered around a prototype (centroid).
 \\
 As an output you may have correct or incorrect detection, in a binary classification problem you can have True positive (hit), True negative, False positive or False negative (miss).
 \\
@@ -95,7 +95,7 @@ The ROC (Receiver Operating Characteristic) curve is a plot of the True Positive
     \centering
     \includegraphics[scale=0.5]{Figures/ROC.png}
 \end{figure}
-We basically would like to have something which stays above the coin flip. More precisely we want something that minimize as much as possible the contributions along the x axes and instead maximizes the contributions on the TPR axes.
+We basically would like to have something which stays above the coin flip. More precisely we want something that minimize as much as possible the contributions along the x axes and instead maximizes the contributions to the TPR axes.
 \\(\textit{NB: If the performance is on the line or under you better use a coin to classify.})
 Given TRP and FPR we can define other two basic parameters which are the precision and the recall.
 \\Precision: $TP/(TP+FP) = hit/(all retrieved) \Rightarrow$ probability that a randomly selected elements is relevant.
@@ -119,7 +119,7 @@ It is an intermediate representation of the image in which we are defining a sin
 \begin{wrapfigure}{l}{0.5\textwidth}
     \includegraphics[width=0.5\linewidth]{Figures/IntegralImage.png}
 \end{wrapfigure}
-So, for example, if we want to compute the integral image at the black point, we just need to dum up the contribution of the pixels in the red area.
+So, for example, if we want to compute the integral image at the black point, we just need to dump up the contribution of the pixels in the red area.
 \\This makes the computation faster, if we start scanning the image from the top left corner and we go to the bottom right corner, we can compute the integral image in a single pass.
 At any shift we can rely on the previous summation, add the last contribution and so on and so forth.
 \\Remember that we are evaluating binary features, so we are looking at the difference between the sum of the pixels in the white area and the sum of the pixels in the black area.
@@ -146,7 +146,7 @@ where $s$ is the cumulative row sum.
 \\I can basically rely on what has been computed up to the previous role and then add the last contribution.
 \\
 \\
-Now we go into the detail of the classifier. In literature we have a lot of different classification algorithms. We have deep networks which are the most popular nowadays, but there is a time when there were other algorithms which are still fine.
+Now we go into the detail of the classifier. In literature, we have a lot of different classification algorithms. We have deep networks which are the most popular nowadays, but there is a time when there were other algorithms which are still fine.
 Usually the most popular algorithms are:
 \begin{itemize}
     \item SVM (Support Vector Machine);
@@ -192,7 +192,7 @@ in cascade, further reducing the computational complexity;
 \end{itemize}
 Remember that in face detection, basic features can be used to exclude non-faces.
 The output of the first classifier is used to trigger the second one and at each stage the negatives are rejected.
-Let's make an example, if we have a face detector and we have a face in the image, the first classifier will check if he can find a symmetry in between the left and right part of the window, if it doesn't find it, it means that at least we have not a frontal face. Then it discards all the windows that he checked so that the second classifier will not waste time on them and has less tasks to perform.
+Let's make an example, if we have a face detector, and we have a face in the image, the first classifier will check if he can find a symmetry in between the left and right part of the window, if it doesn't find it, it means that at least we have not a frontal face. Then it discards all the windows that he checked so that the second classifier will not waste time on them and has fewer tasks to perform.
 \begin{itemize}
     \item In the cascade, binary features are evaluated on training images of equal size (24x24pix);
     \item During the training stage, the boundaries of the classifiers are learned;
