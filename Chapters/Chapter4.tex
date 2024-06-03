@@ -300,39 +300,84 @@ Overall the displacement becomes:
 
 
 \subsection{Bayesian tracking}
-The basic idea is to estimate the state of a system over discrete time steps.
-At each step, we compute noisy measurements of the state and use them to update our estimate.
-The state of the system is represented by the x-y coordinates, velocity and acceleration along each dimension(6D vector).
-Important thing is that noise is typically smaller than the information about the state.
-The state can be defined as \[x_k = f_k(x_{k-1} + w_{k-1})\]
-Linking the measurement with the state vector we have \[z_k = h_k x_k + v_k\]
-where $w_k$ is the process noise, $v_k$ is the measurement noise, $f_k$ and $z_k$ are in general nonlinear functions defined in the state space.
-System and measurement should be available in probabilistic form.
-Every time the measurement is available, the estimation can be computed.
-It is an online method $\Rightarrow$ for every step k an estimate can be computed based on the
-previous observations $z_k$ up to instant $k$.
-The initial probability distribution of the state vector is given $\Rightarrow$ $p(x_0|z_0)$.
-$z_0$ contains no measurement information, so it is the prior distribution.
-The goal is to compute the posterior distribution $p(x_k|z_k)$ at time $k$.
-The process consists of two steps:
+
+The approaches seen so far were based on the assumption we were computing some sort of distance that would give us the chance to find again the point of interest within a certain neighborhood, we will now see an extension of this approach, by giving it a probabilistic twist.
+
+We are considering the tracking problem as a process in which we are making \textbf{estimations} about the position of the object given a certain evidence that we are collecting over time. We represent the state of a system in terms of $x$ and $y$ coordinates but not only, we also take into account the \textit{velocity} and the \textit{acceleration} of the object along both dimension.
+
+The point in this image plane will have a 6D state vector that will describe the state of our system at a given time instant. We expect and take into account noise, but we assume that it's smaller than the amount of information about the state.
+
+\[
+    x_k = f_k(x_{k-1}, w_{k-1})
+\]
+
+The state $x$ at time $k$ can be seen as a function that depends on the previous state of the system plus some noise $w$ that we need to consider making a proper analysis. The process noise is whatever cannot be controlled directly and \textit{just happens}.
+
+\[
+    z_k = h_k x_k + v_k
+\]
+
+In order to make the prediction it's not enough to just rely on the initial position of the subject and just propagate this information about the speed, because there's noise. In Bayesian Tracking when necessary we take a \textit{measurement} trying to confirm our hypotesis. Our measurement $z_k$ is the result of a funtion $h_k$ which takes into account the state of the system plus some measurement noise $v_k$ (may be due to discrete pixels, ambiguous shape etc...).
+\\
+\\
+We can now construct a model in a way that we can start from a prediction, take a measurement "on the ground" and, similarly to Lukas-Kanade, check if the measurement is in line with the prediction, if not we can correct the measurement, the correction that we take (the measurement of the displacement between prediction and measurement) will guide us in the next step.
+\\
+\\
+We are working \textit{online}, using an observation to perform an estimate. More formally we can say that the initial PDF of the state of the system should be given, we should know \textit{at least} the objects that we are going to track, once we know what we are looking for we can take as initial starting point the initial probability $p(x_0|z_0)$ where at the beginning $z_0$ contains no measurements. Our goal is,  for every time step $k$, to compute $p(x_k|z_k)$, the probability of the state of the system given the measurements we have taken up to that time instant.
+
+
+We have said that:
+\[
+    x_k = f_k(x_{k-1}, w_{k-1}) \rightarrow p(x_k|x_{k-1})
+\]
+\[
+    z_k = h_k(x_k, v_k) \rightarrow p(z_k|x_k)
+\]
+
+Considering these two quantities we can create a model for the estimation of the state of the system that consists of these formulations:
+
+\[
+    p(x_k|z_{k-1}) = \int p(x_k|x_{k-1})p(x_{k-1}|z_{k-1})dx_{k-1}
+\]
+
+\begin{multicols}{3}
+    Prior at time step k\\
+    Sysyem model\\
+    Posterior pdf at k-1
+\end{multicols}
+
+We want to create a prior $p(x_k|z_{k-1})$ meaning that I have taken a measurement in the previous step, this measurement relates to that state of the system $k-1$, and thanks to this measurement I can create a \textit{prior}, I can project this measurement ahead in time to give me the new state $x_k$.
+
+\textit{TODO: mica l'ho capita bene sta roba di propagare in avanti la posterior}
+And how is this computed? I can use some posterior information, which is the correction of our $k-1$ prediction given the measurement, this corrected piece of information is propagated forward through our \textbf{system model} $p(x_k|x_{k-1})$ which tells me how to go from $x_{k-1}$ to $x_k$. 
+
+Using the Bayes theorem it is possible to obtain the desired pdf:
+
+\[
+    p(x_k|z_k) = \frac{p(z_k|x_k)p(x_k|z_{k-1})}{p(z_k|z_{k-1})}
+\]
+
+Where $p(z_k|z_{k-1})$ is used for normalization and computed as
+
+\[
+    p(z_k|z_{k-1}) = \int p(z_k|x_k)p(x_k|z_{k-1})dx_k
+\]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Figures/bayes.png}
+    \caption{Bayesian tracking toy example.}
+    \label{img:bayes}
+\end{figure}
+
+In the toy example \ref{img:bayes} the person is equipped with a "door sensing device" and we assume constant speed. 
+
+
 \begin{itemize}
-    \item Prediction: $p(x_k|z_{k-1})$ is computed;
-    \item Update: $p(x_k|z_k)$ is computed.
+
+\item $(a)$ We can see how at the very beginning we have no idea where the person is, so our estimation about the position of the person is that it's anywhere in the area.
+\item $(b)$ What happens next is that the guy approaches a door we get a signal, but we only have that information, the person could be at any of the three positions, so our $p(z|x)$, the probability of a measurement given a state of the system, raises 3 peaks in correspondence of the three possible positions of the person, the doors. This becomes out a posteriori information which is something that we are storing and we need to propagate ahead  in time.
+\item $(c)$ We can propagate the a posteriori information ahead in time using the system model, in this case, the constant speed model, and we can see that the peaks are moving to the right, this is the prediction of the system. We also know that the uncertainty is increasing, this is due to the noise, for this reason the peaks are getting wider.
+\item $(d)$ At this point the door sensing device starts ringing again, meaning the guy has reached one of the other 3 doors. We don't know which one but given our model propagated in time, we can construct a new a posteriori taking into account $Bel^{-}(x_1)$ and the new measurement $p(z|x)$ and, while we still have some components due to noise, we are quite sure that the guy is at the second door.
+\item $(e)$ As we progress over time, we propagate the information, the uncertainty increases until at some point we get a new measurement.
 \end{itemize}
-Let's consider the prediction step\dots\\
-From the previous representation we have \[p(x_k|z_{k-1}) = \int p(x_k|x_{k-1})p(x_{k-1}|z_{k-1})dx_{k-1}\]
-This means that the posterior distribution at time $k-1$ is used to compute the prior distribution at time $k$, so it is propagated forward in time using the system model.
-\\Using the Bayes theorem, it is possible to obtain the desired distribution \[p(x_k|z_k) = \frac{p(z_k|x_k)p(x_k|z_{k-1})}{p(z_k|z_{k-1})}\]
-where $p(z_k|x_k)$ is the likelihood function, $p(x_k|z_{k-1})$ is the prior distribution and $p(z_k|z_{k-1})$ is the evidence and is used for normalization and computed as \[p(z_k|z_{k-1}) = \int p(z_k|x_k)p(x_k|z_{k-1})dx_k\]
-\subsection{Bayesian traking- toy example}
-TODO- tutto
-\\section{Kalman filter}
-The Kalman filter is a recursive algorithm that estimates the state of a linear dynamic system from a series of noisy measurements.
-In a nutshell we can say the following things:
-\begin{itemize}
-    \item It is in line with the Bayesian tracking;
-    \item It take a measurement;
-    \item The measurement is subject to error;
-    \item Derive the state of the system from the measurement.
-\end{itemize}
-We start from 
