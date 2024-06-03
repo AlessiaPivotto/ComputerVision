@@ -32,9 +32,9 @@ Some benefits of object tracking are:
 Sometimes it is enough to track the object in 2D, for example when the object is moving on a plane.
 Exists different approaches to 2D tracking:
 \begin{itemize}
-\item \textbf{Region-based} $\Rightarrow$ set of pixels that share similar features (color);
+\item \textbf{Region-based} $\Rightarrow$ set of pixels that share similar features (color). This does not work very well with multiple objects moving at the same times, on top of that it's computationally intensive;
 \item \textbf{Contour-based} $\Rightarrow$ determine position and shape of an object over time. Useful to track deformable objects;
-\item \textbf{Feature-based} $\Rightarrow$ select meaningful points (contours, corners);
+\item \textbf{Feature-based} $\Rightarrow$ select meaningful points (contours, corners). Very common and effective method, relevant points are selected and tracked over time;
 \item \textbf{Template-based} $\Rightarrow$ use specific models (hands, faces, eyes).
 \end{itemize}
 
@@ -59,23 +59,39 @@ Color variations over time due to changes in illumination or object posture pose
 Additionally, models of tracked objects need continual updates to adapt to evolving conditions.
 
 One conceivable approach to tackle these challenges involves breaking down the object into smaller regions. 
-Each region is then associated with a color vector or histogram, representing the average color values within that region. 
+Each region is then associated with a \textit{color vector} or histogram, representing the average color values within that region. 
 During tracking, the color of each region is computed, and the similarity to a reference model is assessed. 
 If the ratio between the reference and current values is close to 1, it indicates a good match.
 
 Histograms serve as a valuable tool in this process. 
 They provide a quantified representation of the color distribution within a region, enabling comparisons between reference and current models. 
-\\Different similarity measures can be employed for evaluation, such as bin-by-bin comparison: \[\cup (O_i^t, O_i^r) \sum_{n=1}^{U} min \{O_{i,n}^r, O_{i,n}^t\} \]
-or Sum of Squared Differences (SSD): \[SSD(O_i^t, O_i^r) = \sum_{n=1}^{U} (O_{i,n}^r - O_{i,n}^t)^2 \]
-Careful consideration must be given to the number of bins used in the histograms, striking a balance between granularity and computational efficiency.
+\\Different similarity measures can be employed for evaluation, such as bin-by-bin comparison: 
+\[
+    \bigcap (O_i^t, O_i^r) = \sum_{n=1}^{U} min \{O_{i,n}^r, O_{i,n}^t\} 
+\]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Figures/bins.jpg}
+    \caption{For all the bins of each object we compute the \\intersection (blue), one that
+    yields the highest value is the best match.}
+    \label{fig:bins}
+\end{figure}
+
+or Sum of Squared Differences (SSD), so instead of computing the correlation between the two histograms, we compute the difference between the two histograms, the error: 
+\[ 
+    SSD(O_i^t, O_i^r) = \sum_{n=1}^{U} (O_{i,n}^r - O_{i,n}^t)^2 
+\]
+Careful consideration must be given to the number of bins used in the histograms, striking a balance between granularity and computational efficiency. A smaller number of bins may also lead to better generalization, as it reduces the impact of noise.
 
 In summary, tracking regions with uniform appearance offers a promising avenue for real-time applications, but it requires robust techniques to address challenges such as variable illumination and color changes over time. 
 Techniques involving region division and histogram analysis can help achieve accurate and efficient tracking in these scenarios.
 \\\textit{NB: Shadows can be problematic in region-based tracking as they introduce noise, leading to false positives. 
-A shadow does not correspond to the motion of a real object; rather, it represents a change in the object's color, specifically a variation in luminance while chrominance remains ideally unaltered. 
+A shadow does not correspond directly to the motion of a real object; rather, if we are lucky enough, it represents a change in the object's color, specifically a variation in luminance while chrominance remains ideally unaltered. 
 To ensure proper tracking, shadows should be removed beforehand using a suitable algorithm.}
+
 \section{Blobs extraction} 
-An object can consist of multiple blobs, such as one for the torso and one for the head. Blobs are aggregations of connected pixels that share common features. 
+An object can consist of multiple blobs, such as one for the torso and one for the head, disjoint one from the other. Blobs are aggregations of connected pixels that share common features. 
 When considering features, position is also important, so pixels with similar color but located far from the object must be discarded. 
 This approach is typically used in combination with background suppression to enhance object detection and tracking.
 \subsection{Target association}
@@ -113,7 +129,7 @@ To figure out what's happening, it's important to gather more information over t
 It's impossible to understand right away whether it's a single object that looks fragmented or two objects close together. 
 Therefore, we need to observe for a while to decide if the blobs belong to one object or two separate ones.
 \section{Merging}
-\begin{wrapfigure}[4]{r}{0.4\textwidth}
+\begin{wrapfigure}{r}{0.4\textwidth}
     \centering
     \includegraphics[width=0.25\textwidth]{Figures/Merging.png}
 \end{wrapfigure}
