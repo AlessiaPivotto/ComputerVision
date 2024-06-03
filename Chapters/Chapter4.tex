@@ -154,31 +154,46 @@ In order to solve this problem, we need to re-associate "A to A" and "B to B" (w
 \\\textit{NB: Histograms are a good way out.}
 
 \section{Tracking: Feature-based}
-The objective is to retrieve the motion information of a set of features (such as points, corners, edges\dots) in the image.
-\\Considering
-\[A = \{A(0), A(1), A(2), \dots, A(j-1)\}\] as a set of images and
-\[m_i(x_i, y_i)i = [0, j-1] \] the position of the feature in the image plane in each frame.
 
-\begin{wrapfigure}[4]{r}{0.2\textwidth}
+Histograms are just one way to track objects, we also mentioned other methodologies, such as feature-based tracking. The objective is to retrieve the motion information from sets of features (such as points, corners, edges\dots) in local areas of the image.
+\\Considering
+\[
+    A = \{A(0), A(1), A(2), \dots, A(j-1)\}
+\] 
+as a set of images and
+\[
+    m_i(x_i, y_i)\;\;i = [0, j-1] 
+\] 
+the position of the feature in the image plane in each frame.
+
+\begin{wrapfigure}{r}{0.2\textwidth}
     \includegraphics[scale=0.3]{Figures/Tracking.png}
 \end{wrapfigure}
-The objective is to determine the displacement vector \[d_i = (dx_i, dy_i)\] that best estimates the position of the feature in the next frame \[m_{i+1}(x_{i+1}, y_{i+1}) = m_i + d_i\]
+The objective is to determine the displacement vector 
+\[
+    d_i = (dx_i, dy_i)
+\] 
+that best estimates the position of the feature in the next frame 
+\[
+    m_{i+1}(x_{i+1}, y_{i+1}) = m_i + d_i
+\]
 
-If needed, points can be grouped and objects can be represented using the bounding box or the convex hull.
+We'd like to get the coordinated \(x\) and \(y\) of the feature in the next frames at time \(i+1\).
+In principle a feature point does not convey much information, usually we group them to create a bounding box or a convex hull that can contain the moving object into an independent structure.
 
-The question now is how to choose a good feature point that must has distinctive characteristic such as brightness, contrast, texture, edges, corners or point with high curvature.
-\\The main idea is that for each candidate point, we compute: 
+The question now is how to choose a good feature point that must has distinctive characteristic such as brightness, contrast, texture, edges, corners or point with high curvature, basically something that exhibits some elements that let that point be sufficiently diverse compared to the rest of the image.
+\\We can use the \textbf{Good Features to Track} algorithm:
 \[
     Z = \begin{bmatrix}
         \sum_{W}^{}J_x^2 & \sum_{W}^{}J_xJ_y \\
         \\
-        \sum_{W}^{}J_xJ_y & \sum_{W}^{}J_y^2
+        \sum_{W}^{}J_yJ_x & \sum_{W}^{}J_y^2
     \end{bmatrix}
 \]
-\\Where $J_x$ and $J_y$ are the gradients evaluated on the point in $x$ and $y$ direction within $W$ ($nxn$ window). 
-A good feature point is the one that maximizes the function, so the point where the smallest eigenvalue of $Z$ is larger than a specific threshold.
-In practice, it highlights corner points and texture.
-\\In summary, it's important to consider the following key points when analyzing eigenvalues:
+\\Where $J_x$ and $J_y$ are the gradients evaluated on a certain point in the $x$ and $y$ direction within a certain window $W$ (of size $n\times n$). 
+A good feature point is the with strong gradients component in both directions, so we are interested not only in the \(x\) and \(y\) components but also in the cross-correlation between them. To maximize this function we compute the eigenvalues of the matrix. In order to evaluate if it's a good feature point we are interested whether the smallest eigenvalue is larger than a certain threshold. This means that in case we have just one of the eigenvalues with high magnitude and the other very small probably it is a feature point with good characteristics only in one direction, what we are looking for is a point with strong components in \textit{both} directions, in practice, it highlights corner points and texture.
+
+In summary, it's important to consider the following key points when analyzing eigenvalues:
 \begin{itemize}
     \item Eigenvalues should surpass the image noise level to ensure reliable information.
     \item Small eigenvalues indicate strong similarity within the analyzed window.
@@ -186,14 +201,13 @@ In practice, it highlights corner points and texture.
     \item Points with two large eigenvalues are of high interest, indicating features like salt and pepper texture or corners.
 \end{itemize}
 
-For what concerns tracking them, we must ensure that the same points are tracked throughout the video sequence. 
+For what concerns tracking, we must ensure that the same points are tracked throughout the video sequence. 
 Ideally we would expect that $A_i(Dm-d)=A_{i+1}(m)$, where $A_i, A_{i+1}$ are the successive frames at time $i$ and $i+1$, $m$ is the 2D position of the feature point, $D$ the deformation matrix (affine transformation model) and $d$ is the displacement vector (translation models).
-\\ However, due to noise the equality usually does not hold. In addition, motion across successive frames is assumed to be small $\Rightarrow$ a translational model is a good approximation.
-Feature dissimilarity measure is used to quantify the change of appearance between the first and current frame
+\\ However, due to noise the equality usually does not hold. In addition, since motion across successive frames is assumed to be small $\Rightarrow$ a \textit{translational model} is a good approximation and the term $D$ can be removed. So, after making this simplification, we can use it to find the configuration of the displacement vector $d$ that \textit{minimizes} the residual between the two frames:
 \[
-    \varepsilon = \iint_{W} \left(A_i(m-d)-A_{i+1}(m)\right)^2 w(m) \, dm
+    \varepsilon = \iint_{W} \left[A_i(m-d)-A_{i+1}(m)\right]^2 w(m) \, dm
 \]
-where $w$ is a weighting function such as Gaussian to emphasize the center of the window\dots
+we are also implementing a weighting function $w$ such as Gaussian to emphasize the center of the window giving less relevance to the terms that are outside the center.
 \\When the feature dissimilarity grows too large, the feature point should be abandoned and a new one should be selected.
 To minimize the residual we differentiate w.r.t unknowns (d)
 \[
