@@ -32,9 +32,9 @@ Some benefits of object tracking are:
 Sometimes it is enough to track the object in 2D, for example when the object is moving on a plane.
 Exists different approaches to 2D tracking:
 \begin{itemize}
-\item \textbf{Region-based} $\Rightarrow$ set of pixels that share similar features (color);
+\item \textbf{Region-based} $\Rightarrow$ set of pixels that share similar features (color). This does not work very well with multiple objects moving at the same times, on top of that it's computationally intensive;
 \item \textbf{Contour-based} $\Rightarrow$ determine position and shape of an object over time. Useful to track deformable objects;
-\item \textbf{Feature-based} $\Rightarrow$ select meaningful points (contours, corners);
+\item \textbf{Feature-based} $\Rightarrow$ select meaningful points (contours, corners). Very common and effective method, relevant points are selected and tracked over time;
 \item \textbf{Template-based} $\Rightarrow$ use specific models (hands, faces, eyes).
 \end{itemize}
 
@@ -59,23 +59,39 @@ Color variations over time due to changes in illumination or object posture pose
 Additionally, models of tracked objects need continual updates to adapt to evolving conditions.
 
 One conceivable approach to tackle these challenges involves breaking down the object into smaller regions. 
-Each region is then associated with a color vector or histogram, representing the average color values within that region. 
+Each region is then associated with a \textit{color vector} or histogram, representing the average color values within that region. 
 During tracking, the color of each region is computed, and the similarity to a reference model is assessed. 
 If the ratio between the reference and current values is close to 1, it indicates a good match.
 
 Histograms serve as a valuable tool in this process. 
 They provide a quantified representation of the color distribution within a region, enabling comparisons between reference and current models. 
-\\Different similarity measures can be employed for evaluation, such as bin-by-bin comparison: \[\cup (O_i^t, O_i^r) \sum_{n=1}^{U} min \{O_{i,n}^r, O_{i,n}^t\} \]
-or Sum of Squared Differences (SSD): \[SSD(O_i^t, O_i^r) = \sum_{n=1}^{U} (O_{i,n}^r - O_{i,n}^t)^2 \]
-Careful consideration must be given to the number of bins used in the histograms, striking a balance between granularity and computational efficiency.
+\\Different similarity measures can be employed for evaluation, such as bin-by-bin comparison: 
+\[
+    \bigcap (O_i^t, O_i^r) = \sum_{n=1}^{U} min \{O_{i,n}^r, O_{i,n}^t\} 
+\]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Figures/bins.jpg}
+    \caption{For all the bins of each object we compute the \\intersection (blue), one that
+    yields the highest value is the best match.}
+    \label{fig:bins}
+\end{figure}
+
+or Sum of Squared Differences (SSD), so instead of computing the correlation between the two histograms, we compute the difference between the two histograms, the error: 
+\[ 
+    SSD(O_i^t, O_i^r) = \sum_{n=1}^{U} (O_{i,n}^r - O_{i,n}^t)^2 
+\]
+Careful consideration must be given to the number of bins used in the histograms, striking a balance between granularity and computational efficiency. A smaller number of bins may also lead to better generalization, as it reduces the impact of noise.
 
 In summary, tracking regions with uniform appearance offers a promising avenue for real-time applications, but it requires robust techniques to address challenges such as variable illumination and color changes over time. 
 Techniques involving region division and histogram analysis can help achieve accurate and efficient tracking in these scenarios.
 \\\textit{NB: Shadows can be problematic in region-based tracking as they introduce noise, leading to false positives. 
-A shadow does not correspond to the motion of a real object; rather, it represents a change in the object's color, specifically a variation in luminance while chrominance remains ideally unaltered. 
+A shadow does not correspond directly to the motion of a real object; rather, if we are lucky enough, it represents a change in the object's color, specifically a variation in luminance while chrominance remains ideally unaltered. 
 To ensure proper tracking, shadows should be removed beforehand using a suitable algorithm.}
+
 \section{Blobs extraction} 
-An object can consist of multiple blobs, such as one for the torso and one for the head. Blobs are aggregations of connected pixels that share common features. 
+An object can consist of multiple blobs, such as one for the torso and one for the head, disjoint one from the other. Blobs are aggregations of connected pixels that share common features. 
 When considering features, position is also important, so pixels with similar color but located far from the object must be discarded. 
 This approach is typically used in combination with background suppression to enhance object detection and tracking.
 \subsection{Target association}
@@ -113,7 +129,7 @@ To figure out what's happening, it's important to gather more information over t
 It's impossible to understand right away whether it's a single object that looks fragmented or two objects close together. 
 Therefore, we need to observe for a while to decide if the blobs belong to one object or two separate ones.
 \section{Merging}
-\begin{wrapfigure}[4]{r}{0.4\textwidth}
+\begin{wrapfigure}{r}{0.4\textwidth}
     \centering
     \includegraphics[width=0.25\textwidth]{Figures/Merging.png}
 \end{wrapfigure}
@@ -138,31 +154,46 @@ In order to solve this problem, we need to re-associate "A to A" and "B to B" (w
 \\\textit{NB: Histograms are a good way out.}
 
 \section{Tracking: Feature-based}
-The objective is to retrieve the motion information of a set of features (such as points, corners, edges\dots) in the image.
-\\Considering
-\[A = \{A(0), A(1), A(2), \dots, A(j-1)\}\] as a set of images and
-\[m_i(x_i, y_i)i = [0, j-1] \] the position of the feature in the image plane in each frame.
 
-\begin{wrapfigure}[4]{r}{0.2\textwidth}
+Histograms are just one way to track objects, we also mentioned other methodologies, such as feature-based tracking. The objective is to retrieve the motion information from sets of features (such as points, corners, edges\dots) in local areas of the image.
+\\Considering
+\[
+    A = \{A(0), A(1), A(2), \dots, A(j-1)\}
+\] 
+as a set of images and
+\[
+    m_i(x_i, y_i)\;\;i = [0, j-1] 
+\] 
+the position of the feature in the image plane in each frame.
+
+\begin{wrapfigure}{r}{0.2\textwidth}
     \includegraphics[scale=0.3]{Figures/Tracking.png}
 \end{wrapfigure}
-The objective is to determine the displacement vector \[d_i = (dx_i, dy_i)\] that best estimates the position of the feature in the next frame \[m_{i+1}(x_{i+1}, y_{i+1}) = m_i + d_i\]
+The objective is to determine the displacement vector 
+\[
+    d_i = (dx_i, dy_i)
+\] 
+that best estimates the position of the feature in the next frame 
+\[
+    m_{i+1}(x_{i+1}, y_{i+1}) = m_i + d_i
+\]
 
-If needed, points can be grouped and objects can be represented using the bounding box or the convex hull.
+We'd like to get the coordinated \(x\) and \(y\) of the feature in the next frames at time \(i+1\).
+In principle a feature point does not convey much information, usually we group them to create a bounding box or a convex hull that can contain the moving object into an independent structure.
 
-The question now is how to choose a good feature point that must has distinctive characteristic such as brightness, contrast, texture, edges, corners or point with high curvature.
-\\The main idea is that for each candidate point, we compute: 
+The question now is how to choose a good feature point that must has distinctive characteristic such as brightness, contrast, texture, edges, corners or point with high curvature, basically something that exhibits some elements that let that point be sufficiently diverse compared to the rest of the image.
+\\We can use the \textbf{Good Features to Track} algorithm:
 \[
     Z = \begin{bmatrix}
         \sum_{W}^{}J_x^2 & \sum_{W}^{}J_xJ_y \\
         \\
-        \sum_{W}^{}J_xJ_y & \sum_{W}^{}J_y^2
+        \sum_{W}^{}J_yJ_x & \sum_{W}^{}J_y^2
     \end{bmatrix}
 \]
-\\Where $J_x$ and $J_y$ are the gradients evaluated on the point in $x$ and $y$ direction within $W$ ($nxn$ window). 
-A good feature point is the one that maximizes the function, so the point where the smallest eigenvalue of $Z$ is larger than a specific threshold.
-In practice, it highlights corner points and texture.
-\\In summary, it's important to consider the following key points when analyzing eigenvalues:
+\\Where $J_x$ and $J_y$ are the gradients evaluated on a certain point in the $x$ and $y$ direction within a certain window $W$ (of size $n\times n$). 
+A good feature point is the with strong gradients component in both directions, so we are interested not only in the \(x\) and \(y\) components but also in the cross-correlation between them. To maximize this function we compute the eigenvalues of the matrix. In order to evaluate if it's a good feature point we are interested whether the smallest eigenvalue is larger than a certain threshold. This means that in case we have just one of the eigenvalues with high magnitude and the other very small probably it is a feature point with good characteristics only in one direction, what we are looking for is a point with strong components in \textit{both} directions, in practice, it highlights corner points and texture.
+
+In summary, it's important to consider the following key points when analyzing eigenvalues:
 \begin{itemize}
     \item Eigenvalues should surpass the image noise level to ensure reliable information.
     \item Small eigenvalues indicate strong similarity within the analyzed window.
@@ -170,14 +201,13 @@ In practice, it highlights corner points and texture.
     \item Points with two large eigenvalues are of high interest, indicating features like salt and pepper texture or corners.
 \end{itemize}
 
-For what concerns tracking them, we must ensure that the same points are tracked throughout the video sequence. 
+For what concerns tracking, we must ensure that the same points are tracked throughout the video sequence. 
 Ideally we would expect that $A_i(Dm-d)=A_{i+1}(m)$, where $A_i, A_{i+1}$ are the successive frames at time $i$ and $i+1$, $m$ is the 2D position of the feature point, $D$ the deformation matrix (affine transformation model) and $d$ is the displacement vector (translation models).
-\\ However, due to noise the equality usually does not hold. In addition, motion across successive frames is assumed to be small $\Rightarrow$ a translational model is a good approximation.
-Feature dissimilarity measure is used to quantify the change of appearance between the first and current frame
+\\ However, due to noise the equality usually does not hold. In addition, since motion across successive frames is assumed to be small $\Rightarrow$ a \textit{translational model} is a good approximation and the term $D$ can be removed. So, after making this simplification, we can use it to find the configuration of the displacement vector $d$ that \textit{minimizes} the residual between the two frames:
 \[
-    \varepsilon = \iint_{W} \left(A_i(m-d)-A_{i+1}(m)\right)^2 w(m) \, dm
+    \varepsilon = \iint_{W} \left[A_i(m-d)-A_{i+1}(m)\right]^2 w(m) \, dm
 \]
-where $w$ is a weighting function such as Gaussian to emphasize the center of the window\dots
+we are also implementing a weighting function $w$ such as Gaussian to emphasize the center of the window giving less relevance to the terms that are outside the center.
 \\When the feature dissimilarity grows too large, the feature point should be abandoned and a new one should be selected.
 To minimize the residual we differentiate w.r.t unknowns (d)
 \[
