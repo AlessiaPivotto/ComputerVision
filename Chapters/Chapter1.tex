@@ -183,6 +183,8 @@ Moreover, histograms can assist in object identification by determining whether 
 \\ 
 \textbf{Equalization:}
 \\Working on the statistics of the pixels it is possible to improve the quality of an image. Ideally we’d like to obtain a FLAT histogram, and to do so we have to compute the cumulative histogram (equivalent to CDF).
+Basically, we compute the sum of all bins, then we subtract the minimum value and normalize the result by dividing for the number of pixels minus 1.
+Notice that this operation can introduce artifact, indeed, looking at the image, we can notice that some bins are empty. Concerning the visual final aspect, the image is more contrasted (similarly to stretching), but the noise is enhanced.
     \[
         CHist_I(p) = \sum_{k=0}^{p} hist(k)
     \]
