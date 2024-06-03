@@ -15,7 +15,8 @@ Then we characterize those gradients using a direction information and a magnitu
 At the end of the process we can construct a descriptor which can be used by next algorithms to recognize the presence of object in the image.
 \\But how do we get the descriptor?
 First of all, we need to divide the image into a number of rectangular or radial cells of arbitrary size.
-\textit{NB: It's good practice to have only one main edge component inside a cell.} Then, for each pixel in the cell we compute the orientation of edges(\textit{Take a pixel, take his neighbor and see if there is an edge or not}).
+\\\textit{NB: It's good practice to have only one main edge component inside a cell.} 
+\\Then, for each pixel in the cell we compute the orientation of edges(\textit{Take a pixel, take his neighbor and see if there is an edge or not}).
 This means that each pixel can cast a weighted vote for an orientation histogram based on the values found in the gradient computation.
 In other words, each cell is represented through a 1D array (that corresponds to a single bin of the histogram) of gradient directions casting on the magnitude.
 In addition, intensity is locally normalized in the RGB or LAB color space using L1 or L2-norm, to account for illumination changes and shadowing especially when using larger areas (blocks), consisting of more cells.
@@ -25,15 +26,26 @@ In addition, intensity is locally normalized in the RGB or LAB color space using
     \includegraphics[scale=0.45]{Figures/HOG_Pipeline.png}
 \end{figure}
 \\It basically consists of taking the input image, computing the gradients and then the voting for each pixel, applying some additional normalization and finally getting the descriptor.
-But what does it mean having a descriptor? It means that, for an object, we have a full description of its shape, a concatenation of all the cells, where each cell represents the gradient information within a small patch of the image.
-\\\textit{NB: I decide to skip all the configuration and the performance part (performance depends on configuration), but there is an important thing that I want to mention. The algorithm takes blocks that overlaps, this helps to have a smooth transition of the information across different blocks.}
-As final notes, just advice for obtain the best performance: we suggest you to use overlapping blocks with a relatively high number of orientation bins and a moderate block size.
+
+But what does it mean having a descriptor? It means that, for an object, we have a full description of its shape, obtained by concatenating all the cells, where each cell represents the gradient information within a small patch of the image.
+
+Once we have our descriptor, we can pass it to a classifier, such as an SVM as you can see from the pipeline, to perform tasks like human detection. 
+\\
+Since this is not a machine learning course, we will just take a quick look at the Dalal and Triggs algorithm, a popular method for human detection available in OpenCV. This algorithm arranges the data in a $64\times128$ window, which is then divided into $8\times8$ pixel cells. These cells are grouped into structures called blocks, each consisting of 4 cells. For each cell, a histogram is created based on 9 different gradient directions.
+
+The final descriptor is formed by concatenating the feature elements from these cells. Each block is represented by a feature vector of 36 dimensions, derived from the 9 directions for each of the 4 cells. Notably, the algorithm takes blocks that overlap, this helps to have a smooth transition of the information across different blocks.
+
+\begin{wrapfigure}[8]{r}{0.45\textwidth}
+    \includegraphics[scale=0.3]{Figures/Performance.png}
+    \caption{Performance of the HOG algorithm with different configurations.}
+    \label{fig:Performance}
+\end{wrapfigure}
+This configuration was chosen based on performance tests that measured the miss rate. As depicted in Figure \ref{fig:Performance}, this specific setup achieved the best results. Therefore, when implementing similar algorithms, we suggest to use overlapping blocks with a relatively high number of orientation bins and a moderate size of the elements you use.
 \subsection{The problem of scale}
 The problem of scale is a common issue even in current classifiers. The fact is that in video the pedestrian can be detected at different sizes.
 This can be due to the spacial resolution of the camera, the distance from the object and even the object itself.
 So, how can we solve this problem? A possible solution is to use a multiscale approach. This means that we need to resize the window at different scales and then apply the algorithm on all different sizes.
 \subsection{Feature compression}
-TODO: da finire\\\\
 The last thing we want to mention is the feature compression. The descriptor can be very large, so we need to compress it in order to reduce the computational cost for delivering.
 \\\textit{NB: To compute the compression in a lossless way, we can extract the histograms.}
 \begin{figure}[h]
@@ -47,12 +59,12 @@ The server takes the features and compares them with the database, then it retur
 So, in terms of computation, what we are doing is called spatial binning.
 \section{SIFT}
 The Scale Invariant Feature Transform is an algorithm that extract the salient points of an image.
-The main idea is to find the keypoints that are invariant to scale, rotation, illumination and viewpoint changes.
+The main idea is to find the key-points that are invariant to scale, rotation, illumination and viewpoint changes.
 The algorithm is composed by four main steps:
 \begin{itemize}
     \item construct a subspace representation of the image by progressively apply a Gaussian(low pass) smoothing filter;
     \item at every iteration, each image becomes a blurred version of the previous one;
-    \item find keypoints;
+    \item find key-points;
     \item compute the descriptor.
 \end{itemize}
 The filtering is obtained by applying a regular Gaussian filter to the image:
@@ -66,9 +78,12 @@ The next step is a procedure called the creation of octaves, which is a set of i
 So each one represents a blurred version of the previous one.
 \\Having the filtered version of the image, we can create the Difference of Gaussian (DoG) by subtracting, for each pair, the blurred image from the previous one.
 More generally, we are trying to highlight what survives subtraction after subtraction, so we are looking for the maximum and minimum of the DoG.
-\\To grab the most salient points from the DOGs, each pixel from a given DOG is compared to its 26 neighbors (8 in the same scale, 9 above and 9 below).
+\\To grab the most salient points from the DoGs, each pixel from a given DOG is compared to its 26 neighbors (8 in the same scale, 9 above and 9 below).
 A pixel is kept as a key-point only if it is greater (maximum) or smaller (minimum) than its neighbors.
-\\However, the selection of the points might be noisy, so we can apply the derivative set to $0$. 
+\\DOG function exhibits strong response to edges, but edges are not always good key-points, the selection of the points might be noisy, so we can apply a second order Taylor expansion with the derivative set to $0$. 
+\[
+    D(X)=D + \frac{\partial D^T}{\partial X}X + \frac{1}{2}X^T\frac{\partial^2D}{\partial X^2}X
+\]
 Through this derivative we can obtain the maximum and minimum and construct a Hessian matrix $H$.
 The Hessian matrix is the one that told us if the point that we have found are actually good or not.
 Having it we can construct the trace and the determinant of the matrix to define a threshold.
@@ -80,9 +95,23 @@ Having it we can construct the trace and the determinant of the matrix to define
 \]
 What we can check at this point is the ratio between the determinant and the trace of the matrix.
 If the ratio is greater than a certain threshold, we can consider the point as a key-point.
+So now consider $r = \frac{\alpha}{\beta}$, where $\alpha$ and $\beta$ are the largest and smallest eigenvalues in magnitude of the Hessian matrix.
+If \[ \frac{Tr(H)^2}{Det(H)} < \frac{(r+1)^2}{r} \] is satisfied, then the point is a key-point.
+\\
 But not only, we can also check the magnitude and the orientation of the gradient.
-Then, from the orientations, a 36-bin histogram is computed. If a keypoint exhibits multiple peaks in the histogram that are higher than $80\%$ of the highest peak, a new keypoint is instantiated with same location and scale.
-The 16x16 area (oriented according to the key-point orientation computed before) around the selected keypoint is divided in 4x4 regions, and for each of them a histogram of the gradients (8bins) is computed.
-This turns out in a descriptor of 128 elements.
-\\\\
-TODO: manca la parte di orientation, lui la salta di pacca durante la lezione ma nelle slide ci sono delle belle formulette\dots
+This is because the eigenvalues of H are proportional to the curvature of the function D, so if the curvature is high in both dimensions, the gradient and orientation are computed.
+This step achieves the invariance to rotation:
+\[
+    m(x,y) = \sqrt{(L(x+1,y)-L(x-1,y))^2 + (L(x,y+1)-L(x,y-1))^2}  
+\]
+\[
+    \theta(x,y) = \arctan\left(\frac{L(x,y+1)-L(x,y-1)}{L(x+1,y)-L(x-1,y)}\right)
+\]
+The region within which $m$ and $\theta$ are computed is relative to the scale of the key-point, the higher the scale, the larger the computation region.
+\\\textit{NB: This is very helpful for us to match the points across different images with different scale and resolution.}
+\\
+Then, from the orientations, a 36-bin histogram is computed. If a key-point exhibits multiple peaks in the histogram that are higher than $80\%$ of the highest peak, a new key-point is instantiated with same location and scale.
+The 16x16 area (oriented according to the key-point orientation computed before) around the selected key-point is divided in $4\times4$ regions, and for each of them a histogram of the gradients (8bins) is computed.
+This turns out in a descriptor of 128 elements ($4\times4\times8$).
+\\
+Once that the descriptor is constructed, we can use it to search and match the key-points in different images. This is done usually by Nearest Neighbor searching, where the Euclidean distance between the descriptors is computed, or by using optimization algorithms like RANSAC. 
