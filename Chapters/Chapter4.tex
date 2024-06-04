@@ -52,7 +52,7 @@ While these techniques work reasonably well indoors, outdoor settings may presen
 
 In terms of what we aim to track, the possibilities are diverse. 
 It could involve monitoring any moving object, distinguishing between skin and non-skin regions (useful for applications like hand and face tracking), identifying specific colored areas, and more. 
-The approach typically involves techniques such as color thresholding for uniform regions or utilizing color histograms.
+The approach typically involves techniques such as color thresholding for uniform regions or utilizing color histograms. 
 
 However, tracking regions with uniform appearance isn't without its challenges. 
 Color variations over time due to changes in illumination or object posture pose significant hurdles. 
@@ -285,7 +285,7 @@ To construct higher levels, the contributions of the pixels around the pixel in 
 Starting from the lowest level we make a guess of the flow \textbf{g} and, looking at the observation window, we find the first displacement vector, this means that after minimizing the quantity $\epsilon$ we have an initial guess of the displacement.
 \\
 
-After that we go to the lower, bigger level. Scaling the motion vector is doubles its scale but now we have more pixels and a better chance or refining the guess just by looking in the new neighborhood and fine-tuning the displacement vector. The propagation of information to the lower levels follows this equation:
+After that we go to the lower, bigger level. Scaling the motion vector is doubles its scale, but now we have more pixels and a better chance or refining the guess just by looking in the new neighborhood and fine-tuning the displacement vector. The propagation of information to the lower levels follows this equation:
 
 \[
     g^{L-1} = 2(g^L+d^L)
@@ -342,7 +342,7 @@ Considering these two quantities we can create a model for the estimation of the
 
 \begin{multicols}{3}
     Prior at time step k\\
-    Sysyem model\\
+    System model\\
     Posterior pdf at k-1
 \end{multicols}
 
