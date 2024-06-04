@@ -405,25 +405,29 @@ Starting from this we can propagate the information over time, make a new predic
 
 
 \[
-    z_2, \sigma^2_{z_2}\;\;\hat{x}_2=?\;\;\sigma^2_2=?    
+    z_2, \sigma^2_{z_2}\;\;\;\;\hat{x}_2=?\;\;\;\;\sigma^2_2=?    
 \]
 
 We need to come up with a second measurement $z_2$ with its variance, make a new prediction and come up with a new value for the noise.
 
+\begin{figure}[H]    
 \[
-    \hat{x}_2 = \hat{x}_1 + K(z_2-\hat{x}_1) \;\;\;\;\;\; K_2 = \frac{\sigma^2_1}{\sigma^2_1+\sigma^2_{z_2}}  
+    \hat{x}_2 = \hat{x}_1 + K_2(z_2-\hat{x}_1) \;\;\;\;\;\; K_2 = \frac{\sigma^2_1}{\sigma^2_1+\sigma^2_{z_2}}  
 \]
 \[
     \frac{1}{\sigma^2_2} = \frac{1}{\sigma^2_{z_1}}+\frac{1}{\sigma^2_{z_2}}\;\;\;\;\;
     \sigma^2_2 = \frac{\sigma^2_{z_1}\sigma^2_{z_2}}{\sigma^2_{z_1}+\sigma^2_{z_2}} 
 \]
+\caption{Simplified Kalman Filter.}
+\label{eq:kalman}
+\end{figure}
 In the first equation we rely on the information we collected before, and we add a displacement to this quantity to get the new prediction $\hat{x}_2$ by taking into account some additional parameters. Capital K is what we call the \textbf{Kalman gain}, it's a multiplying factor which weights the distance between the second measurement $z_2$ and the previous estimate $\hat{x}_1$: we know that from the previous estimate and the new measurement we have an error, and so we use this error information together with the Kalman gain to push ahead our estimation. The Kalman Gain is a combination of the variances we are collecting. It's basically a weighted average between the prediction and the measurement, the weight is given by the ratio of the variances. 
 \\
 
 The process is rather simple because be basically have to iterate between these two steps, the first one is prediction and the second one is measurement: first we predict the new state and the correspondent uncertainty $\sigma^2$, then we correct using the new measurement $z$ for which we know there's a variance associated $\sigma^2_z$, this piece of information is the one that will guide us torwards the next prediction and variance.
 \\
 
-The Kalman Filter is also a computationally efficient solution to the least squares method. With LSM, we are trying to minimize an error, but with Kalman's formulation what we are trying to do is to find the configuration of the Kalman Gain (which is also the only parameter we can tune) to make sure that the result obtained from the prediction is as close as possible to the real position of the object.
+The Kalman Filter is also a computationally efficient solution to the least squares method. With LSM, we are trying to minimize an error, similarly with Kalman's formulation what we are trying to do is to find the configuration of the Kalman Gain (which is also the only parameter we can tune) to make sure that the result obtained from the prediction is as close as possible to the real position of the object.
 \\
 
 Assuming that the noise components $w_k$ and $v_k$ are normal distributions, the overall the state and measurement model can be expressed through the following equations:
@@ -436,3 +440,133 @@ Assuming that the noise components $w_k$ and $v_k$ are normal distributions, the
 \]
 
 Looking at the measurement equation we can see that the measurement is something that is going to happen on the basis of $x_k$ (we previously mentioned how $z_k$ is a function of $x_k$ and the noise) and this function is nothing but a multiplication of the measurement matrix $H_k$ plus the noise contribution $v_k$.
+
+Similarly with the state information $x_k$ we have the system model $A_k$ which projects the state of the system at time $k-1$ forward in time. In this formulation we have an additional term $B_kU_k$ which is the control input: we can model additional information that we can inject into the system to guide the state of the system in a certain direction, for instance if we directly press gas on a car or if we adjust the trajectory of a missile.
+\\
+
+The noise in the process is usually modeled as a Gaussian distribution with zero mean and covariance matrix $Q$ and $R$:
+
+\[
+    p(w) = N(0, Q)
+\]
+\[
+    p(w) = N(0, Q)
+\]
+
+The error is one of the driving forces in our model, a very relevant parameter, in fact we have seen in Equation \ref{eq:kalman} how if there's no noise the Kalman Gain would disappear, not only that, if the measurement is correct and the error zero we wouldn't be able to project ahead in time the state of the system.
+
+\subsection{Predict-and-correct stages}
+
+During the first phase the current state estimate together with the error estimate are propagated forward in time, in the second stage a new measurement is taken to modify the two estimations.
+This gives us the chance to have an \textbf{a priori estimate} of the state of the system, before taking any new measurement, based only on the past knowledge; and an \textbf{a posteriori estimate} which is the corrected version of the a priori estimate, after taking the new measurement into account.
+\\
+
+\textit{NB: while maybe only Equation \ref{eq:kalman} is worth remembering by heart, we will quickly go through all of them to complete the pipeline}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/prior.png}
+    \caption{The minus means it an a priori information, modeled via our current state and our a priori estimate, this error allows us to make an a posteriori estimate $\hat{x}_k$ that will be used to estimate the new error and so on.}
+    \label{img:prior}
+\end{figure}
+
+Once I have the error I can compute the covariance matrices, both a priori and a posteriori:
+
+\[
+    P^-_k = E[e^-_ke^{-T}_k]
+\]
+\[
+    P_k = E[e_ke^T_k]
+\]
+
+After that I can start the prediction (the new a priori estimate) and compute the new error matrix ( we are discarding the additional control parameter $B$ for simplicity):
+
+\[
+    \hat{x}^-_k = A_k\hat{x}_{k-1}
+\]
+\[
+    P^-_k = A_kP_{k-1}A^T_k+Q_{k-1}
+\]
+
+This leads to the definition of the new Kalman Gain, which needs to take into account the error estimate:
+
+\[
+    K_k = P^-_kH^T_k(H_kP^-_kH^T_k+R_k)^{-1}    
+\]
+
+The gain is used to modify the a priori estimate and to compute the a posteriori state estimate:
+
+\[
+    \hat{x}_k = \hat{x}^-_k+K_k(z_k-H_k\hat{x}^-_k)
+\]
+
+And to compute the a posteriori error covariance, which is then used to compute the new prior and so on:
+
+\[
+    P_k = (I-K_kH_k)P^-_k    
+\]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/loop.png}
+    \caption{While \textit{it's not necessary to remember the equations} it must be clear how the information flows in the algorithm.}
+    \label{img:loop}
+\end{figure}
+
+\subsection{Simple Kalman Filter example}
+
+The situation is that we are trying to estimate the value of a constant function, the voltage out of a socket, we know that the voltage is 220V but we are not sure about the noise in both the measurement and in the process.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Figures/constatn.png}
+    \caption{The function we are trying to estimate.}
+    \label{img:const}
+\end{figure}
+
+The problem is easy: obviously we know something about the model, otherwise it would be impossible to make an estimate, and knowing that this is a constant we are sure there's no evolution in both the model $A$ and the measurement $H$ matrices, so:
+
+\[
+  A = 1  
+\]
+\[
+  H = 1  
+\]
+\[
+  x_k= x_{k-1} + w_k
+\]
+\[
+  z_k = x_k + v_k  
+\]
+
+Our a priori state estimate is given by the previous state and the error covariance is just changed by the presence of some noise:
+
+\[
+  \hat{x}^-_k = \hat{x}_{k-1}
+\]
+\[
+    P^-_k = P_{k-1}+Q    
+\]
+
+At this point we just have to use the equation of the Kalman filter, compute the Kalman gain, thanks to that estimate the new posterior and the new error matrix:
+\[
+    K_k = P^-_k(P^-_k+R)^{-1}    
+\]
+\[
+    \hat{x}_k = \hat{x}^-_k+K_k(z_k-\hat{x}^-_k)    
+\]
+\[
+    P_k = (1-K_k)P^-_k    
+\]
+
+To make the algorithm work we just have to select as starting value the initial state "wrong" and the initial non-zero error covariance, then we can iterate the algorithm and see how the estimate converges to the real value of the function.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Figures/voltage.png}
+    \caption{The results of our simplified example.}
+    \label{img:voltage}
+\end{figure}
+
+\subsection{Extended Kalman Filter}
+
+An assumption that we made is that the behavior of the system is linear, the question is whether this reflects or not what happens in the real world. Turns out it does not.
