@@ -373,22 +373,20 @@ Where $p(z_k|z_{k-1})$ is used for normalization and computed as
 In the toy example \ref{img:bayes} the person is equipped with a "door sensing device" and we assume constant speed. 
 
 
-\begin{itemize}
+\begin{description}
 
-\item $(a)$ We can see how at the very beginning we have no idea where the person is, so our estimation about the position of the person is that it's anywhere in the area.
-\item $(b)$ What happens next is that the guy approaches a door we get a signal, but we only have that information, the person could be at any of the three positions, so our $p(z|x)$, the probability of a measurement given a state of the system, raises 3 peaks in correspondence of the three possible positions of the person, the doors. This becomes out a posteriori information which is something that we are storing and we need to propagate ahead  in time.
-\item $(c)$ We can propagate the a posteriori information ahead in time using the system model, in this case, the constant speed model, and we can see that the peaks are moving to the right, this is the prediction of the system. We also know that the uncertainty is increasing, this is due to the noise, for this reason the peaks are getting wider.
-\item $(d)$ At this point the door sensing device starts ringing again, meaning the guy has reached one of the other 3 doors. We don't know which one but given our model propagated in time, we can construct a new a posteriori taking into account $Bel^{-}(x_1)$ and the new measurement $p(z|x)$ and, while we still have some components due to noise, we are quite sure that the guy is at the second door.
-\item $(e)$ As we progress over time, we propagate the information, the uncertainty increases until at some point we get a new measurement.
-\end{itemize}
+\item [a)] We can see how at the very beginning we have no idea where the person is, so our estimation about the position of the person is that it's anywhere in the area.
+\item [b)] What happens next is that the guy approaches a door we get a signal, but we only have that information, the person could be at any of the three positions, so our $p(z|x)$, the probability of a measurement given a state of the system, raises 3 peaks in correspondence of the three possible positions of the person, the doors. This becomes out a posteriori information which is something that we are storing and we need to propagate ahead  in time.
+\item [c)] We can propagate the a posteriori information ahead in time using the system model, in this case, the constant speed model, and we can see that the peaks are moving to the right, this is the prediction of the system. We also know that the uncertainty is increasing, this is due to the noise, for this reason the peaks are getting wider.
+\item [d)] At this point the door sensing device starts ringing again, meaning the guy has reached one of the other 3 doors. We don't know which one but given our model propagated in time, we can construct a new a posteriori taking into account $Bel^{-}(x_1)$ and the new measurement $p(z|x)$ and, while we still have some components due to noise, we are quite sure that the guy is at the second door.
+\item [e)] As we progress over time, we propagate the information, the uncertainty increases until at some point we get a new measurement.
+\end{description}
 
 \subsection{The Kalman Filter}
 
 The idea of the Kalman filter goes back to Bayesian tracking. We take a prediction, validate that prediction with a measurement and knowing that both prediction and measurement are subject to noise, we can combine them in a way that we can minimize the error in the estimation of the state of the system.
-\\
-
+\\\\
 We start from
-
 \[
     z_1, \sigma^2_{z_1}    
 \]
@@ -399,11 +397,9 @@ We start from
     \sigma^2_1 = \sigma^2_{z_1}    
 \]
 
-$z_1$ is the measurement that already includes some noise that we define with a variance $\sigma^2_{z_1}$. We provide the first prediction by initiating it at the first measurement location, and we just map the variance of the measurement to the variance of the prediction.
+Where $z_1$ is the measurement that already includes some noise that we define with a variance $\sigma^2_{z_1}$. We provide the first prediction by initiating it at the first measurement location, and we just map the variance of the measurement to the variance of the prediction.
 
 Starting from this we can propagate the information over time, make a new prediction, take a measurement, correct the measurement and make the new prediction and so on.
-
-
 \[
     z_2, \sigma^2_{z_2}\;\;\;\;\hat{x}_2=?\;\;\;\;\sigma^2_2=?    
 \]
@@ -465,11 +461,11 @@ This gives us the chance to have an \textbf{a priori estimate} of the state of t
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Figures/prior.png}
-    \caption{The minus means it an a priori information, modeled via our current state and our a priori estimate, this error allows us to make an a posteriori estimate $\hat{x}_k$ that will be used to estimate the new error and so on.}
+    \caption{The minus means that it is an a priori information, modeled via our current state and our a priori estimate, this error allows us to make an a posteriori estimate $\hat{x}_k$ that will be used to estimate the new error and so on.}
     \label{img:prior}
 \end{figure}
 
-Once I have the error I can compute the covariance matrices, both a priori and a posteriori:
+Once we have the error we can compute the covariance matrices, both a priori and a posteriori:
 
 \[
     P^-_k = E[e^-_ke^{-T}_k]
@@ -478,7 +474,7 @@ Once I have the error I can compute the covariance matrices, both a priori and a
     P_k = E[e_ke^T_k]
 \]
 
-After that I can start the prediction (the new a priori estimate) and compute the new error matrix ( we are discarding the additional control parameter $B$ for simplicity):
+After that we can start the prediction (the new a priori estimate) and compute the new error matrix (we are discarding the additional control parameter $B$ for simplicity):
 
 \[
     \hat{x}^-_k = A_k\hat{x}_{k-1}
