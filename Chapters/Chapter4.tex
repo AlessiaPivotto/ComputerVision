@@ -381,3 +381,58 @@ In the toy example \ref{img:bayes} the person is equipped with a "door sensing d
 \item $(d)$ At this point the door sensing device starts ringing again, meaning the guy has reached one of the other 3 doors. We don't know which one but given our model propagated in time, we can construct a new a posteriori taking into account $Bel^{-}(x_1)$ and the new measurement $p(z|x)$ and, while we still have some components due to noise, we are quite sure that the guy is at the second door.
 \item $(e)$ As we progress over time, we propagate the information, the uncertainty increases until at some point we get a new measurement.
 \end{itemize}
+
+\subsection{The Kalman Filter}
+
+The idea of the Kalman filter goes back to Bayesian tracking. We take a prediction, validate that prediction with a measurement and knowing that both prediction and measurement are subject to noise, we can combine them in a way that we can minimize the error in the estimation of the state of the system.
+\\
+
+We start from
+
+\[
+    z_1, \sigma^2_{z_1}    
+\]
+\[
+    \hat{x}_1 = z_1
+\]
+\[
+    \sigma^2_1 = \sigma^2_{z_1}    
+\]
+
+$z_1$ is the measurement that already includes some noise that we define with a variance $\sigma^2_{z_1}$. We provide the first prediction by initiating it at the first measurement location, and we just map the variance of the measurement to the variance of the prediction.
+
+Starting from this we can propagate the information over time, make a new prediction, take a measurement, correct the measurement and make the new prediction and so on.
+
+
+\[
+    z_2, \sigma^2_{z_2}\;\;\hat{x}_2=?\;\;\sigma^2_2=?    
+\]
+
+We need to come up with a second measurement $z_2$ with its variance, make a new prediction and come up with a new value for the noise.
+
+\[
+    \hat{x}_2 = \hat{x}_1 + K(z_2-\hat{x}_1) \;\;\;\;\;\; K_2 = \frac{\sigma^2_1}{\sigma^2_1+\sigma^2_{z_2}}  
+\]
+\[
+    \frac{1}{\sigma^2_2} = \frac{1}{\sigma^2_{z_1}}+\frac{1}{\sigma^2_{z_2}}\;\;\;\;\;
+    \sigma^2_2 = \frac{\sigma^2_{z_1}\sigma^2_{z_2}}{\sigma^2_{z_1}+\sigma^2_{z_2}} 
+\]
+In the first equation we rely on the information we collected before, and we add a displacement to this quantity to get the new prediction $\hat{x}_2$ by taking into account some additional parameters. Capital K is what we call the \textbf{Kalman gain}, it's a multiplying factor which weights the distance between the second measurement $z_2$ and the previous estimate $\hat{x}_1$: we know that from the previous estimate and the new measurement we have an error, and so we use this error information together with the Kalman gain to push ahead our estimation. The Kalman Gain is a combination of the variances we are collecting. It's basically a weighted average between the prediction and the measurement, the weight is given by the ratio of the variances. 
+\\
+
+The process is rather simple because be basically have to iterate between these two steps, the first one is prediction and the second one is measurement: first we predict the new state and the correspondent uncertainty $\sigma^2$, then we correct using the new measurement $z$ for which we know there's a variance associated $\sigma^2_z$, this piece of information is the one that will guide us torwards the next prediction and variance.
+\\
+
+The Kalman Filter is also a computationally efficient solution to the least squares method. With LSM, we are trying to minimize an error, but with Kalman's formulation what we are trying to do is to find the configuration of the Kalman Gain (which is also the only parameter we can tune) to make sure that the result obtained from the prediction is as close as possible to the real position of the object.
+\\
+
+Assuming that the noise components $w_k$ and $v_k$ are normal distributions, the overall the state and measurement model can be expressed through the following equations:
+
+\[
+    x_k = A_kX_{k-1}+B_kU_k+w_{k-1}    
+\]
+\[
+    z_k = H_kX_k+v_k   
+\]
+
+Looking at the measurement equation we can see that the measurement is something that is going to happen on the basis of $x_k$ (we previously mentioned how $z_k$ is a function of $x_k$ and the noise) and this function is nothing but a multiplication of the measurement matrix $H_k$ plus the noise contribution $v_k$.
