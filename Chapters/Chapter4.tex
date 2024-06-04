@@ -570,3 +570,34 @@ To make the algorithm work we just have to select as starting value the initial 
 \subsection{Extended Kalman Filter}
 
 An assumption that we made is that the behavior of the system is linear, the question is whether this reflects or not what happens in the real world. Turns out it does not.
+
+The goal of the \textbf{Extended Kalman Filter EKF} is to adapt the Kalman Filter to linearize the equations that we used in the standard version. To define our state $x_k$ and measurement $z_k$ we are still using  $f_k$ and $h_k$, the only difference is that it's no more linear functions.
+
+\[
+  x_k = f_k(x_{k-1}, w_{k-1})  
+\]
+\[
+    z_k = h_k(x_k, v_k)    
+\]
+
+Considering that we are assuming that the process is not linear, in order to linearize them we use partial derivatives of both $A$ and $H$. Since we don't know the values of noise we can assume here for simplicity that state and measurement are:
+
+\[
+    \tilde{x}_k = f(\hat{x}_{k-1},0)    
+\]
+\[
+    \tilde{z}_k =  h(\tilde{x}_k,0)   
+\]
+
+Using the same notation as for KF, the \textbf{prediction} stage is given by:
+
+\[
+    \tilde{x}_k = f(\hat{x}_{k-1},0)    
+\]
+\[
+    P^-_k = A_{k-1}P_{k-1}A^T_{k-1}+W_{k-1}Q_{k-1}W^T_{k-1}    
+\]
+\\
+Where $A_k$ is the Jacobian matrix of partial derivatives of $f$ with respect to $x_k$.\\
+$W_k$ is the Jacobian matrix of partial derivatives of $f$ with respect to $w_k$.\\
+$Q_k$ is the process noise covariance matrix
