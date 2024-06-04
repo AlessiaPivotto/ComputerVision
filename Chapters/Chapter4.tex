@@ -348,7 +348,6 @@ Considering these two quantities we can create a model for the estimation of the
 
 We want to create a prior $p(x_k|z_{k-1})$ meaning that I have taken a measurement in the previous step, this measurement relates to that state of the system $k-1$, and thanks to this measurement I can create a \textit{prior}, I can project this measurement ahead in time to give me the new state $x_k$.
 
-\textit{TODO: mica l'ho capita bene sta roba di propagare in avanti la posterior}
 And how is this computed? I can use some posterior information, which is the correction of our $k-1$ prediction given the measurement, this corrected piece of information is propagated forward through our \textbf{system model} $p(x_k|x_{k-1})$ which tells me how to go from $x_{k-1}$ to $x_k$. 
 
 Using the Bayes theorem it is possible to obtain the desired pdf:
