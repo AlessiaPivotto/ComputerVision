@@ -39,7 +39,7 @@ But what does it mean having a descriptor? It means that, for an object, we have
 
 Once we have our descriptor, we can pass it to a classifier, such as an SVM as you can see from the pipeline, to perform tasks like human detection. 
 \\
-Since this is not a machine learning course, we will just take a quick look at the Dalal and Triggs algorithm, a popular method for human detection available in OpenCV:
+Since this is not a machine learning course, we will just take a quick look at the \textbf{Dalal and Triggs algorithm}, a popular method for human detection available in OpenCV:
 
 \begin{itemize}
     \item Arrange the data in a $64\times128$ window;
@@ -72,13 +72,16 @@ The last thing we want to mention is the feature compression. The descriptor can
 We (client) send them to the server that has a huge database filled up with the information of blocks, objects, songs, etc.
 The server takes the features and compares them with the database, then it returns the result.
 So, in terms of computation, what we are doing is called spatial binning.
+
+% TODO: integrate some more about the compression of the features, encoding etc
+
 \section{SIFT}
-The Scale Invariant Feature Transform is an algorithm that extract the salient points of an image.
-The main idea is to find the key-points that are invariant to scale, rotation, illumination and viewpoint changes.
+The Scale Invariant Feature Transform is an algorithm that extract the salient points of an image, points that exhibit certain proprieties. The Good Features to Track algorithm just extracts corners, and corners by themselves are not enough to \textit{describe} an object, in SIFT case we want to use these features in order to come up with objects' representations made up from a concatenation of features.
+The main idea is to find the key-points that are \textbf{invariant to scale}, rotation, illumination and viewpoint changes.
 The algorithm is composed by four main steps:
 \begin{itemize}
     \item construct a subspace representation of the image by progressively apply a Gaussian(low pass) smoothing filter;
-    \item at every iteration, each image becomes a blurred version of the previous one;
+    \item at every iteration, each image becomes a blurred version of the previous one. This because, since we are looking for \textit{strong} points, a strong point should survive blurring operations;
     \item find key-points;
     \item compute the descriptor.
 \end{itemize}
@@ -88,14 +91,30 @@ The filtering is obtained by applying a regular Gaussian filter to the image:
 \]
 where $I(x,y)$ is the image, $L(x,y,\sigma)$ is the scale space of the image after convolution and $\sigma$ is the standard deviation of the Gaussian filter (strength of the filter).
 \\\textit{NB: A large sigma means a strong filter, which will tend to average more points.}
-\\
-The next step is a procedure called the creation of octaves, which is a set of images of the same size that are down sampled by a factor of 2.
-So each one represents a blurred version of the previous one.
-\\Having the filtered version of the image, we can create the Difference of Gaussian (DoG) by subtracting, for each pair, the blurred image from the previous one.
-More generally, we are trying to highlight what survives subtraction after subtraction, so we are looking for the maximum and minimum of the DoG.
-\\To grab the most salient points from the DoGs, each pixel from a given DOG is compared to its 26 neighbors (8 in the same scale, 9 above and 9 below).
+
+The next step is a procedure called the \textbf{creation of octaves}. An octave is a set of images of the same size where each image is a blurred version of the previous one. The next octave is obtained by downsampling the original image by a factor of $2$, we can crate octaves iteratively as long as the image can be downsampled.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{Figures/dog.png}
+    \caption{Difference of Gaussian}
+    \label{fig:dog}
+\end{figure}
+
+Having the filtered version of the image, we can create the Difference of Gaussian (DoG) by subtracting, for each pair, the blurred image from the previous one as shown in Figure \ref{fig:dog}.
+More generally, we are trying to \textit{highlight what survives} subtraction after subtraction, so we are looking for the maximum and minimum of the DoG.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{Figures/dogs2.png}
+    \caption{Selection of pixels among the DoGs.}
+    \label{fig:dogs2}
+\end{figure}
+
+To grab the most salient points from the DoGs, each pixel from a given DOG is compared to its 26 neighbors ($8$ in the same scale, $9$ above and $9$ below).
 A pixel is kept as a key-point only if it is greater (maximum) or smaller (minimum) than its neighbors.
-\\DOG function exhibits strong response to edges, but edges are not always good key-points, the selection of the points might be noisy, so we can apply a second order Taylor expansion with the derivative set to $0$. 
+
+DoG function exhibits strong response to edges, but edges are not always good key-points, the selection of the points might be noisy, so we can apply a second order Taylor expansion with the derivative set to $0$. 
 \[
     D(X)=D + \frac{\partial D^T}{\partial X}X + \frac{1}{2}X^T\frac{\partial^2D}{\partial X^2}X
 \]
