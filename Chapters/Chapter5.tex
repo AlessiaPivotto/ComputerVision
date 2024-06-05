@@ -1168,7 +1168,7 @@ We don't need to have the intrinsic parameters, we just need to take a snapshot 
 \end{figure}
 
 But what does it represent? \\
-For the moment we know the intrinsic parameters of the camera, this means that everything consists in roto-translations between cameras. In this case what we can say is that if we start from a \({}^WP\) what we have to understand is transformation that brings the coordinate system of one camera into the other, and this can be seen as a rotation and a translation:
+For the moment we know the intrinsic parameters of the camera, this means that everything consists of roto-translations between cameras. In this case what we can say is that if we start from a \({}^WP\) what we have to understand is transformation that brings the coordinate system of one camera into the other, and this can be seen as a rotation and a translation:
 
 \[
     Op\cdot[OO'\times O'p'] = 0
@@ -1204,13 +1204,13 @@ In this way the point we obtain through se essential can be mapped using another
 line \(l'\) in the other image.
 \\
 \\
-Now that we have understood that we can go back to this expression, \(p' {}^TFp=0\), we use the world as shared information to find the correspondences, but once we have computed the matrix we have found the relationship between the points in the two image planes: we looked at the world to understand where the matches occurred, but now we can somehow forget about it because we have a relationship that binds the two cameras.
+Now that we have understood that we can go back to this expression, \(p' {}^TFp=0\). We use the world as shared information to find the correspondences, but once we have computed the matrix we have found the relationship between the points in the two image planes: we looked at the world to understand where the matches occurred, but now we can "forget" about it because we have a relationship that binds the two cameras.
 \\
 \\
-The fundamental matrix is great because it gives the chance off determining the configuration of a system regardless of what are the coordinates in the real world, it means if we (rigidly) change the coordinates of the cameras in the real world, the same F will hold.
+The fundamental matrix is great because it gives the chance of determining the configuration of a system regardless of what are the coordinates in the real world, it means if we (rigidly) change the coordinates of the cameras in the real world, the same F will hold.
 \\
 \\
-The camera matrices \({}^1M\) and \({}^2M\) are used to determine a unique Fundamental Matrix \(F\) and while \({}^1M\) and \({}^2M\) are affected by rigid movements in the real world and \(F\) is not,  from a matrix \(F\) we can determine the camera matrices only to a multiplication factor of a certain matrix \(H\).
+The camera matrices \({}^1M\) and \({}^2M\) are used to determine a \textit{unique} Fundamental Matrix \(F\) and while \({}^1M\) and \({}^2M\) are affected by rigid movements in the real world and \(F\) is not, on the other hand from a matrix \(F\) we can determine the camera matrices only to \textit{up a multiplication factor} of a certain matrix \(H\).
 
 Given a fundamental matrix \(F\) for an object it's impossible to determine the absolute position in the world, the orientation and the scale. 
 However, up to a projective transformation, the ambiguity in reconstruction can be solved, the projected points don't change if
@@ -1233,7 +1233,7 @@ The planar homography \(H\) is a transformation that helps us make the mapping i
 
 In Figure \ref{fig:homo} we can see how we are mapping a ground plane on the image plane, they are roto-translated and scaled by certain transformation but we want to match these two planes in order to understand how things can be transferred from one domain to the other. This is the point where we go back to the real world.
 \\
-We have the fundamental matrix that deal with the camera configuration and we use the homography information to bind the views with the real world, we are talking about planes so in the same way as we did before what we do is to grab some \textit{control points}, easily seen by both planes, such that if we know how this transformation occurs we can determine the correspondence of a displacement in the image plane to the displacement in the real plane. We can know that a displacement of 5px corresponds to a displacement of 3m in the real world thanks to the Homography Matrix \(H\).
+We have the fundamental matrix that deals with the camera configuration and we use the homography information to bind the views with the real world, we are talking about planes so, in the same way as we did before, what we do is to grab some \textbf{control points}, easily seen by both planes, such that if we know how this transformation occurs we can determine the correspondence of a displacement in the image plane to the displacement in the real plane. We can know that a displacement of 5px corresponds to a displacement of 3m in the real world thanks to the Homography Matrix \(H\).
 \\\\
 This is the basic element in order to determine the trajectory of something that moves on the ground plane, the process is the following:
 \begin{itemize}
