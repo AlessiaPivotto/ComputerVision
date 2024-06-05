@@ -39,11 +39,18 @@ But what does it mean having a descriptor? It means that, for an object, we have
 
 Once we have our descriptor, we can pass it to a classifier, such as an SVM as you can see from the pipeline, to perform tasks like human detection. 
 \\
-Since this is not a machine learning course, we will just take a quick look at the Dalal and Triggs algorithm, a popular method for human detection available in OpenCV. This algorithm arranges the data in a $64\times128$ window, which is then divided into $8\times8$ pixel cells. These cells are grouped into structures called blocks, each consisting of 4 cells. For each cell, a histogram is created based on 9 different gradient directions.
+Since this is not a machine learning course, we will just take a quick look at the Dalal and Triggs algorithm, a popular method for human detection available in OpenCV:
 
-The final descriptor is formed by concatenating the feature elements from these cells. Each block is represented by a feature vector of 36 dimensions, derived from the 9 directions for each of the 4 cells. Notably, the algorithm takes blocks that overlap, this helps to have a smooth transition of the information across different blocks.
+\begin{itemize}
+    \item Arrange the data in a $64\times128$ window;
+    \item Divide the window into $8\times8$ pixel cells;
+    \item Blocks are formed by grouping $2\times2$ cells;
+    \item Each cell has a histogram of 9 directions;
+    \item The final descriptor is formed by concatenating the feature elements from these cells in each block, so a 36D vector.
+    \item Blocks overlap to allow a smoother transition across the different blocks. In a $64\times128$ window we can fit $7\times15$ blocks.
+\end{itemize}
 
-\begin{wrapfigure}[8]{r}{0.45\textwidth}
+\begin{wrapfigure}{r}{0.45\textwidth}
     \includegraphics[scale=0.3]{Figures/Performance.png}
     \caption{Performance of the HOG algorithm with different configurations.}
     \label{fig:Performance}
