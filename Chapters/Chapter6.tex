@@ -102,24 +102,24 @@ The next step is a procedure called the \textbf{creation of octaves}. An octave 
 \end{figure}
 
 Having the filtered version of the image, we can create the Difference of Gaussian (DoG) by subtracting, for each pair, the blurred image from the previous one as shown in Figure \ref{fig:dog}.
-More generally, we are trying to \textit{highlight what survives} subtraction after subtraction, so we are looking for the maximum and minimum of the DoG.
+More generally, we are trying to \textit{highlight what survives} subtraction after subtraction, so we are looking for the maximums and minimums of the DoG.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{Figures/dogs2.png}
-    \caption{Selection of pixels among the DoGs.}
+    \caption{Selection of pixels among the DoGs. The points in the right image correspond to the selected candidates. Magnitude and direction are already computed and represented as circles with an arrow although up to this point we are not interested in them.}
     \label{fig:dogs2}
 \end{figure}
 
-To grab the most salient points from the DoGs, each pixel from a given DOG is compared to its 26 neighbors ($8$ in the same scale, $9$ above and $9$ below).
-A pixel is kept as a key-point only if it is greater (maximum) or smaller (minimum) than its neighbors.
-
+To grab the most salient points from the DoGs, each pixel from a given DOG is compared to its 26 neighbors ($8$ in the same level, $9$ above and $9$ below) as shown in Figure \ref{fig:dogs2}.
+A pixel is kept as a key-point only if it is greater (maximum) or smaller (minimum) than all its neighbors.
+ 
 DoG function exhibits strong response to edges, but edges are not always good key-points, the selection of the points might be noisy, so we can apply a second order Taylor expansion with the derivative set to $0$. 
 \[
     D(X)=D + \frac{\partial D^T}{\partial X}X + \frac{1}{2}X^T\frac{\partial^2D}{\partial X^2}X
 \]
 Through this derivative we can obtain the maximum and minimum and construct a Hessian matrix $H$.
-The Hessian matrix is the one that told us if the point that we have found are actually good or not.
+The Hessian matrix is the one that tells us if the point that we have found are actually good or not.
 Having it we can construct the trace and the determinant of the matrix to define a threshold.
 \[
     H = \begin{bmatrix}
@@ -131,21 +131,29 @@ What we can check at this point is the ratio between the determinant and the tra
 If the ratio is greater than a certain threshold, we can consider the point as a key-point.
 So now consider $r = \frac{\alpha}{\beta}$, where $\alpha$ and $\beta$ are the largest and smallest eigenvalues in magnitude of the Hessian matrix.
 If \[ \frac{Tr(H)^2}{Det(H)} < \frac{(r+1)^2}{r} \] is satisfied, then the point is a key-point.
-\\
-But not only, we can also check the magnitude and the orientation of the gradient.
-This is because the eigenvalues of H are proportional to the curvature of the function D, so if the curvature is high in both dimensions, the gradient and orientation are computed.
+
+
+At his point we can also check the magnitude and the orientation of the gradient, this because the eigenvalues of H are proportional to the principal curvatures of the function D, so if the curvature is high in both dimensions, the gradient and orientation are computed.
 This step achieves the invariance to rotation:
+
 \[
     m(x,y) = \sqrt{(L(x+1,y)-L(x-1,y))^2 + (L(x,y+1)-L(x,y-1))^2}  
 \]
 \[
     \theta(x,y) = \arctan\left(\frac{L(x,y+1)-L(x,y-1)}{L(x+1,y)-L(x-1,y)}\right)
 \]
+
 The region within which $m$ and $\theta$ are computed is relative to the scale of the key-point, the higher the scale, the larger the computation region.
 \\\textit{NB: This is very helpful for us to match the points across different images with different scale and resolution.}
-\\
-Then, from the orientations, a 36-bin histogram is computed. If a key-point exhibits multiple peaks in the histogram that are higher than $80\%$ of the highest peak, a new key-point is instantiated with same location and scale.
-The 16x16 area (oriented according to the key-point orientation computed before) around the selected key-point is divided in $4\times4$ regions, and for each of them a histogram of the gradients (8bins) is computed.
-This turns out in a descriptor of 128 elements ($4\times4\times8$).
-\\
+ 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.3]{Figures/decrs.png}
+    \caption{Computation of the final descriptor.}
+    \label{fig:decrs}
+\end{figure}
+
+From the orientations, a 36-bin histogram is computed. If a key-point exhibits multiple peaks in the histogram that are higher than $80\%$ of the highest peak, a new key-point is instantiated with same location and scale.
+The 16x16 area (oriented according to the key-point orientation computed before) around the selected key-point is divided in $4\times4$ regions, and for each of them a histogram of the gradients (8bins) is computed, this turns out as a \textbf{descriptor of 128 elements} ($4\times4\times8$).
+
 Once that the descriptor is constructed, we can use it to search and match the key-points in different images. This is done usually by Nearest Neighbor searching, where the Euclidean distance between the descriptors is computed, or by using optimization algorithms like RANSAC. 
