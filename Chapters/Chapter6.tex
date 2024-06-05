@@ -10,15 +10,23 @@ The first algorithm we are going to introduce is the Histogram of Oriented Gradi
 We already know that gradient is what characterizes the edges of an image, where the edge means that we are dealing with the transition from a gray level to another one.
 In the Histogram of Oriented Gradients we can easily recognize the object in the image by looking at the vectors. The stronger the gradient, the brighter the arrow will be.
 While where the edges are weaker the arrow will be less intense.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/HOG.png}
+    \caption{Vector representation of the gradients in an image.}
+    \label{fig:HOG}
+\end{figure}
+
 So basically, what we are doing inside the picture is to divide it into small patches and look at the gradient of each pixel in the patch.
 Then we characterize those gradients using a direction information and a magnitude or intensity.
 At the end of the process we can construct a descriptor which can be used by next algorithms to recognize the presence of object in the image.
 \\But how do we get the descriptor?
 First of all, we need to divide the image into a number of rectangular or radial cells of arbitrary size.
-\\\textit{NB: It's good practice to have only one main edge component inside a cell.} 
-\\Then, for each pixel in the cell we compute the orientation of edges(\textit{Take a pixel, take his neighbor and see if there is an edge or not}).
-This means that each pixel can cast a weighted vote for an orientation histogram based on the values found in the gradient computation.
-In other words, each cell is represented through a 1D array (that corresponds to a single bin of the histogram) of gradient directions casting on the magnitude.
+\\\textit{NB: It's good practice to have only one main edge component inside a cell, so small cells are preferable.} 
+\\Then, for each pixel in the cell we compute the orientation of edge(\textit{Take a pixel, take his neighbor and see if there is an edge or not}), which gets subsequently quantized and put in one of the histogram's bins.
+This means that each pixel within the cell can cast a vote, weighted by the gradient magnitude, for an orientation histogram based on the values found in the gradient computation.
+In other words, each cell is represented through a 1D array (that corresponds to the bins of the histogram) that describes the gradient direction of the cell.
 In addition, intensity is locally normalized in the RGB or LAB color space using L1 or L2-norm, to account for illumination changes and shadowing especially when using larger areas (blocks), consisting of more cells.
 \\Just to wrap up, let's take a look to the pipeline:
 \begin{figure}[h]
