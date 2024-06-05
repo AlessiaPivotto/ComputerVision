@@ -374,11 +374,11 @@ In the toy example \ref{img:bayes} the person is equipped with a "door sensing d
 
 \begin{description}
 
-\item [a)] We can see how at the very beginning we have no idea where the person is, so our estimation about the position of the person is that it's anywhere in the area.
-\item [b)] What happens next is that the guy approaches a door we get a signal, but we only have that information, the person could be at any of the three positions, so our $p(z|x)$, the probability of a measurement given a state of the system, raises 3 peaks in correspondence of the three possible positions of the person, the doors. This becomes out a posteriori information which is something that we are storing and we need to propagate ahead  in time.
-\item [c)] We can propagate the a posteriori information ahead in time using the system model, in this case, the constant speed model, and we can see that the peaks are moving to the right, this is the prediction of the system. We also know that the uncertainty is increasing, this is due to the noise, for this reason the peaks are getting wider.
-\item [d)] At this point the door sensing device starts ringing again, meaning the guy has reached one of the other 3 doors. We don't know which one but given our model propagated in time, we can construct a new a posteriori taking into account $Bel^{-}(x_1)$ and the new measurement $p(z|x)$ and, while we still have some components due to noise, we are quite sure that the guy is at the second door.
-\item [e)] As we progress over time, we propagate the information, the uncertainty increases until at some point we get a new measurement.
+\item [(a)] We can see how at the very beginning we have no idea where the person is, so our estimation about the position of the person is that it's anywhere in the area.
+\item [(b)] What happens next is that the guy approaches a door we get a signal, but we only have that information, the person could be at any of the three positions, so our $p(z|x)$, the probability of a measurement given a state of the system, raises 3 peaks in correspondence of the three possible positions of the person, the doors. This becomes out a posteriori information which is something that we are storing and we need to propagate ahead  in time.
+\item [(c)] We can propagate the a posteriori information ahead in time using the system model, in this case, the constant speed model, and we can see that the peaks are moving to the right, this is the prediction of the system. We also know that the uncertainty is increasing, this is due to the noise, for this reason the peaks are getting wider.
+\item [(d)] At this point the door sensing device starts ringing again, meaning the guy has reached one of the other 3 doors. We don't know which one but given our model propagated in time, we can construct a new a posteriori taking into account $Bel^{-}(x_1)$ and the new measurement $p(z|x)$ and, while we still have some components due to noise, we are quite sure that the guy is at the second door.
+\item [(e)] As we progress over time, we propagate the information, the uncertainty increases until at some point we get a new measurement.
 \end{description}
 
 \subsection{The Kalman Filter}
@@ -566,7 +566,7 @@ To make the algorithm work we just have to select as starting value the initial 
 
 An assumption that we made is that the behavior of the system is linear, the question is whether this reflects or not what happens in the real world. Turns out it does not.
 
-The goal of the \textbf{Extended Kalman Filter EKF} is to adapt the Kalman Filter to linearize the equations that we used in the standard version. To define our state $x_k$ and measurement $z_k$ we are still using  $f_k$ and $h_k$, the only difference is that it's no more linear functions.
+The goal of the \textbf{Extended Kalman Filter (EKF)} is to adapt the Kalman Filter to linearize the equations that we used in the standard version. To define our state $x_k$ and measurement $z_k$ we are still using  $f_k$ and $h_k$, the only difference is that it's no more linear functions.
 
 \[
   x_k = f_k(x_{k-1}, w_{k-1})  
@@ -692,10 +692,10 @@ At this point we \textbf{resample} again the particles.
     \label{img:pf}
 \end{figure}
 \begin{itemize}
-    \item[a)] At the beginning we have no idea what kind of behavior the object will have, it might be the black arrow, but we don't know, so we draw a set of samples in pretty much every direction and these samples will have the same weight at the very beginning.
-    \item[b)] We observe a movement (blue arrow) and we take a measurement to know what are the particles that better approximate the object movement.
-    \item[c)] Some of them are close, some are useless, we assign a weight to each particle based on the goodness of the approximation.
-    \item[d)] Now instead of drawing new particles like in step $a)$ we draw more points in a certain direction, this will lead us to be more accurate, taking into account non-linear and non-gaussian behaviors but still keeping in the set of points some "outliers" in case the object decides to move in a different direction.
+    \item[a.] At the beginning we have no idea what kind of behavior the object will have, it might be the black arrow, but we don't know, so we draw a set of samples in pretty much every direction and these samples will have the same weight at the very beginning.
+    \item[b.] We observe a movement (blue arrow) and we take a measurement to know what are the particles that better approximate the object movement.
+    \item[c.] Some of them are close, some are useless, we assign a weight to each particle based on the goodness of the approximation.
+    \item[d.] Now instead of drawing new particles like in step $a)$ we draw more points in a certain direction, this will lead us to be more accurate, taking into account non-linear and non-gaussian behaviors but still keeping in the set of points some "outliers" in case the object decides to move in a different direction.
 \end{itemize}
 
 
@@ -707,9 +707,9 @@ At this point we \textbf{resample} again the particles.
 \end{figure}
 
 \begin{itemize}
-    \item [a)] At the beginning we select a certain distribution of the point which to us are potential solutions to the problem, but we have no idea where the guy can be. Any sample could potentially be a solution.
-    \item [b)] By the time the device rings it means we are close to one among the 3 doors. What happens is that instate of creating a continuous distribution, we assign a higher priority to the samples that are close to the doors, graphically we are increasing the bars of the points in proximity to the doors, and we assign less weight to the samples outside the range of the doors.
-    \item [c)] Given that we have assigned higher probability to these points, in the next step we draw more samples in the areas of higher probability, but before doing that, we need to propagate the information over time. As a result, we will have high density areas shifted from the peaks computed at step $(b)$ according to our model. The fact that we still have some sparse samples in the areas of low probability makes the algorithm more robust, as we would be able to "catch" the person in case he decided to move in a different direction compared to our prediction, in case this happened the redrawing of the samples would be done accordingly.
-    \item [d)] At a certain point he approaches the second door. Now we have again evidence that the guy is at one of the three locations, as a consequence we increase the probabilities of the samples in proximity of the doors. 
-    \item [e)] In this step we redraw the particles giving higher priority to the locations where we collected some evidence and we propagate according to the model.
+    \item [(a)] At the beginning we select a certain distribution of the point which to us are potential solutions to the problem, but we have no idea where the guy can be. Any sample could potentially be a solution.
+    \item [(b)] By the time the device rings it means we are close to one among the 3 doors. What happens is that instate of creating a continuous distribution, we assign a higher priority to the samples that are close to the doors, graphically we are increasing the bars of the points in proximity to the doors, and we assign less weight to the samples outside the range of the doors.
+    \item [(c)] Given that we have assigned higher probability to these points, in the next step we draw more samples in the areas of higher probability, but before doing that, we need to propagate the information over time. As a result, we will have high density areas shifted from the peaks computed at step $(b)$ according to our model. The fact that we still have some sparse samples in the areas of low probability makes the algorithm more robust, as we would be able to "catch" the person in case he decided to move in a different direction compared to our prediction, in case this happened the redrawing of the samples would be done accordingly.
+    \item [(d)] At a certain point he approaches the second door. Now we have again evidence that the guy is at one of the three locations, as a consequence we increase the probabilities of the samples in proximity of the doors. 
+    \item [(e)] In this step we redraw the particles giving higher priority to the locations where we collected some evidence and we propagate according to the model.
 \end{itemize}
