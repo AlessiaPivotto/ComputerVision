@@ -1231,7 +1231,7 @@ The planar homography \(H\) is a transformation that helps us make the mapping i
     \label{fig:homo}
 \end{figure}
 
-In Figure \ref{fig:homo} we can see how we are mapping a ground plane on the image plane, they are roto-translated and scaled by certain transformation but we want to match these two planes in order to understand how things can be transferred from one domain to the other. This is the point where we go back to the real world.
+In Figure \ref{fig:homo} we can see how we are mapping a ground plane on the image plane, they are roto-translated and scaled by certain transformation, but we want to match these two planes in order to understand how things can be transferred from one domain to the other. This is the point where we go back to the real world.
 \\
 We have the fundamental matrix that deals with the camera configuration and we use the homography information to bind the views with the real world, we are talking about planes so, in the same way as we did before, what we do is to grab some \textbf{control points}, easily seen by both planes, such that if we know how this transformation occurs we can determine the correspondence of a displacement in the image plane to the displacement in the real plane. We can know that a displacement of 5px corresponds to a displacement of 3m in the real world thanks to the Homography Matrix \(H\).
 \\\\
