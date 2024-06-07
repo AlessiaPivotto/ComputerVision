@@ -76,35 +76,53 @@ In such cases, only displacements of the borders are detectable and only in the 
     \caption{Aperture}
 \end{figure}
 \subsection{Optical Flow}
+Optical flow describes the apparent motion of objects between consecutive frames. It is the combination of the motion of the object and the motion of the camera.
 At this point things look complicated... but we can simplify the problem by making some assumptions:
 \begin{itemize}
     \item Object illumination does not change in $[t, t + dt]$;
     \item Distances do not change significantly;
     \item Each point $[x,y]$ is shifted in $[x + dx, y + dy]$.
 \end{itemize}
-\textit{NB: This is not true in real video but good enough for a first approximation.}
+\textit{NB: This is not true in real video but good enough for a first approximation.}\\
 \\\textbf{Optical flow equation}
-\\\textit{Hypothesis:} object points keep the same intensity over time\\
+\\
+
+\textit{Hypothesis:} object points keep the same intensity over time\\
+
 \[
     \psi(x,y,t) = \psi(x + dx, y + dy, t + dt)
 \]
-We can use the Taylor expansion\[f(x + \Delta x) =f(x)+f'(x)\Delta x\] to approximate the function(for small $dx, dy, dz$):
+
+We can use the Taylor expansion\[f(x + \Delta x) =f(x)+f'(x)\Delta x\] 
+
+to approximate the function(for small $dx, dy, dz$):
+
 \[
     \psi(x + dx, y + dy, t + dt) \approx \psi(x,y,t) + \frac{\partial \psi}{\partial x}dx + \frac{\partial \psi}{\partial y}dy + \frac{\partial \psi}{\partial t}dt
 \]
+
 Comparing the two we obtain that 
+
 \[
     \frac{\partial \psi}{\partial x}dx + \frac{\partial \psi}{\partial y}dy + \frac{\partial \psi}{\partial t}dt = 0
 \]
+
 Then, dividing by $dt$ and rearranging the terms we obtain the optical flow equation:
+
 \[
-    \frac{\partial \psi}{\partial x}v_x + \frac{\partial \psi}{\partial y}v_y + \frac{\partial \psi}{\partial t} = 0 \quad \text{or} \quad \nabla \psi ^{T} \cdot \mathbf{v} + \frac{\partial \psi}{\partial t} = 0
+    \frac{\partial \psi}{\partial x}v_x + \frac{\partial \psi}{\partial y}v_y + \frac{\partial \psi}{\partial t} = 0 
 \]
-\textit{NB: if $v=0 \Rightarrow$ we have no variation.}
+
+or, in a better form:
+
+\[
+    \quad \nabla \psi ^{T} \cdot \mathbf{v} + \frac{\partial \psi}{\partial t} = 0
+\]
+\textit{NB: if $v=0 \Rightarrow$ we have no variation.}\\
 \\\textbf{Comments:}
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.35]{Figures/OpticalFlow.png}
+    \includegraphics[scale=0.45]{Figures/OpticalFlow.png}
     \caption{Optical Flow}
 \end{figure}
 \section{Motion detection in practice}
