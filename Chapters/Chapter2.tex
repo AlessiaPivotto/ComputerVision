@@ -263,6 +263,55 @@ The \textbf{resolving power} of a camera is the ability to distinguish between t
 \end{figure}
 \end{multicols}
 
-
-
 Where $\Delta$ is the pixel spacing: the distance between two pixels/lines in the sensor. The reason why we divide by 2 is that we need one separating row of pixels between two lines.
+
+\textbf{Example}
+\\
+% \begin{wrapfigure}[115]{r}{0.3\textwidth}
+%     \includegraphics[scale=0.1]{Figures/sensor.png}
+% \end{wrapfigure}
+Camera \(10Mpx \; \rightarrow \; 4000 cols \times 2500 rows \) \\
+Full frame sensor \(\rightarrow \; 36mm \times 24mm \)
+
+\[
+    R_p = \frac{1}{2\Delta} \;\;\; \Delta = \frac{24}{2500} \approx 0.01mm 
+\]
+\[
+    R_p = \frac{1}{2 * 0.01} = 50 \; \frac{lines}{mm}    
+\]
+
+This means our sensor can distinguish 50 lines per millimeter, now we want to place our sensor in a camera in the real world and understand how well we can perceive details. Our setup is the following:\\
+Focal length \(f = 50mm\) \\
+Distance from the object \(L = 50m = 5000mm\) \\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/rp.png}
+    \caption{On the left we have a wall with some stripes, on the right we have our camera and sensor.}
+    \label{fig:rp}
+\end{figure}
+
+We can see we have an angle \(\theta\) separating the rays coming from two adjacent lines. In order to distinguish two lines, the spacing between pixel lines must be at least \(2\Delta\), we can write:
+
+\[
+    2\Delta = f \sin(\theta)
+\]
+
+Since the angle is very small, the sine can be approximated to the angle itself. We can now calculate:
+
+\[
+    2\Delta \approx f\theta = 50\theta
+\]
+
+We can now determine the angle \(\theta\):
+
+\[
+    \theta = \frac{\Delta}{25} \approx 4 * 10^{-4} rad
+\]
+Now that we have the angle and we know the distance from the object to the camera, we can calculate what is $M$, the distance between two lines on the wall:
+
+\[
+    M \approx L\theta = 5000 * 4 * 10^{-4} = 2mm    
+\]
+
+With this expression we are saying that, given this setup, I can distinguish two lines which are spread vertically by a quantity no smaller than $2mm$.
