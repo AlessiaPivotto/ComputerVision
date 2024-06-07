@@ -383,7 +383,7 @@ In the toy example \ref{img:bayes} the person is equipped with a "door sensing d
 
 \subsection{The Kalman Filter}
 
-The idea of the Kalman filter goes back to Bayesian tracking. We take a prediction, validate that prediction with a measurement and knowing that both prediction and measurement are subject to noise, we can combine them in a way that we can minimize the error in the estimation of the state of the system.
+The idea of the Kalman filter goes back to Bayesian tracking. We take a prediction, validate that prediction with a measurement and knowing that both prediction and measurement are subject to noise, we can combine them in a way so that we can minimize the error in the estimation of the state of the system.
 \\\\
 We start from
 \[
@@ -419,24 +419,24 @@ We need to come up with a second measurement $z_2$ with its variance, make a new
 In the first equation we rely on the information we collected before, and we add a displacement to this quantity to get the new prediction $\hat{x}_2$ by taking into account some additional parameters. Capital K is what we call the \textbf{Kalman gain}, it's a multiplying factor which weights the distance between the second measurement $z_2$ and the previous estimate $\hat{x}_1$: we know that from the previous estimate and the new measurement we have an error, and so we use this error information together with the Kalman gain to push ahead our estimation. The Kalman Gain is a combination of the variances we are collecting. It's basically a weighted average between the prediction and the measurement, the weight is given by the ratio of the variances. 
 \\
 
-The process is rather simple because be basically have to iterate between these two steps, the first one is prediction and the second one is measurement: first we predict the new state and the correspondent uncertainty $\sigma^2$, then we correct using the new measurement $z$ for which we know there's a variance associated $\sigma^2_z$, this piece of information is the one that will guide us torwards the next prediction and variance.
+The process is rather simple because we basically have to iterate between these two steps, the first one is prediction and the second one is measurement: first we predict the new state and the correspondent uncertainty $\sigma^2$, then we correct using the new measurement $z$ for which we know there's a variance associated $\sigma^2_z$, this piece of information is the one that will guide us torwards the next prediction and variance.
 \\
 
 The Kalman Filter is also a computationally efficient solution to the least squares method. With LSM, we are trying to minimize an error, similarly with Kalman's formulation what we are trying to do is to find the configuration of the Kalman Gain (which is also the only parameter we can tune) to make sure that the result obtained from the prediction is as close as possible to the real position of the object.
 \\
 
-Assuming that the noise components $w_k$ and $v_k$ are normal distributions, the overall the state and measurement model can be expressed through the following equations:
+Assuming that the noise components $w_k$ and $v_k$ are normal distributions, the overall state and measurement model can be expressed through the following equations:
 
 \[
     x_k = A_kX_{k-1}+B_kU_k+w_{k-1}    
 \]
 \[
-    z_k = H_kX_k+v_k   
+    z_k = H_kx_k+v_k   
 \]
 
-Looking at the measurement equation we can see that the measurement is something that is going to happen on the basis of $x_k$ (we previously mentioned how $z_k$ is a function of $x_k$ and the noise) and this function is nothing but a multiplication of the measurement matrix $H_k$ plus the noise contribution $v_k$.
+Looking at the measurement equation we can see that the measurement is something that is going to happen on the basis of $x_k$ (we previously mentioned how $z_k$ is a function of $x_k$ and the noise) and this function is nothing but a multiplication of the measurement matrix $H_k$ and $x_k$, plus the noise contribution $v_k$.
 
-Similarly with the state information $x_k$ we have the system model $A_k$ which projects the state of the system at time $k-1$ forward in time. In this formulation we have an additional term $B_kU_k$ which is the control input: we can model additional information that we can inject into the system to guide the state of the system in a certain direction, for instance if we directly press gas on a car or if we adjust the trajectory of a missile.
+Similarly, for the state information $x_k$ we have the system model $A_k$ which projects the state of the system at time $k-1$ forward in time. In this formulation we have an additional term $B_kU_k$ which is the control input: we can model additional information that we can inject into the system to guide the state of the system in a certain direction, for instance if we directly press gas on a car or if we adjust the trajectory of a missile.
 \\
 
 The noise in the process is usually modeled as a Gaussian distribution with zero mean and covariance matrix $Q$ and $R$:
@@ -445,10 +445,10 @@ The noise in the process is usually modeled as a Gaussian distribution with zero
     p(w) = N(0, Q)
 \]
 \[
-    p(w) = N(0, Q)
+    p(v) = N(0, R)
 \]
 
-The error is one of the driving forces in our model, a very relevant parameter, in fact we have seen in Equation \ref{eq:kalman} how if there's no noise the Kalman Gain would disappear, not only that, if the measurement is correct and the error zero we wouldn't be able to project ahead in time the state of the system.
+The error is one of the driving forces in our model, a very relevant parameter, in fact we have seen in Equation \ref{eq:kalman} how, if there's no noise, the Kalman Gain would disappear. Not only that, if the measurement is correct and the error zero we wouldn't be able to project ahead in time the state of the system.
 
 \subsection{Predict-and-correct stages}
 
@@ -460,7 +460,7 @@ This gives us the chance to have an \textbf{a priori estimate} of the state of t
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Figures/prior.png}
-    \caption{The minus means that it is an a priori information, modeled via our current state and our a priori estimate, this error allows us to make an a posteriori estimate $\hat{x}_k$ that will be used to estimate the new error and so on.}
+    \caption{The minus means that it is an a priori information, modeled via our current state and our a priori estimate. This error allows us to make an a posteriori estimate $\hat{x}_k$ that will be used to estimate the new error and so on.}
     \label{img:prior}
 \end{figure}
 

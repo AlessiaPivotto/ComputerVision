@@ -161,7 +161,7 @@ If FD is non-null, a change has occurring. Change can be due to noise, so a thre
 \[
     z_{k, k-1}(x_1, x_2)= \begin{cases} 1 & \text{if } |FD_{k, k-1}(x_1, x_2)| > \tau \\ 0 & \text{otherwise} \end{cases}
 \]
-\textit{NB: a good strategy to avoid noise is to use the so-called \underline{cumulative difference.}}
+A good strategy to avoid noise is to use the so-called \underline{cumulative difference.}
 \subsection{Frame differencing}
 The technique involves subtracting the current image from the previous one to produce a binary image. 
 In this binary image, white pixels indicate areas where changes have occurred between the two frames. 
@@ -191,18 +191,16 @@ This method offers several noteworthy considerations:
 \end{itemize}
 Regarding the last point, we can observe the following:
 \[D(N) = ||I(t)-I(t+N)||\]
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{0.6\textwidth}
         \includegraphics[scale=0.5]{Figures/FrameDifferencing.png} 
     \end{subfigure}
     \begin{subfigure}{0.4\textwidth}
         \includegraphics[scale=0.5]{Figures/DifferencingDiagram.jpeg}    \end{subfigure}
         \label{fig:image2}
-\end{figure}\\
-The goal in this case is to increase the value of $N$ to better understand the motion. Indeed, as you can see from the image above, the difference between 3 or even 5 frames is pretty good.
-So, the higher the value of $N$, the better the understanding of the motion, the contour of the object becomes clearer. Until a certain point, after which we have that the object is doubled.
-Doubling is not good because you can't tell which one is the real one. But don't worry, we have a solution for this problem $\Rightarrow$ AND between 2 different frames, so I understand the real movement between the departure and the arrival.
-\\\textit{NB: It doesn't work when we have more than one object moving.}
+    \caption{The contour of the object becomes clearer, until it doubles on departure and arrival points, doubling is not good because you can't tell which one is the real one. To solve this problem we can  AND between 2 different frames and get as a result the real movement.}
+\end{figure}
+
 \subsection{Background subtraction}
 In this method, we establish a static image as the background, typically obtained when no objects are in motion. 
 Subsequently, each incoming frame is compared against this background to discern moving entities within the scene. 
