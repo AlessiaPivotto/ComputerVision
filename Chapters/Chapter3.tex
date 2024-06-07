@@ -166,7 +166,7 @@ If FD is non-null, a change has occurring. Change can be due to noise, so a thre
 The technique involves subtracting the current image from the previous one to produce a binary image. 
 In this binary image, white pixels indicate areas where changes have occurred between the two frames. 
 A crucial assumption for this method to work effectively is that the camera must remain stationary throughout the process. 
-The essence of this method is to continuously update the background in each frame to accurately detect changes.
+The essence of this method is to continuously update the background in each frame (cumulative difference), this means that this method doesn't have any form of memory, and it's not able to detect the motion of an object that stops moving.
 \\For example:
 \begin{verbatim}
     B(0) = I(0);
@@ -199,9 +199,10 @@ Regarding the last point, we can observe the following:
         \includegraphics[scale=0.5]{Figures/DifferencingDiagram.jpeg}    \end{subfigure}
         \label{fig:image2}
 \end{figure}\\
-The contour of the object becomes clearer, until it doubles: departure and arrival points.
-\\\textit{NB: doubling is not good because you can't tell which one is the real one.}
-\\Solution $\Rightarrow$ AND between 2 different frames(so I understand the real movement).
+The goal in this case is to increase the value of $N$ to better understand the motion. Indeed, as you can see from the image above, the difference between 3 or even 5 frames is pretty good.
+So, the higher the value of $N$, the better the understanding of the motion, the contour of the object becomes clearer. Until a certain point, after which we have that the object is doubled.
+Doubling is not good because you can't tell which one is the real one. But don't worry, we have a solution for this problem $\Rightarrow$ AND between 2 different frames, so I understand the real movement between the departure and the arrival.
+\\\textit{NB: It doesn't work when we have more than one object moving.}
 \subsection{Background subtraction}
 In this method, we establish a static image as the background, typically obtained when no objects are in motion. 
 Subsequently, each incoming frame is compared against this background to discern moving entities within the scene. 
