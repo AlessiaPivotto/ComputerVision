@@ -87,27 +87,27 @@ At this point things look complicated... but we can simplify the problem by maki
 \\\textbf{Optical flow equation}
 \\
 
-\textit{Hypothesis:} object points keep the same intensity over time\\
+\textit{Hypothesis:} object points keep the same intensity even though they are subject to a displacement along x, y and over time:
 
 \[
     \psi(x,y,t) = \psi(x + dx, y + dy, t + dt)
 \]
 
-We can use the Taylor expansion\[f(x + \Delta x) =f(x)+f'(x)\Delta x\] 
+We can use the Taylor expansion that says \[f(x + \Delta x) =f(x)+f'(x)\Delta x\] 
 
-to approximate the function(for small $dx, dy, dz$):
+to approximate the function(for small $dx, dy, dz$), in this way we obtain:
 
 \[
     \psi(x + dx, y + dy, t + dt) \approx \psi(x,y,t) + \frac{\partial \psi}{\partial x}dx + \frac{\partial \psi}{\partial y}dy + \frac{\partial \psi}{\partial t}dt
 \]
 
-Comparing the two we obtain that 
+Comparing the two we can delete $\psi(x,y,t)$ that appears in both sides and obtain: 
 
 \[
     \frac{\partial \psi}{\partial x}dx + \frac{\partial \psi}{\partial y}dy + \frac{\partial \psi}{\partial t}dt = 0
 \]
 
-Then, dividing by $dt$ and rearranging the terms we obtain the optical flow equation:
+Then, dividing by $dt$ and rearranging the terms we achieve the optical flow equation:
 
 \[
     \frac{\partial \psi}{\partial x}v_x + \frac{\partial \psi}{\partial y}v_y + \frac{\partial \psi}{\partial t} = 0 
@@ -118,6 +118,7 @@ or, in a better form:
 \[
     \quad \nabla \psi ^{T} \cdot \mathbf{v} + \frac{\partial \psi}{\partial t} = 0
 \]
+
 \textit{NB: if $v=0 \Rightarrow$ we have no variation.}\\
 \\\textbf{Comments:}
 \begin{figure}[H]
