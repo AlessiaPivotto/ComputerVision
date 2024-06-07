@@ -262,14 +262,15 @@ This comparison enables the detection of moving objects against the relatively s
 To initialize the background model, a training sequence may be used, typically consisting of frames depicting an empty or static scene. 
 This step ensures the accurate initialization of the Gaussian parameters.
 \\
-In essence, Gaussian average background modeling shares similarities with adaptive background subtraction but offers enhanced stability. 
+In essence, Gaussian average background modeling shares similarities with adaptive background subtraction but offers enhanced stability (because instead using something related to the previous model, that basically consists of an average of frames, we use the mean value of a Gaussian function that are more stable).  
 By leveraging statistical properties to represent the background, this method provides a robust framework for detecting moving objects in various dynamic environments.
 \[
     \mu_{t} = \alpha I_t + (1-\alpha)\mu_{t-1}
 \]
 The advantages are its computational efficiency and the low memory requirements.
-Pixel goes to foreground if: $|I_t - \mu_t| > k \sigma_t$
-Quality depends on the application, a too high value can lead to a slow adaptation to changes, a too low value can lead to a noisy background. Slow update = slow response to changes.
+Pixel goes to foreground if: $|I_t - \mu_t| > k \sigma_t$.
+
+Quality depends on $\alpha$, a too high value can lead to a slow adaptation to changes, a too low value can lead to a noisy background. Slow update = slow response to changes.
 \subsubsection{Improving the Gaussian average}
 To improve the Gaussian average we can use a binary operator to update values selectively, so only background values. M=1 if the pixel is foreground and 0 if it's background. This produces a more stable model and prevents pixels from being considered as background when they are not.
 \[
