@@ -81,7 +81,7 @@ At this point things look complicated... but we can simplify the problem by maki
 \begin{itemize}
     \item Object illumination does not change in $[t, t + dt]$;
     \item Distances do not change significantly;
-    \item Each point $[x,y]$ is shifted in $[x + dx, y + dy]$.
+    \item Each point $[x,y]$ is shifted in $[x + dx, y + dy]$, we only assume movement to be translational.
 \end{itemize}
 \textit{NB: This is not true in real video but good enough for a first approximation.}\\
 \\\textbf{Optical flow equation}
@@ -120,7 +120,7 @@ or, in a better form:
 \]
 \textit{NB: if $v=0 \Rightarrow$ we have no variation.}\\
 \\\textbf{Comments:}
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.45]{Figures/OpticalFlow.png}
     \caption{Optical Flow}
