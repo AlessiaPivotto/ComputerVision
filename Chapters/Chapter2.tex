@@ -168,13 +168,18 @@ An element is not visible if the angle between the normal and the light directio
 Generally, the pixel in image $I(r,c)$ depends on the light source direction and the normal of the element direction.
 
 \section{Remarks on cameras and lenses}
-Cameras use lenses rather than pinholes, that do not exist in real life. This introduces the concept of focus. 
+Cameras use lenses rather than pinholes, that do not exist in real life. This introduces the concept of \textbf{focus}. 
 According to the thin lens equation, an object is in focus if the distance from the center of the camera to the image plane satisfies certain conditions. 
-If this is not the case, it leads to aberrations, which are deviations from the ideal imaging process.
+If this is not the case, it leads to \textbf{aberrations}, which are deviations from the ideal imaging process.
 \\
 While we usually assume that the object is in focus, it's important to understand the implications of this assumption. 
 By adhering to the principles of the thin lens equation, we ensure that the camera captures images with minimal aberrations, resulting in clear and accurate representations of the scene.
 \subsection{Typical issues with lenses}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+    \includegraphics[scale=0.4]{Figures/ops.png}
+\end{wrapfigure}
+
 \textbf{Spherical aberration:} 
 \\The lens does not focus light rays that strike the lens far from the center. This means that the image is not sharp (causes blur).
 In simple terms the lens does not focus all the rays in the same point, so the light is reflected wrongly because the lens is not properly manufactured.
@@ -185,7 +190,7 @@ In simple terms the lens does not focus all the rays in the same point, so the l
 \\\textbf{Barrel distortion:}
 \\The focal length is too short or the lens is too wide, so the image is distorted and the lines are not straight anymore.
 In simple terms, the lens is able to grasp a wide area of view. To compensate we can use a software to correct the distortion. 
-\\\textit{NB: Crooked lines can give problems in path analysis\dots distortion problem $\Rightarrow$ that's why modern cells have more lenses.}
+\textit{NB: Crooked lines can give problems in path analysis\dots distortion problem $\Rightarrow$ that's why modern cellphones have more lenses.}
 \subsection{Focus}
 In contrast to the abstract pinhole model, real-life cameras employ lenses. These lenses have the remarkable ability to converge light rays to a single point, allowing for focused images. 
 The relationship between the distance from the center of the camera to the image plane adheres to the thin lens equation.
