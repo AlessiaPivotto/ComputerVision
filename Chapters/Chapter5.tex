@@ -7,14 +7,11 @@ In this chapter we will introduce the basic concepts of geometry that will allow
 Typically, we represent a point (pixel) as a set of coordinates:
 
 \[ P = [ x, y ]^t = \begin{bmatrix} x \\ y \end{bmatrix}\]
-\\
 Often is convenient to use homogeneous coordinates:
 \[ P = [ x, y ]^t = [sx, sy, s]\]
-
 Where \( s \) is a scaling factor, commonly set to 1.0, this will help us when doing transformations.
 
 \[ P = [ x, y ]^t = [x, y, 1]\]
-
 Sometimes we can also omit the " \(^t\) " and write the coordinates as a row vector.
 
 \section{Affine Transformations}
@@ -223,7 +220,7 @@ We can write the formula above as a matrix multiplication:
     \end{bmatrix}
 \]
 \\
-So to obtain the transformation matrix we need to solve a system of equations with 4 unknowns, the 4 parameters we mentioned before. To obtain 4 equations we can use 2 points called control points (obtaining \(x_1, y_1\) and \(x_2, y_2\)), such points must be clearly visible both in the image and in the real world and must be very clear in both planes. Once we have found these two points we are able to map these coordinates on the image plane.
+So to obtain the transformation matrix we need to solve a system of equations with 4 unknowns, the 4 parameters we mentioned before. To obtain 4 equations we can use 2 points called control points (obtaining \(x_1, y_1\) and \(x_2, y_2\)), such points must be clearly visible both in the image and in the real world planes. Once we have found these two points we are able to map these coordinates on the image plane.
 \\
 We keep referring to the transformations in Figure \ref{fig:comb} as \(2D \rightarrow 2D \) transformations, this implies we have a ground plane on which we are working on and a camera plane, the camera plane is the image plane that might be scaled, translated with respect to the ground plane. At the moment we are not considering a rotation of the camera, we are assuming the image plane is parallel to the ground plane.
 
@@ -259,7 +256,7 @@ Starting from the previous transformations we can see that the 3 matrices are of
 
 This transformation is the set of coefficients, we don't know exactly the contribution of each of the 3 matrices, but it results in a certain transformation which is represented by what is called in general the \textbf{Camera Matrix}. It tells us exactly how to move from a certain plane where \(x, y\) lie to where they will be in the camera plane, and vice versa.
 \\
-We see that we have 6 coefficients instead of the 4 parameters, to determine them it's the same as we did before, with the exception that instead of 2 we need 3 matching control points which we know the position of in the real world and in the image plane. However, finding these points might now be trivial,
+We see that we have 6 coefficients instead of the 4 parameters, to determine them it's the same as we did before, with the exception that instead of 2 we need 3 matching control points for which we know the position of in the real world and in the image plane. However, finding these points might now be trivial,
 the main difficulty is being precise in picking them.
 \\
 What is usually done is, instead of using the minimum required control points, picking up more points with the hope that on average we are making a very small mistake, averaging out the errors. This way we might end up with 12, 20 equations and 6 unknowns (an \textit{over-determined system}), our goal is to find the 6 equations that minimize the error. We use the \textit{least-squares method} to find the best solution that minimizes the error.
@@ -300,7 +297,7 @@ What we are trying to get is to find the best configuration of these coefficient
 
 The solution is found by computing the minimum of the error, or in other terms compute the \textit{partial derivative} with respect to each unknown and set them to zero, making sure the error between the result of the transformation and the observed points is minimized.
 
-And this is how the whole thing works, how we determine the \textbf{2D camera matrix} used to map the real world plane to the camera plane. Remember that the reference are two different planes one on top of the other, we don't have full 3D rotations \textit{yet}.
+And this is how the whole thing works, how we determine the \textbf{2D camera matrix} used to map the real world plane to the camera plane. Remember that we are talking about two different planes one on top of the other, we don't have full 3D rotations \textit{yet}.
 
 \section{Going 3D}
 
@@ -356,7 +353,7 @@ Now we have a system for each camera so a triplet of coordinates for Camera 1 an
 
 We can see all these 4 systems linked by a transformation, which is nothing more than a rotation-translation to go from any of the 3 systems to the other. At the end it means that we need to deal with a rotation matrix and a translation vector.
 \({}^wP = T R {}^mP\) and same for \({}^1P\) and \({}^2P\).
-\\Where T is a translation vector and R a rotation matrix. It must be noted that the point seen from the first camera and the second camera might be different from the second camera, both in terms of coordinates and in the sense that Camera 1 and Camera 2 might have opposite views, meaning that there might be no one-to-one mapping of all points, there's a supset of points that's visible from both cameras, we'll be able to reconstruct the 3D position only for the points visible from both cameras.
+\\Where T is a translation vector and R a rotation matrix. It must be noted that the point seen from the first camera might be different from the second camera, both in terms of coordinates and in the sense that Camera 1 and Camera 2 might have opposite views, meaning that there might be no one-to-one mapping of all points. If there's a superset of points that's visible from both cameras, we'll be able to reconstruct the 3D position only for the points visible from both cameras.
 \\\\\textit{NB: The notation for the next section will be \({}^kP_j\) where \(k\) is the camera number and \(j\) is the point number.}
 
 \subsection{3D Translation}
@@ -532,7 +529,7 @@ Our goal is to then put everything together in a single matrix, this is the gene
     \end{bmatrix}   
 \]
 
-It's some sort of camera matrix, but at this point we are dealing with something that return 3D coordinates and unfortunately doesn't help us much because at the end what we have is an image plane where the coordinates are only rows and columns, \(x, y\). It means that we need to further modify this matrix in order to end up with a representation that 2D. We need to add to our transformation what are the proprieties of the camera, that give us the opportunity to move from the 3D coordinates (in our case the world \(W\)) to a 2D plane \(I\).
+It's some sort of camera matrix, but at this point we are dealing with something that return 3D coordinates and unfortunately doesn't help us much because at the end what we have is an image plane where the coordinates are only rows and columns, \(x, y\). It means that we need to further modify this matrix in order to end up with a representation that's 2D. We need to add to our transformation what are the proprieties of the camera, this gives us the opportunity to move from the 3D coordinates (in our case the world \(W\)) to a 2D plane \(I\).
 
 \[
     {}^IP = {}^I_W C^WP
@@ -649,7 +646,7 @@ The conversion from mm to pixel consists of a scaling factor related to the real
 
 The minus sign is due to the fact that the origin is usually bottom left but in the image it's top left, so we flip the coordinates.
 \\
-Overall in order to get the position rows and columns on the image plane we need to go from 3D generic world coordinates to the camera coordinates than we need the intrinsic information of the camera and then we need to discretize the pixels.
+Overall in order to get the position rows and columns on the image plane we need to go from 3D generic world coordinates to the camera coordinates, then we need the intrinsic information of the camera, and then we need to discretize the pixels.
 
 \[
   [p_r, p_c]^T = {}^IP = {}^I_F S^F_C \varPi (f)^C_W TR(\alpha, \beta, \gamma, t_x, t_y, t_z) {}^WP
