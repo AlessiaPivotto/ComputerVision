@@ -278,7 +278,7 @@ To improve the Gaussian average we can use a binary operator to update values se
 \subsection{Mixture of Gaussians}
 
 With most techniques new objects are sooner or later absorbed in the background. This is because there are changes that appear and disappear faster than the update rate, such as tree leaves, rain, snow, water of a fountain, etc.
-It can be that the same pixel represents at different time' instants tree leaves and sky/building behind.
+It can be that the same pixel represents at different time instants tree leaves and sky/building behind.
 Unlike single Gaussian models, MoG represents the background as a combination of multiple Gaussians (\textbf{K} Gaussians), allowing better representation of complex scenes. 
 \[
     p(x_t) = \sum_{i=1}^{K} w_{i,t} \mathcal{N}(x_t, \mu_{i,t}, \Sigma_{i,t})
@@ -287,7 +287,7 @@ Each of them is used to model a foreground or background object. Theoretical mod
 \\
 Practically, the theoretical complexity is simplified by assuming independence among components and uniform variance across dimensions (\textit{NB: this means that collapse to $\sigma^2$}), leading to a diagonal covariance matrix. 
 \\Let's take a deeper look\dots\\
-$w_[i,t] = $ weight for the current Gaussian, $\mu_{i,t} = $ mean for the current Gaussian, $\Sigma_{i,t} = $ variance for the current Gaussian.
+$w_{[i,t]} = $ weight for the current Gaussian, $\mu_{i,t} = $ mean for the current Gaussian, $\Sigma_{i,t} = $ variance for the current Gaussian.
 \\
 The process involves iteratively updating the model parameters based on incoming pixel observations. 
 Pixels are compared against existing Gaussian models, and if no match is found, a new Gaussian is created. 
