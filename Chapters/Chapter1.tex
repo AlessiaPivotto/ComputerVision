@@ -309,14 +309,14 @@ Sweep the structuring element on the whole image, as the origin of the structuri
     \label{fig:enter-label}
 \end{figure}
 Erosion is a morphological operation that is used to reduce the boundaries of regions of foreground pixels in an image. It is used to separate the objects in an image.
-Sweep the structuring element on the whole image, at each position where every 1-pixel of the structuring element covers a 1-pixel of the binary image the binary image corresponding to the origin is OR’ed with the output image. 
+Sweep the structuring element on the whole image, at each position where every 1-pixel of the structuring element covers a 1-pixel of the binary image, the binary image corresponding to the origin is OR’ed with the output image (the pixel is set to 1). 
 \\More formally, the erosion of an image $B$ by a structuring element $S$ is given by:
 \[
     B \ominus S = \{b | b + S \in B \quad \forall s \in S\} 
 \]
 Erosion of A by B can be understood as the locus of points reached by the center of B when B moves inside A.
 \\
-\textit{NB: If before it was enough for the center to touch a 1, now ALL must touch a 1.}
+\textit{NB: If before it was enough for the center to touch a 1, now ALL must touch a 1. All the structuring element must be contained in the image.}
 \subsection{Closing and Opening}
 \begin{figure}[H]
     \centering
