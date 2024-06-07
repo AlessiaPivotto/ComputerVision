@@ -137,7 +137,7 @@ Lambertian Reflectance is a model used to describe diffuse reflection. It operat
 This model neglects any specular component of reflection, focusing solely on the diffuse characteristics of the surface.
 \\\textit{NB: Assumes that the surface we're dealing with is ideal, so looking at it from any angle we'll see the same intensity.}
 \[
-    I = \rho n \cdot s
+    I = \rho n \cdot s = |n||s|\cos(\alpha)  
 \]
 Where:
 \begin{itemize}
@@ -146,7 +146,7 @@ Where:
     \item $n$ is the normal to the surface;
     \item $s$ is the direction of the light.
 \end{itemize}
-So, an element is not visible if the angle between the normal and the light direction is greater than 90 degrees.
+So, an element is not visible if the angle $\alpha$ between the normal and the light direction is greater than 90 degrees.
 Moreover, the pixel in image $I(r,c)$ depends on the light source direction and the normal of the element direction.
 
 \section{Remarks on cameras and lenses}
@@ -174,12 +174,13 @@ The relationship between the distance from the center of the camera to the image
 \[
     \frac{1}{f} = \frac{1}{u} + \frac{1}{v}
 \]
-\begin{wrapfigure}[10]{r}{0.5\textwidth}
+\begin{wrapfigure}[6]{r}{0.5\textwidth}
     \includegraphics[scale=0.4]{Figures/ThinLenses.png}
 \end{wrapfigure}
+
 This equation serves as a fundamental principle in optics, ensuring that the lens accurately focuses incoming light onto the image sensor or film. 
 It's this precise focusing mechanism that enables cameras to capture sharp and detailed images of the world around us.\\
-\\\\
+
 If we move the image plane, point $p'$ is out of focus $\Rightarrow$ $v$ changes $\Rightarrow$ $v'$. And, if $P$ is moved $u$ changes $\Rightarrow$ $u'$.
 The result is that the image is blurred on the image plane (instead of a point I see a circle, the rays of light don't converge).
 \\\textit{NB: If the object is too far you can try to set the focal length but it won't work.}
