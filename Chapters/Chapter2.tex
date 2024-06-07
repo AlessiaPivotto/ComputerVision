@@ -5,19 +5,19 @@ Well, they represent a good approximation of the real world and allow describing
 The pinhole camera model is the simplest model used to describe the imaging process. It is based on the principle that light travels in straight lines. The model is composed of a pinhole, a plane, and an image plane. The pinhole is a small hole in the plane, and the image plane is placed behind the pinhole. The light rays coming from the scene pass through the pinhole and project the scene onto the image plane. 
 \\\textit{PS: If the object is far, it appears small in the image. If the object is close, it appears large in the image.}
 \subsection{Features of the Pinhole Camera Model}
-In an image, parallel lines in the real world converge at a single point, known as the vanishing point. Parallel lines on the same plane converge to collinear vanishing points, forming a line called the horizon for that plane. Additionally, vertical lines in the image are perpendicular to this horizon.
+In an image, parallel lines in the real world converge at a single point, known as the vanishing point. Parallel lines on the same plane converge to collinear vanishing points, forming a line called the horizon for that plane. Additionally, vertical lines in the image are perpendicular to this horizon. 
 
 \subsection{Features of the Pinhole Camera Model}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/horizon.jpg}
-    \caption{The behavior lines in the world and in the image.}
+    \caption{The behavior of parallel lines in the world and in the image.}
     \label{fig:horizon}
 \end{figure}
 \begin{itemize}
     \item Parallel lines in the world converge to a single point in the image;
-    \item Parallel lines on the same plane lead to \textit{collinear vanishing} points. In Figure \ref{fig:horizon} we can see how the blue and green lines that lie parallel on two different planes, eveltually converge to the same point in the image plane;
+    \item Parallel lines on the same plane lead to \textit{collinear vanishing} points. In Figure \ref{fig:horizon} we can see how the blue and green lines, that lie parallel on two different planes, eventually converge to the same point in the image plane;
     \item The line where coplanar parallel lines end up is called the \textit{horizon} for that plane;
     \item Vertical lines (red) are perpendicular to the horizon.
 \end{itemize}
@@ -46,7 +46,7 @@ Projection is the fundamental process of mapping 3D points, including time, to 2
 \]
 \textit{NB: These are continuous variables.}       
 \\
-Exist two types of projection:
+There exist two types of projection:
 \begin{itemize}
     \item Perspective projection;
     \item Orthographic projection.
@@ -54,20 +54,22 @@ Exist two types of projection:
 \subsection{The Perspective Projection Model}
 The perspective projection model is an extension of the pinhole camera model. It is used to describe the imaging process in a more realistic way. The model is based on the principle that light travels in straight lines and that the image is formed by the intersection of these lines with the image plane. 
 For simplicity, we usually consider the image plane on the same side of the “real world”, to avoid the picture flip.\\\\
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{0.5\textwidth}
-        \includegraphics[scale=0.2]{Figures/Perspective_proj1.jpeg} 
+        \includegraphics[scale=0.2]{Figures/Perspective_proj1.jpeg}
+        \caption{The pinhole camera model.} 
         \label{fig:subim1}
     \end{subfigure}
     \begin{subfigure}{0.5\textwidth}
         \includegraphics[scale=0.4]{Figures/Perspective_proj.jpeg}
+        \caption{The perspective projection model.}
         \label{fig:subim2}
     \end{subfigure}
+    \caption{We can see how in \ref{fig:subim2} we moved the camera plane on the right side and the center of projection at the origin, for this reason a $-f$ is added to the denominator.}
         \label{fig:image2}
 \end{figure}
-The center of projection corresponds to the origin of the 3D space, and the plane $(X,Y)$ is parallel to $(x,y)$. 
-\\\textit{PS: This approximation is allowed when Z$>>$f.}
-\\From a computational point of view nothing changes, we simply shift the image plane from back to front in order to have the image straight. For what concerns the projection, we can use the same formulas as before but we remove the minus f from the denominator(too small).
+
+
 \[
     \begin{cases}
         \frac{x}{f} = \frac{X}{Z-f} \\
@@ -80,6 +82,9 @@ The center of projection corresponds to the origin of the 3D space, and the plan
         y = \frac{fY}{Z}
     \end{cases}
 \]
+
+Now the center of projection corresponds to the origin of the 3D space, and the plane $(X,Y)$ is parallel to $(x,y)$. From a computational point of view nothing changes, we simply shift the image plane from back to front in order to have the image straight. Due to the fact that we assume that $f$ is negletable, compared to Z (Z$>>$f) we can safely approximate the denominator and remove the $-f$, obtaining the same equations as the pinhole camera model.
+
 
 \subsection{The Orthographic Projection Model}
 The orthographic projection model is a simplified version of the perspective projection model. It is assumed that all rays originated from the 3D object, and from the scene in general, are parallel among each other. 
@@ -118,15 +123,27 @@ Illumination plays a crucial role in how we perceive objects, as it defines thei
 When a light source interacts with an object, light can be absorbed, reflected, or transmitted. 
 Modeling illumination is complex because we perceive objects based on how they reflect light across specific wavelengths. 
 Remember that reflection can be either specular or diffuse.
-\\
+
 Specular reflection concentrates more energy in the direction of the light source, creating highlights. 
 Conversely, diffuse reflection distributes energy uniformly in all directions, making the position of the observer irrelevant. 
-\\Surfaces vary in specularity: matte surfaces reflect light uniformly, while glossy ones reflect light directionally. 
+
+Surfaces vary in specularity: matte surfaces reflect light uniformly, while glossy ones reflect light directionally. 
 The specularity also depends on factors such as surface distance and the angle of the light source.
-\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Figures/matte.png}
+    \caption{Reflections.} 
+    \label{fig:matte}
+\end{figure}
+
 Modeling surface irradiation by the light source involves determining how the light interacts with the surface. 
 Assuming a distant light source, we can represent all rays with a single unit vector. 
 Each surface element receives light based on the cosine of the angle between the surface normal and the light direction, affecting its perceived brightness and color.
+
+\[
+  i = n\cdot s  
+\]
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/Illumination.png}
@@ -137,7 +154,7 @@ Lambertian Reflectance is a model used to describe diffuse reflection. It operat
 This model neglects any specular component of reflection, focusing solely on the diffuse characteristics of the surface.
 \\\textit{NB: Assumes that the surface we're dealing with is ideal, so looking at it from any angle we'll see the same intensity.}
 \[
-    I = \rho n \cdot s = |n||s|\cos(\alpha)  
+    I = \rho n \cdot s = |n||s|\cos(\alpha) 
 \]
 Where:
 \begin{itemize}
@@ -146,17 +163,23 @@ Where:
     \item $n$ is the normal to the surface;
     \item $s$ is the direction of the light.
 \end{itemize}
-So, an element is not visible if the angle $\alpha$ between the normal and the light direction is greater than 90 degrees.
-Moreover, the pixel in image $I(r,c)$ depends on the light source direction and the normal of the element direction.
+
+An element is not visible if the angle between the normal and the light direction is greater than 90 degrees.
+Generally, the pixel in image $I(r,c)$ depends on the light source direction and the normal of the element direction.
 
 \section{Remarks on cameras and lenses}
-Cameras use lenses rather than pinholes, that do not exist in real life. This introduces the concept of focus. 
+Cameras use lenses rather than pinholes, that do not exist in real life. This introduces the concept of \textbf{focus}. 
 According to the thin lens equation, an object is in focus if the distance from the center of the camera to the image plane satisfies certain conditions. 
-If this is not the case, it leads to aberrations, which are deviations from the ideal imaging process.
+If this is not the case, it leads to \textbf{aberrations}, which are deviations from the ideal imaging process.
 \\
 While we usually assume that the object is in focus, it's important to understand the implications of this assumption. 
 By adhering to the principles of the thin lens equation, we ensure that the camera captures images with minimal aberrations, resulting in clear and accurate representations of the scene.
 \subsection{Typical issues with lenses}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+    \includegraphics[scale=0.4]{Figures/ops.png}
+\end{wrapfigure}
+
 \textbf{Spherical aberration:} 
 \\The lens does not focus light rays that strike the lens far from the center. This means that the image is not sharp (causes blur).
 In simple terms the lens does not focus all the rays in the same point, so the light is reflected wrongly because the lens is not properly manufactured.
@@ -167,7 +190,7 @@ In simple terms the lens does not focus all the rays in the same point, so the l
 \\\textbf{Barrel distortion:}
 \\The focal length is too short or the lens is too wide, so the image is distorted and the lines are not straight anymore.
 In simple terms, the lens is able to grasp a wide area of view. To compensate we can use a software to correct the distortion. 
-\\\textit{NB: Crooked lines can give problems in path analysis\dots distortion problem $\Rightarrow$ that's why modern cells have more lenses.}
+\textit{NB: Crooked lines can give problems in path analysis\dots distortion problem $\Rightarrow$ that's why modern cellphones have more lenses.}
 \subsection{Focus}
 In contrast to the abstract pinhole model, real-life cameras employ lenses. These lenses have the remarkable ability to converge light rays to a single point, allowing for focused images. 
 The relationship between the distance from the center of the camera to the image plane adheres to the thin lens equation.
