@@ -871,7 +871,7 @@ We need to go through the \textbf{Epipolar Geometry}.
     \label{fig:epipolar}
 \end{figure}
 
-The \textbf{epipolar plane} is what connects the  \({}^WP\) with the two cameras, this plane can be seen as something anchored to axis \(f_L\) and \(f_R\), since they don't move, depending on where the point is in the world what chances in the inclination of the plane. The intersection in between the epipolar plane and the image plane is what we call the \textbf{epipolar lines}. The points \(e\) and \(e'\) are the \textbf{epipoles} and they are the intersection of the epipolar lines with the image plane, they are useful because, for example, as the \({}^WP\) moves along its projection line on \(f_R\) (basically the ray that goes from \(f_R\) to \({}^WP\)) its projection on the right image plane will remain the same meanwhile its projection on the left image plane will move exclusively along the epiploar line, so we \textit{know} that we only need to look in that area to find the correspondence. 
+The \textbf{epipolar plane} is what connects the  \({}^WP\) with the two cameras, this plane can be seen as something anchored to axis \(f_L\) and \(f_R\), since they don't move, depending on where the point is in the world what chances in the inclination of the plane. The intersection in between the epipolar plane and the image plane is what we call the \textbf{epipolar lines}. The points \(e\) and \(e'\) are the \textbf{epipoles} and they are the intersection of the epipolar lines with the image plane, they are useful because, for example, as the \({}^WP\) moves along its projection line on \(f_R\) (basically the ray that goes from \(f_R\) to \({}^WP\)) its projection on the right image plane will remain the same meanwhile its projection on the left image plane will move exclusively along the epiploar line: we \textit{know} that we only need to look in that area to find the correspondence. 
 
 \begin{figure}[H]
     \centering
@@ -907,27 +907,27 @@ The only common term between the two last equations is \({}^WP\), so we can subs
     = M^RP+B
 \]
 
-Where the term \(M\) that multiplies the \({}^RP\) and a term \(B\). This tells us that in between the \(L\) and the \(R\) we have a roto-translation. Using the simplified perspective projections $(Z > f)$ we obtain the coordinates on the two image planes:
+Where the term \(M\) is a matrix that multiplies \({}^RP\), plus a term \(B\). This tells us that in between the \(L\) and the \(R\) we have a roto-translation. Using the simplified perspective projections $(Z >> f)$ we obtain the coordinates on the two image planes:
 
 \begin{multicols}{2}
 
-\(
+\[
     {}^Lp_x = f\frac{{}^LP_x}{{}^LP_z}  
-\) \\
-\(
+\] 
+\[
     {}^Lp_y = f\frac{{}^LP_y}{{}^LP_z}
-\)
+\]
 
 \end{multicols}
 
 \begin{multicols}{2}
 
-\(
+\[
     {}^Rp_x = f\frac{{}^RP_x}{{}^RP_z}  
-\) \\
-\(
+\] 
+\[
     {}^Rp_y = f\frac{{}^RP_y}{{}^RP_z}
-\)
+\]
     
 \end{multicols}
 
@@ -953,16 +953,16 @@ from which we obtain
 
 \subsection{Estimation of the 3D position}
 
-Some computations are not trivial, so we will see the simplified situation where the cameras are parallel and aligned, the math problem is always the same: we want to get the coordinates of \({}^WP\) given the two projections on the two image planes.
+Some computations are not trivial, so we will see the simplified situation where the cameras are parallel and aligned. The math problem is always the same: we want to get the coordinates of \({}^WP\) given the two projections on the two image planes.
 
 \begin{figure}[H]
 \[
         \bm{{}^WP_z = \frac{fb}{{}^Lp_x-{}^Rp_x}}
 \]
-\caption{Formula do compute the depth of the point.}
+\caption{Formula to compute the depth of the point. \textit{It's strongly recommended memorizing this formula}.
+}
 \end{figure}
 
-It's \textit{strongly} recommended memorizing this formula.
 
 \begin{figure}[H]
     \centering
@@ -983,19 +983,19 @@ We can say that:
 \caption{Projection equations.}
 \label{eq:proj}
 \end{figure}
-Note that we are using \(P_z\) for both because the cameras are parallel and aligned, so it's the same, also we can say that:
+Note that we are using \(P_z\) for both because the cameras are parallel and aligned, so it's the same:
 
 \[
     {}^WP_z = {}^LP_z = {}^RP_z
 \]
 
-Because we put the origin of the world in the origin of one of the two cameras, this is what happens in real stereo systems. From here we can play around with equations \ref{eq:proj}:
+We put the origin of the world in the origin of one of the two cameras, this is what happens in real stereo systems. From here we can play around with equations \ref{eq:proj}:
 
 \[
     {}^LP_x = \frac{{}^Lp_xP_z}{f}    
 \]
 
-If the cameras are distant one from the other by a certain amount \(b\) we can say:
+If the cameras are distant one from the other by a certain amount \(b\) we can say (\textit{I guess \(b\) is a negative value in this example}):
 
 \[
     {}^LP_x = b+{}^RP_x
@@ -1007,7 +1007,7 @@ At this point we use this expression to evaluate the projection on the right cam
     {}^Rp_x = \frac{f({}^LP_x-b)}{P_z}    
 \]
 
-We know already what was out \({}^LP_x\) so what we can say is that: 
+We know already what was our \({}^LP_x\), so we can say that: 
 
 \[
     {}^Rp_x = \frac{f({}^LP_x-b)}{P_z}    
@@ -1025,9 +1025,9 @@ We know already what was out \({}^LP_x\) so what we can say is that:
 \]
 Finally we have the component \(P_z\) that we have been looking for. To get to this point we have many values that play a role:
 \begin{itemize}
-    \item \(b\)  something that relates to the extrinsic parameters of the camera
-    \item \(f\) one of the intrinsic parameters of the camera
-    \item \({}^Rp_x \;\; {}^Rp_x\) the projections of the point in the two cameras. This term is also called the \textbf{disparity} and it's the offset between the two projections, this disparity term changes according to the distance of the object to the cameras.
+    \item \(b\) is something that relates to the extrinsic parameters of the camera
+    \item \(f\) is one of the intrinsic parameters of the camera
+    \item \({}^Rp_x \;\; {}^Lp_x\) are the projections of the point in the two image planes. This term is also called the \textbf{disparity} and it's the offset between the two projections, this disparity term changes accordingly to the distance of the object from the cameras.
 \end{itemize}
 
 \begin{figure}[H]
@@ -1041,7 +1041,7 @@ Finally we have the component \(P_z\) that we have been looking for. To get to t
 
 Now that we know how to get the 3 coordinates given the projections we need to understand how to compute the match, and define an evaluation function to understand how good the match is. 
 
-The matching is usually done by looking at the intensity of the pixels, a common technique is to use \textbf{Window-based approaches}. They are very generic in computer vision at it goes like this:
+The matching is usually done by looking at the intensity of the pixels, a common technique is to use \textbf{Window-based approaches}. They are very generic in computer vision, and it goes like this:
 
 \begin{itemize}
     \item Take a window around the point of interest in the left image
@@ -1137,8 +1137,8 @@ What do we need?
 \item Position of C1 and some internal parameters such as the focal
 length, we know that this information is embedded in the camera matrix, which defines the relationship between the points in the real world and the image plane.
 \item The same stuff for C2.
-\item The corresponding matching of \({}^WP\) in the two image planes.
-\item Finally, compute the 3D position of \({}^WP\) starting from the positions of \({}^1P\) and \({}^2P\).
+\item The corresponding matching projections of \({}^WP\) in the two image planes.
+\item Finally we compute the 3D position of \({}^WP\) starting from the positions of \({}^1P\) and \({}^2P\).
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -1186,7 +1186,7 @@ What we are doing here is taking the vector that connects the two origins of the
 \label{eq:ess}
 \end{figure}
 
-After the transformations shown in \ref{eq:ess} we can map the two points with a single \textbf{Essential Matrix \(E\)}. This expression says that the matching between the two views is visible through a rotation and a translation of the origins. At this stage the \textbf{essential matrix} contains only the extrinsic information because, as we said, the intrinsic parameters are already known.
+After the transformations shown in \ref{eq:ess} we can map the two points with a single \textbf{Essential Matrix \(E\)}. This expression says that the matching between the two views is visible through a rotation and a translation of the origins. At this stage the \textbf{essential matrix} contains only the extrinsic information because, as we said, the intrinsic parameters are already known. %TODO: not sure about this one chief.. "are already known" ??
 
 But we know that we have to deal with also the intrinsic parameters, fortunately it's nothing but a matrix to be added to the system.
 
