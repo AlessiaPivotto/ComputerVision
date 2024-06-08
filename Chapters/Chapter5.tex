@@ -311,7 +311,7 @@ More in general what happens is that the image plane we are dealing with is some
     \label{fig:3d}
 \end{figure}
 
-We need to go through a process called \textbf{calibration} where we'll need to determined the so called \textbf{intrinsic} and \textbf{extrinsic} parameters of the camera. The projections that we have seen so far won't be enough to describe the 3D world, we'll need to add an \textit{additional view} to make possible to determine the unique 3D coordinates \(X Y Z\) that are necessary to describe the position of a point in the real world. 
+We need to go through a process called \textbf{calibration} where we'll need to determine the so called \textbf{intrinsic} and \textbf{extrinsic} parameters of the camera. The projections that we have seen so far won't be enough to describe the 3D world, we'll need to add an \textit{additional view} to make possible to determine the unique 3D coordinates \(X Y Z\) that are necessary to describe the position of a point in the real world. 
 \\With that additional information we can do many tasks:
 \begin{itemize} 
     \item Point Clouds
@@ -351,7 +351,7 @@ Now we have a system for each camera so a triplet of coordinates for Camera 1 an
     \label{fig:coo}
 \end{figure}
 
-We can see all these 4 systems linked by a transformation, which is nothing more than a rotation-translation to go from any of the 3 systems to the other. At the end it means that we need to deal with a rotation matrix and a translation vector.
+We can see all these 4 systems linked by a transformation, which is nothing more than a rotation-translation to go from any of the 3 systems to the others. At the end it means that we need to deal with a rotation matrix and a translation vector.
 \({}^wP = T R {}^mP\) and same for \({}^1P\) and \({}^2P\).
 \\Where T is a translation vector and R a rotation matrix. It must be noted that the point seen from the first camera might be different from the second camera, both in terms of coordinates and in the sense that Camera 1 and Camera 2 might have opposite views, meaning that there might be no one-to-one mapping of all points. If there's a superset of points that's visible from both cameras, we'll be able to reconstruct the 3D position only for the points visible from both cameras.
 \\\\\textit{NB: The notation for the next section will be \({}^kP_j\) where \(k\) is the camera number and \(j\) is the point number.}
@@ -529,7 +529,7 @@ Our goal is to then put everything together in a single matrix, this is the gene
     \end{bmatrix}   
 \]
 
-It's some sort of camera matrix, but at this point we are dealing with something that return 3D coordinates and unfortunately doesn't help us much because at the end what we have is an image plane where the coordinates are only rows and columns, \(x, y\). It means that we need to further modify this matrix in order to end up with a representation that's 2D. We need to add to our transformation what are the proprieties of the camera, this gives us the opportunity to move from the 3D coordinates (in our case the world \(W\)) to a 2D plane \(I\).
+It's some sort of camera matrix, but at this point we are dealing with something that returns 3D coordinates and unfortunately doesn't help us much because at the end what we have is an image plane where the coordinates are only rows and columns, \(x, y\). It means that we need to further modify this matrix in order to end up with a representation that's 2D. We need to add to our transformation what are the proprieties of the camera, this gives us the opportunity to move from the 3D coordinates (in our case the world \(W\)) to a 2D plane \(I\).
 
 \[
     {}^IP = {}^I_W C^WP
@@ -565,9 +565,9 @@ This matrix here flattens the information and returns a 2D vector corresponding 
     \end{bmatrix}
 \]
 
-Unfortunately we are still not happy because while it's true that we have the camera coordinates on the image plane, but that would be a continuous hypothetical image plane where we do not have pixels (basically an implementation of the pinhole, but it's not discretized). It's a 2D representation, but it's not the one that we want.
-\\
-We need to work again on these transformations moving from the camera to some additional coordinates:
+Unfortunately we are still not happy because while it's true that we have a 2D representation of the 3D world, we are not yet in the image plane, we are still in the camera coordinates (notice the capital \(P\)s in the formulation) and in the continuous space. We need to further modify this matrix to move from the camera coordinates to the image plane.
+
+We need to rework again on these transformations moving from the camera to some additional coordinates:\\
 \textit{(While important the following part till the end of the section was covered briefly)}
 \[
     \begin{bmatrix}
@@ -786,7 +786,7 @@ Given a generic point \([x, y, z] \) and given two projections \([r_1, c_1]\) an
 
 To compute and reconstruct the 3D position of the point we can solve the system of equations and find a solution.
 
-If we assume we have the projections we know that they are subject to a certain error and that error caused by an approximation of the projection can be seen in the real world as an error in the intersection of the two rays.
+If we assume that we have the projections, we know that they are subject to a certain error. That error is caused by an approximation of the projection and can be seen in the real world as a discrepancy in the intersection of the two rays.
 
 
 \begin{figure}[H]
@@ -800,7 +800,7 @@ Usually what's done is to take the distance between the two lines and use the mi
 
 \section{The Binocular Stereo}
 
-As the name suggests it's basically a system that looks like Figure \ref{fig:inter} where we have two cameras and we try to come up with few equations to model that situation, which by no coincidence is the same system humans are equipped with. It can be scaled up with multiple cameras, but the idea is the same as it becomes a pairwise binocular system. 
+As the name suggests it's basically a system that looks like Figure \ref{fig:inter} where we have two cameras and we try to come up with few equations to model that situation which, by no coincidence, is the same system humans are equipped with. It can be scaled up with multiple cameras, but the idea is the same as it becomes a pairwise binocular system anyways. 
 \\The computation of the 3D position of a point usually goes through 2 steps:
 \begin{itemize}
     \item Computation of the correspondences (main source of error) 
@@ -871,7 +871,7 @@ We need to go through the \textbf{Epipolar Geometry}.
     \label{fig:epipolar}
 \end{figure}
 
-The \textbf{epipolar plane} is what connects the  \({}^WP\) with the two cameras, this plane can be seen as something anchored to axis \(f_L\) and \(f_R\), since they don't move, depending on where the point is in the world what chances in the inclination of the plane. The intersection in between the epipolar plane and the image plane is what we call the \textbf{epipolar lines}. The points \(e\) and \(e'\) are the \textbf{epipoles} and they are the intersection of the epipolar lines with the image plane, they are useful because, for example, as the \({}^WP\) moves along its projection line on \(f_R\) (basically the ray that goes from \(f_R\) to \({}^WP\)) it's projection on the right image plane will remain the same meanwhile its projection on the left image plane will move exclusively along the epiploar line, so we \textit{know} that we only need to look in that area to find the correspondence. 
+The \textbf{epipolar plane} is what connects the  \({}^WP\) with the two cameras, this plane can be seen as something anchored to axis \(f_L\) and \(f_R\), since they don't move, depending on where the point is in the world what chances in the inclination of the plane. The intersection in between the epipolar plane and the image plane is what we call the \textbf{epipolar lines}. The points \(e\) and \(e'\) are the \textbf{epipoles} and they are the intersection of the epipolar lines with the image plane, they are useful because, for example, as the \({}^WP\) moves along its projection line on \(f_R\) (basically the ray that goes from \(f_R\) to \({}^WP\)) its projection on the right image plane will remain the same meanwhile its projection on the left image plane will move exclusively along the epiploar line, so we \textit{know} that we only need to look in that area to find the correspondence. 
 
 \begin{figure}[H]
     \centering
