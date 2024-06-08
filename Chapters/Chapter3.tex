@@ -120,14 +120,21 @@ or, in a better form:
 \]
 
 \textit{NB: if $v=0 \Rightarrow$ we have no variation.}\\
-\\\textbf{Comments:}
+
+We can see how the \textbf{gradient of the appearance} times the \textbf{velocity} compensates the variation over time. 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.45]{Figures/OpticalFlow.png}
     \caption{Optical Flow}
+    \label{fig:optic}
 \end{figure}
+
+In Figure \ref{fig:optic} we see how we can decompose the velocity vector in two components: one orthogonal to the gradient and one parallel to it. Intuitively, the component orthogonal to the gradient isn't very informative, it doesn't cause any change in the appearance, while what's relevant to us, and what we can actually see is the component parallel to the gradient.
+
+In order for motion to be \textbf{visible}, it needs to occur in the direction orthogonal to the border, parallel to the gradient. If instead the object is moving along the border or the area has a constant intensity, the motion is \textbf{undetermined}.
+
 \section{Motion detection in practice}
-We have two possibilities to detect motion: \textbf{Intensity based} and \textbf{Feature based}. However, we have some problems, like the representation of the motion field and the choice of discriminant parameter.
+We have two possible types of algorithms to detect motion: \textbf{Intensity based} and \textbf{Feature based}. However, we have some problems, like the representation of the motion field and the choice of discriminant parameter.
 \subsection{Change Detection}
 To begin, just take a look at the following example:
 \begin{figure}[h]

@@ -631,7 +631,7 @@ This helps us to deal with processes that are non-linear. However, this is only 
 
 Still, there are some situations where the EFK cannot provide satisfactory results. With \textbf{Particle Filters} the goal is to make it possible to track objects that are not only \textit{non-linear} but also that are behaving in a \textit{non-Gaussian} way.
 
-The idea is to replace the single estimation that we are doing with KF and EFK with multiple rap presentations: we are providing alternative solutions to our problem. 
+The idea is to replace the single estimation that we are doing with KF and EFK with multiple representations: we are providing alternative solutions to our problem. 
 
 \begin{figure}[H]
     \centering
@@ -669,7 +669,7 @@ Instead of having an integral representation of the a posteriori, we have an app
     p(x_k|z_k) \approx \sum_{i=1}^{n} w^i_{k-1}\delta(x_k-x^i_{k-1})  
 \]
 
-How do we select \(\{x^i_{k}\}\) and \(\{ w^i_{k}\}\) for the approximation? We have to come up with a \textbf{proposal distribution} which is kind of an arbitrary choice that tell where to position the points considering the position of the point in the previous state.
+How do we select \(\{x^i_{k}\}\) and \(\{ w^i_{k}\}\) for the approximation? We have to come up with a \textbf{proposal distribution} which is kind of an arbitrary choice that tells where to position the points considering the position of the point in the previous state.
 \[
     x^i_k \approx \pi(x^i_k|x^i_{k-1})\;\;i=1,2,\dots,n
 \]
