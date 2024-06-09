@@ -1165,7 +1165,7 @@ We don't need to have the intrinsic parameters, we just need to take a snapshot 
 \end{figure}
 
 But what does it represent? \\
-For the moment we know the intrinsic parameters of the camera, this means that everything consists of roto-translations between cameras. In this case what we can say is that if we start from a \({}^WP\) what we have to understand is transformation that brings the coordinate system of one camera into the other, and this can be seen as a rotation and a translation:
+Let's say for the moment that we know the intrinsic parameters of the camera, this means that everything consists of roto-translations between cameras, we don't need to deal with normalizations, quantizations and distortions due to focal length. In this case if we start from \({}^WP\),in order to match the two views, what we have to find is the transformation that brings the coordinate system of one camera into the other, and this can be seen as a rotation and a translation:
 
 \[
     Op\cdot[OO'\times O'p'] = 0
@@ -1188,7 +1188,7 @@ What we are doing here is taking the vector that connects the two origins of the
 
 After the transformations shown in \ref{eq:ess} we can map the two points with a single \textbf{Essential Matrix \(E\)}. This expression says that the matching between the two views is visible through a rotation and a translation of the origins. At this stage the \textbf{essential matrix} contains only the extrinsic information because, as we said, the intrinsic parameters are already known. %TODO: not sure about this one chief.. "are already known" ??
 
-But we know that we have to deal with also the intrinsic parameters, fortunately it's nothing but a matrix to be added to the system.
+But we know that we have to deal with also the intrinsic parameters, fortunately it's nothing but a matrix to be added to the system. We can pass the points projected by the essential matrix (\(\hat{p}\) and \(\hat{p}'\)) through the intrinsic parameters (\(K\) and \(K'\)) of the two cameras, and say that the points in the two views are related by the following expression:
 
 \[
     p = K\hat{p} \;\;\;
@@ -1197,10 +1197,16 @@ But we know that we have to deal with also the intrinsic parameters, fortunately
     F= K^{-T}EK'^{-1}
 \]
 
-In this way the point we obtain through se essential can be mapped using another transformation, \(K\) and \(K'\), and by combining the two we finally obtain the \textbf{fundamental matrix}. The foundamental matrix contains the roto-translation (the extrinsic) and also the instrinsic information. We can say that \(p\) and \(p'\) correspond as they are different projections of the same point in the two views. So, for each point \(p\) in one view, there's a corresponding epipolar
+We finally obtain the \textbf{fundamental matrix}. The fundamental matrix contains the roto-translation (the extrinsic) and also the instrinsic information. We can say that \(p\) and \(p'\) correspond as they are different projections of the same point in the two views. So, for each point \(p\) in one view, there's a corresponding epipolar
 line \(l'\) in the other image.
-\\
-\\
+
+\[
+    l' = Fp
+\]
+\[
+    l = F^Tp'    
+\]
+
 Now that we have understood that we can go back to this expression, \(p' {}^TFp=0\). We use the world as shared information to find the correspondences, but once we have computed the matrix we have found the relationship between the points in the two image planes: we looked at the world to understand where the matches occurred, but now we can "forget" about it because we have a relationship that binds the two cameras.
 \\
 \\
