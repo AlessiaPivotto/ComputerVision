@@ -826,7 +826,7 @@ The conditions for a binocular system is that overall we have two cameras positi
     \label{fig:coplan}
 \end{figure}
 
-In the case of coplanar cameras the difference between the views will be just a small offset as shown in Figure \ref{fig:coplan}. Points will result shifted, and the shift will depend on the depth of the point, the further the point the smaller the shift, this leads to the \textbf{parallax}, apparent motion.  
+In the case of coplanar cameras the difference between the views will be just a small offset as shown in Figure \ref{fig:coplan}. Points will result shifted, and the shift will depend on the depth of the point, the further the point the smaller the shift. On top of that from a single image it's impossible to correctly estimate speed, further points will appear to move slower compared to closer points even if the real speed is the same, this is called \textbf{parallax}. Using a stereo rig is quite more informative, we can do the matching in terms of real coordinates, and we can compute the true distance covered.
 
 \subsection{Computing correspondences}
 
