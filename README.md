@@ -4,7 +4,7 @@ Hello world! Here you'll find e comprehensive recap of the Computer Vision cours
 
 
 
-| <a href="https://github.com/AlessiaPivotto/ComputerVision/blob/main/main.pdf"><img src="Figures/frontpage.png" width="300"/></a> |
+| <a href="https://github.com/AlessiaPivotto/ComputerVision/blob/main/main.pdf"><img src="Figures/frontpage2.png" width="300"/></a> |
 | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 |                                                                                                                   Click to download                                                                                                                   |
 
