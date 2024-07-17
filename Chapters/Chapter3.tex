@@ -54,7 +54,7 @@ For instance, zooming can appear as translation.
 This issue arises because the detected changes do not always reflect actual motion. 
 Real motion is defined by the velocity $v(x,y,t)$ of pixels between consecutive frames and can result from object movement, camera movement, or changes in illumination.
 \subsection{Real vs Apparent movement}
-2D motion is perceived by changes in the scene over time, but it's not always identify correctly. With a constant illumination, for example, a perfect rotating sphere is perceived as not moving. With an illumination source that rotates around a static sphere, the sphere is perceived as moving.
+2D motion is perceived by changes in the scene over time, but it's not always identified correctly. With a constant illumination, for example, a perfect rotating sphere is perceived as not moving. With an illumination source that rotates around a static sphere, the sphere is perceived as moving.
 \subsection{Occlusion}
 Occlusion is a problem that arises when a surface is covered/uncovered by the movement of an object.
 This makes it challenging to track or detect motion accurately because the missing information can lead to incorrect assumptions about the object's position or movement.
@@ -69,7 +69,7 @@ However, in the end we have notion of movement in these regions but we don't hav
 \subsection{Aperture}
 It's a problem that arises when observing motion through a small, limited view (like looking through a tiny aperture). 
 In such cases, only displacements of the borders are detectable and only in the direction of the intensity gradient, making it difficult to determine the true direction of motion. 
-\\To simplify, imagine drag a paper along its diagonal. We can only see the 2 edges moving up and right but we can't see the actual corner moving.
+\\To simplify, imagine dragging a paper left and right under a small slit. Even though the paper is moving and the edge is visible, no movement will be detected as the displacement is orthogonal to the edge gradient. 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.7\textwidth]{Figures/Aperture.png}
@@ -120,14 +120,21 @@ or, in a better form:
 \]
 
 \textit{NB: if $v=0 \Rightarrow$ we have no variation.}\\
-\\\textbf{Comments:}
+
+We can see how the \textbf{gradient of the appearance} times the \textbf{velocity} compensates the variation over time. 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.45]{Figures/OpticalFlow.png}
     \caption{Optical Flow}
+    \label{fig:optic}
 \end{figure}
+
+In Figure \ref{fig:optic} we see how we can decompose the velocity vector in two components: one orthogonal to the gradient and one parallel to it. Intuitively, the component orthogonal to the gradient isn't very informative, it doesn't cause any change in the appearance, while what's relevant to us, and what we can actually see is the component parallel to the gradient.
+
+In order for motion to be \textbf{visible}, it needs to occur in the direction orthogonal to the border, parallel to the gradient. If instead the object is moving along the border or the area has a constant intensity, the motion is \textbf{undetermined}.
+
 \section{Motion detection in practice}
-We have two possibilities to detect motion: \textbf{Intensity based} and \textbf{Feature based}. However, we have some problems, like the representation of the motion field and the choice of discriminant parameter.
+We have two possible types of algorithms to detect motion: \textbf{Intensity based} and \textbf{Feature based}. However, we have some problems, like the representation of the motion field and the choice of discriminant parameter.
 \subsection{Change Detection}
 To begin, just take a look at the following example:
 \begin{figure}[h]
@@ -157,7 +164,7 @@ This method is effective when the illumination remains relatively constant.
 \[
     FD_{k, k-1}(x_1, x_2)= s(x_1, x_2, k)-s(x_1, x_2, k-1)
 \]
-If FD is non-null, a change has occurring. Change can be due to noise, so a threshold is needed to control it:
+If FD is non-null, a change has occurred. Change can be due to noise, so a threshold is needed to control it:
 \[
     z_{k, k-1}(x_1, x_2)= \begin{cases} 1 & \text{if } |FD_{k, k-1}(x_1, x_2)| > \tau \\ 0 & \text{otherwise} \end{cases}
 \]

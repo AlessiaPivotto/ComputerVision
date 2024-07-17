@@ -157,33 +157,32 @@ In order to solve this problem, we need to re-associate "A to A" and "B to B" (w
 \section{Tracking: Feature-based}
 
 Histograms are just one way to track objects, we also mentioned other methodologies, such as feature-based tracking. The objective is to retrieve the motion information from sets of features (such as points, corners, edges\dots) in local areas of the image.
-\\Considering
+\\Considering a set of images
 \[
     A = \{A(0), A(1), A(2), \dots, A(j-1)\}
 \] 
-as a set of images and
+and the position of the feature in the image plane in each frame:
 \[
     m_i(x_i, y_i)\;\;i = [0, j-1] 
 \] 
-the position of the feature in the image plane in each frame.
-
 \begin{wrapfigure}{r}{0.2\textwidth}
     \includegraphics[scale=0.3]{Figures/Tracking.png}
 \end{wrapfigure}
-The objective is to determine the displacement vector 
+The objective is to determine the displacement vector:
 \[
     d_i = (dx_i, dy_i)
 \] 
-that best estimates the position of the feature in the next frame 
+That best estimates the position of the feature in the next frame:
 \[
     m_{i+1}(x_{i+1}, y_{i+1}) = m_i + d_i
 \]
 
 We'd like to get the coordinated \(x\) and \(y\) of the feature in the next frames at time \(i+1\).
-In principle a feature point does not convey much information, usually we group them to create a bounding box or a convex hull that can contain the moving object into an independent structure.
+(In principle a feature point does not convey much information, usually we group them to create a bounding box or a convex hull that can contain the moving object into an independent structure).
 
-The question now is how to choose a good feature point that must has distinctive characteristic such as brightness, contrast, texture, edges, corners or point with high curvature, basically something that exhibits some elements that let that point be sufficiently diverse compared to the rest of the image.
-\\We can use the \textbf{Good Features to Track} algorithm:
+The question now is how to choose a good feature point. Generally speaking it should have distinctive characteristics such as brightness, contrast, texture, edges, corners or points with high curvature, basically something that exhibits some elements that let that point be sufficiently diverse compared to the rest of the image.
+
+We can use the \textbf{Good Features to Track} algorithm:
 \[
     Z = \begin{bmatrix}
         \sum_{W}^{}J_x^2 & \sum_{W}^{}J_xJ_y \\
@@ -204,14 +203,14 @@ In summary, it's important to consider the following key points when analyzing e
 
 For what concerns tracking, we must ensure that the same points are tracked throughout the video sequence. 
 Ideally we would expect that $A_i(Dm-d)=A_{i+1}(m)$, where $A_i, A_{i+1}$ are the successive frames at time $i$ and $i+1$, $m$ is the 2D position of the feature point, $D$ the deformation matrix (affine transformation model) and $d$ is the displacement vector (translation models).
-\\ However, due to noise the equality usually does not hold. In addition, since motion across successive frames is assumed to be small $\Rightarrow$ a \textit{translational model} is a good approximation and the term $D$ can be removed. So, after making this simplification, we can use it to find the configuration of the displacement vector $d$ that \textit{minimizes} the residual between the two frames:
+\\ However, due to noise the equality usually does not hold. In addition, since motion across successive frames is assumed to be small, a \textit{translational model} is a good approximation and the term $D$ can be removed. So, after making this simplification, we can use it to find the configuration of the displacement vector $d$ that \textit{minimizes} the residual between the two frames:
 \[
     \varepsilon = \iint_{W} \left[A_i(m-d)-A_{i+1}(m)\right]^2 \omega(m) \, dm
 \]
 we are also implementing a weighting function $\omega$ such as Gaussian to emphasize the center of the window giving less relevance to the terms that are outside the center.
 
-Inside the scene we are observing a lot of things can happen, for example the points we are looking for gets occluded, exits the scene, or it changes color, in that situation the dissimilarity grows a lot. When the feature dissimilarity grows too large, the feature point should be abandoned and a new one should be selected.
-To minimize the residual we differentiate and zero w.r.t unknowns (d)
+Inside the scene we are observing a lot of things can happen, for example the points we are looking for get occluded, exit the scene, or change color. In that situation the dissimilarity grows a lot. When the feature dissimilarity grows too large, the feature point should be abandoned and a new one should be selected.
+To minimize the residual we differentiate and zero w.r.t unknowns ($d$)
 \[
     e = 2 \iint_{W} \left[A_i(m)-A_{i+1}(m)\right]g(m) \, \omega(m) \, dm
 \] 
@@ -223,7 +222,7 @@ and
         \frac{\partial (A_i(m)-A_{i+1}(m))}{\partial y} 
     \end{bmatrix}
 \]
-In this case the solution for the displacement vector can be expressed by the 2x2 linear system of equations:
+In this case the solution for the displacement vector can be expressed by the 2x2 linear system of equations (see paper for details):
 
 \[
     Zd = e
@@ -240,13 +239,13 @@ $d$ is the vector that minimizes
     \epsilon(d) = \epsilon(d_x, d_y) = \sum_{x=u_x-w_x}^{u_x+w_x} \sum_{y=u_y-w_y}^{u_y+w_y} \left[I(x, y) - J(x+d_x, y+d_y)\right]^2
 \]
 
-This above is pretty much the same thing we have seen before, substituting the continuous integral with a discrete summation, the $\omega$ function has now become a window of size $w_x \times w_y$ centered in $u_x, u_y$.
+This above is pretty much the same thing we have seen before substituting the continuous integral with a discrete summation. The $\omega$ function has now become a window of size $w_x \times w_y$ centered in $u_x, u_y$.
 
 \subsection{Pyramidal implementation}
 
 The strong point of the Lukas-Kanade optical flow is the pyramidal implementation. In order to be a good tracker we need to satisfy two requirements: accuracy and robustness.
 
-\textit{Accuracy} relates to the local sub-pixel accuracy attached to tracking, we want smoothness and to preserve detail information $\Rightarrow$ \textbf{small} integration window preferable to limit
+\textit{Accuracy} relates to the local sub-pixel accuracy attached to tracking, we want smoothness and to preserve detail information $\Rightarrow$ \textbf{small} integration window preferable
 
 \textit{Robustness} relates to the sensitivity of tracking with respect to changes of light and big motions. We never know what's going to happen in the scene $\Rightarrow$ \textbf{large} integration window preferable
 
@@ -261,7 +260,7 @@ In order to satisfy both requirements, the authors built a tracker which works o
 
 \begin{itemize}
     \item Level 0 is the image at original resolution.
-    \item Level 4, in the example, is the image at lowest resolution.
+    \item Level 4 is the image at lowest resolution.
     \item The L-th level is defined as a linear combination of the elements in the previous level.
 \end{itemize}
 \(
@@ -277,7 +276,7 @@ In order to satisfy both requirements, the authors built a tracker which works o
     \frac{1}{16}(I^{L-1}(2x-1,2y-1) + I^{L-1}(2x+1,2y+1)+I^{L-1}(2x-1,2y+1)+I^{L-1}(2x+1,2y-1))    
 \)
 
-To construct higher levels, the contributions of the pixels around the pixel in the lower level are taken into account and weighted. Then what we do is that we start our analysis from the highest level, the smallest. And how do we do that?
+To construct higher levels, the contributions of the pixels around the pixel in the lower level are taken into account and weighted. Then what we do is that we start our analysis from the highest level, the smallest. How do we do that?
 
 \[
 \epsilon^L(d^L) = \epsilon^L(d^L_x, d^L_y) = \sum_{x=u^L_x-w_x}^{u^L_x+w_x} \sum_{y=u^L_y-w_y}^{u^L_y+w_y} \left[I^L(x, y) - J^L(x+ g^L_x +d^L_x, y+g^L_y+d^L_y)\right]^2
@@ -286,7 +285,7 @@ To construct higher levels, the contributions of the pixels around the pixel in 
 Starting from the lowest level we make a guess of the flow \textbf{g} and, looking at the observation window, we find the first displacement vector, this means that after minimizing the quantity $\epsilon$ we have an initial guess of the displacement.
 \\
 
-After that we go to the lower, bigger level. Scaling the motion vector is doubles its scale, but now we have more pixels and a better chance or refining the guess just by looking in the new neighborhood and fine-tuning the displacement vector. The propagation of information to the lower levels follows this equation:
+After that we go to the lower, bigger level. Scaling the motion vector as it doubles its scale, but now we have more pixels and a better chance or refining the guess just by looking in the new neighborhood and fine-tuning the displacement vector. The propagation of information to the lower levels follows this equation:
 
 \[
     g^{L-1} = 2(g^L+d^L)
@@ -631,7 +630,7 @@ This helps us to deal with processes that are non-linear. However, this is only 
 
 Still, there are some situations where the EFK cannot provide satisfactory results. With \textbf{Particle Filters} the goal is to make it possible to track objects that are not only \textit{non-linear} but also that are behaving in a \textit{non-Gaussian} way.
 
-The idea is to replace the single estimation that we are doing with KF and EFK with multiple rappresentations: we are providing alternative solutions to our problem. 
+The idea is to replace the single estimation that we are doing with KF and EFK with multiple representations: we are providing alternative solutions to our problem. 
 
 \begin{figure}[H]
     \centering
@@ -669,7 +668,7 @@ Instead of having an integral representation of the a posteriori, we have an app
     p(x_k|z_k) \approx \sum_{i=1}^{n} w^i_{k-1}\delta(x_k-x^i_{k-1})  
 \]
 
-How do we select \(\{x^i_{k}\}\) and \(\{ w^i_{k}\}\) for the approximation? We have to come up with a \textbf{proposal distribution} which is kind of an arbitrary choice that tell where to position the points considering the position of the point in the previous state.
+How do we select \(\{x^i_{k}\}\) and \(\{ w^i_{k}\}\) for the approximation? We have to come up with a \textbf{proposal distribution} which is kind of an arbitrary choice that tells where to position the points considering the position of the point in the previous state.
 \[
     x^i_k \approx \pi(x^i_k|x^i_{k-1})\;\;i=1,2,\dots,n
 \]

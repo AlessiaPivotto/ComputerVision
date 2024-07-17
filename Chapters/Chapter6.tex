@@ -153,7 +153,11 @@ The region within which $m$ and $\theta$ are computed is relative to the scale o
     \label{fig:decrs}
 \end{figure}
 
-From the orientations, a 36-bin histogram is computed. If a key-point exhibits multiple peaks in the histogram that are higher than $80\%$ of the highest peak, a new key-point is instantiated with same location and scale.
-The 16x16 area (oriented according to the key-point orientation computed before) around the selected key-point is divided in $4\times4$ regions, and for each of them a histogram of the gradients (8bins) is computed, this turns out as a \textbf{descriptor of 128 elements} ($4\times4\times8$).
+An orientation histogram is formed from the gradient orientations of sample points within
+the region around the key-point. The orientation histogram has 36 bins covering the 360 degree
+range of orientations. If a key-point exhibits multiple peaks in the histogram that are higher than $80\%$ of the highest peak, a new key-point is instantiated with same location and scale.
+
+
+The 16x16 area (oriented according to the key-point orientation computed before) around the selected key-point is divided in $4\times4$ regions, and for each of them a histogram of the gradients (8bins) is computed. These 8 bins histograms are concatenated, and finally it turns out as a \textbf{descriptor of 128 elements} ($4\times4\times8$).
 
 Once that the descriptor is constructed, we can use it to search and match the key-points in different images. This is done usually by Nearest Neighbor searching, where the Euclidean distance between the descriptors is computed, or by using optimization algorithms like RANSAC. 
