@@ -146,6 +146,7 @@ Additionally, regions moving at similar speeds are likely part of the same objec
 Evaluating these criteria ensures more accurate tracking and identification of objects.
 
 \section{Occlusion}
+\textit{Yes, it is the same occlusion we have seen in the previous chapters.}\\
 Occlusion is an anomalous, but very frequent, situation in tracking, and it occurs when moving objects overlap.
 Consequently, one or more objects disappear from the scene and bigger blobs appear as a result of the occlusion, with properties that don't belong to any of the models acquired previously, so the acquisition models are not reliable anymore.
 \\\textit{NB: Model update should be avoided during occlusions.}
@@ -190,7 +191,7 @@ We can use the \textbf{Good Features to Track} algorithm:
     \end{bmatrix}
 \]
 \\Where $J_x$ and $J_y$ are the gradients evaluated on a certain point in the $x$ and $y$ direction within a certain window $W$ (of size $n\times n$). 
-A good feature point is the with strong gradients component in both directions, so we are interested not only in the \(x\) and \(y\) components but also in the cross-correlation between them. To maximize this function we compute the eigenvalues of the matrix. In order to evaluate if it's a good feature point we are interested whether the smallest eigenvalue is larger than a certain threshold. This means that in case we have just one of the eigenvalues with high magnitude and the other very small probably it is a feature point with good characteristics only in one direction, what we are looking for is a point with strong components in \textit{both} directions, in practice, it highlights corner points and texture.
+A good feature point is the one with strong gradients component in both directions, so we are interested not only in the \(x\) and \(y\) components but also in the cross-correlation between them. To maximize this function we compute the eigenvalues of the matrix. In order to evaluate if it's a good feature point we are interested whether the smallest eigenvalue is larger than a certain threshold. This means that in case we have just one of the eigenvalues with high magnitude and the other very small probably it is a feature point with good characteristics only in one direction, what we are looking for is a point with strong components in \textit{both} directions, in practice, it highlights corner points and texture.
 
 In summary, it's important to consider the following key points when analyzing eigenvalues:
 \begin{itemize}
@@ -227,7 +228,7 @@ In this case the solution for the displacement vector can be expressed by the 2x
     Zd = e
 \]
 
-The typical combination and feature detection and feature tracking takes as input the \textit{Good features to track} algorithm for the detection which is coupled to another algorithm for the tracking, such as the Lucas-Kanade optical flow.
+The typical combination of feature detection and feature tracking takes as input the \textit{Good features to track} algorithm for the detection which is coupled to another algorithm for the tracking, such as the Lucas-Kanade optical flow.
 
 \subsection{The Lucas-Kanade optical flow}
 Substantially is a two-frame differential method for optical flow estimation.
