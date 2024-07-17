@@ -1,6 +1,6 @@
 # 🤖Computer Vision👀
 
-Hello world! Here you'll find e comprehensive recap of the Computer Vision course held by Prof. Conci at the University of Trento. The document covers pretty much all the topics discussed in class and it's a great way to prepare for the exam, the order of the topics is structured in a way that follows the course's progression.
+Hello world! Here you'll find e comprehensive recap of the Computer Vision course held by Prof. Conci at the University of Trento. The document covers pretty much all the topics discussed in class and it's a great source to prepare for the exam, the order of the topics is structured in a way that follows the course's progression.
 
 
 
