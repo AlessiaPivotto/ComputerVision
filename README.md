@@ -4,6 +4,16 @@ Hello world! Here you'll find e comprehensive recap of the Computer Vision cours
 
 
 
+| <a href="https://github.com/AlessiaPivotto/ComputerVision/blob/main/main.pdf"><img src="Figures/frontpage.png" width="300"/></a> |
+| :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                                                                   Click to download                                                                                                                   |
+
+```
+Be aware there might be some typos and errors in the document, feel free to contact us if you find any :)
+```
+
+
+
 ## Topics Covered:
 1. **Images and Videos** 
     -  Definitions 
@@ -41,7 +51,4 @@ Hello world! Here you'll find e comprehensive recap of the Computer Vision cours
     - Regression 
     - The face detection problem 
 
-```
-Be aware there might be some typos and errors in the document, feel free to contact us if you find any :)
-```
 
