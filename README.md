@@ -8,9 +8,9 @@ Hello world! Here you'll find e comprehensive recap of the Computer Vision cours
 | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 |                                                                                                                   Click to download                                                                                                                   |
 
-```
-Be aware there might be some typos and errors in the document, feel free to contact us if you find any :)
-```
+
+Just be aware there might be some typos and errors in the document, feel free to contact us if you find any :)
+
 
 
 
@@ -52,3 +52,8 @@ Be aware there might be some typos and errors in the document, feel free to cont
     - The face detection problem 
 
 
+## Contacts 
+
+- [@lorenzoorsingher](https://github.com/lorenzoorsingher)
+- [@AlessiaPivotto](https://github.com/AlessiaPivotto)
+- [GitHub repo](https://github.com/lorenzoorsingher/CVBallTracking)
