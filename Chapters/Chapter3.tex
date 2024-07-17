@@ -54,7 +54,7 @@ For instance, zooming can appear as translation.
 This issue arises because the detected changes do not always reflect actual motion. 
 Real motion is defined by the velocity $v(x,y,t)$ of pixels between consecutive frames and can result from object movement, camera movement, or changes in illumination.
 \subsection{Real vs Apparent movement}
-2D motion is perceived by changes in the scene over time, but it's not always identify correctly. With a constant illumination, for example, a perfect rotating sphere is perceived as not moving. With an illumination source that rotates around a static sphere, the sphere is perceived as moving.
+2D motion is perceived by changes in the scene over time, but it's not always identified correctly. With a constant illumination, for example, a perfect rotating sphere is perceived as not moving. With an illumination source that rotates around a static sphere, the sphere is perceived as moving.
 \subsection{Occlusion}
 Occlusion is a problem that arises when a surface is covered/uncovered by the movement of an object.
 This makes it challenging to track or detect motion accurately because the missing information can lead to incorrect assumptions about the object's position or movement.
@@ -164,7 +164,7 @@ This method is effective when the illumination remains relatively constant.
 \[
     FD_{k, k-1}(x_1, x_2)= s(x_1, x_2, k)-s(x_1, x_2, k-1)
 \]
-If FD is non-null, a change has occurring. Change can be due to noise, so a threshold is needed to control it:
+If FD is non-null, a change has occurred. Change can be due to noise, so a threshold is needed to control it:
 \[
     z_{k, k-1}(x_1, x_2)= \begin{cases} 1 & \text{if } |FD_{k, k-1}(x_1, x_2)| > \tau \\ 0 & \text{otherwise} \end{cases}
 \]

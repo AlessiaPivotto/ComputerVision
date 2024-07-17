@@ -156,24 +156,22 @@ In order to solve this problem, we need to re-associate "A to A" and "B to B" (w
 \section{Tracking: Feature-based}
 
 Histograms are just one way to track objects, we also mentioned other methodologies, such as feature-based tracking. The objective is to retrieve the motion information from sets of features (such as points, corners, edges\dots) in local areas of the image.
-\\Considering
+\\Considering a set of images
 \[
     A = \{A(0), A(1), A(2), \dots, A(j-1)\}
 \] 
-as a set of images and
+and the position of the feature in the image plane in each frame:
 \[
     m_i(x_i, y_i)\;\;i = [0, j-1] 
 \] 
-the position of the feature in the image plane in each frame.
-
 \begin{wrapfigure}{r}{0.2\textwidth}
     \includegraphics[scale=0.3]{Figures/Tracking.png}
 \end{wrapfigure}
-The objective is to determine the displacement vector 
+The objective is to determine the displacement vector:
 \[
     d_i = (dx_i, dy_i)
 \] 
-that best estimates the position of the feature in the next frame 
+That best estimates the position of the feature in the next frame:
 \[
     m_{i+1}(x_{i+1}, y_{i+1}) = m_i + d_i
 \]
